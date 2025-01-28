@@ -1,0 +1,36 @@
+/* viewDepartment.css */
+.view-department-container {
+  font-family: Arial, sans-serif;
+  padding: 20px;
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
+.title {
+  text-align: center;
+  color: #4CAF50;
+  margin-bottom: 20px;
+}
+
+.department-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.department-table th,
+.department-table td {
+  border: 1px solid #ddd;
+  padding: 8px;
+  text-align: left;
+}
+
+.department-table th {
+  background-color: #f2f2f2;
+  color: #333;
+}
+
+.department-photo {
+  max-width: 100px;
+  height: auto;
+  border-radius: 5px;
+}

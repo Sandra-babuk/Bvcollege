@@ -1,0 +1,31 @@
+/* AdminHome.css */
+.admin-home {
+  display: flex;
+  height: 100vh;
+  /* background-image: url('https://cdn.pixabay.com/photo/2021/10/11/04/08/university-6699377_1280.jpg'); */
+  /* background-size: cover; */
+  background-position: center;
+}
+
+.MuiDrawer-paper {
+  background-color: #f0f0f0;
+}
+
+.list-item:hover {
+  background-color: #d0e6f7; /* Hover color for list items */
+}
+
+.nested {
+  padding-left: 32px;
+}
+
+.content {
+  flex-grow: 1;
+  padding: 24px;
+  background-color: rgba(255, 255, 255, 0.8); /* Transparent white background for better readability */
+  border-radius: 10px;
+}
+
+.text-light {
+  color: #2c3e50;
+}
