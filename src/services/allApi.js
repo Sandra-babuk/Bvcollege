@@ -140,12 +140,22 @@ export const editFacultyApi = async (id, facultydetails, token) => {
   });
 };
 
-//faculty-api
-export const FacultyApi = async (token) => {
+// faculty list
+export const FacultyApi = async () => {
+  // Retrieve token from localStorage
+  const token = localStorage.getItem("access");
+
+  // Check if token is available
+  if (!token) {
+    throw new Error("Token is missing");
+  }
+
+  // Make API call using commonAPI function
   return await commonAPI("GET", `${serverUrl}/falist/`, null, {
     Authorization: `Bearer ${token}`,
   });
 };
+
 
 
 //Addfacultyapi

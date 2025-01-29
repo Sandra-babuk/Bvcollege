@@ -1,0 +1,70 @@
+.navbar-custom {
+    padding: 10px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    z-index: 1000;
+}
+
+.navbar-custom h2 {
+    color: #ffffff;
+    font-family: 'Roboto', sans-serif;
+    margin: 0;
+}
+
+.links a, .links button {
+    color: #ffffff;
+    font-family: 'Roboto', sans-serif;
+    font-size: 16px;
+    text-decoration: none;
+    padding: 0 15px;
+    transition: color 0.3s ease;
+}
+
+.links a:hover, .links button:hover {
+    color: #ffc107;
+}
+
+.sign-in-btn {
+    background-color: #ffc107;
+    border: none;
+    color: #343a40;
+    padding: 8px 15px;
+    font-size: 16px;
+    cursor: pointer;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+}
+
+.sign-in-btn:hover {
+    background-color: #ffca2c;
+}
+
+.logout {
+    background-color: transparent;
+    border: none;
+    color: #ffffff;
+    font-size: 24px;
+    cursor: pointer;
+    padding: 0;
+    transition: color 0.3s ease;
+}
+
+.logout:hover {
+    color: #ffc107;
+}
+
+.d-flex p {
+    margin: 0;
+    padding-left: 5px;
+    color: #ffffff;
+}
+
+.navbar-custom .links {
+    display: flex;
+    align-items: center;
+}
+
+.navbar-custom .links .logout {
+    display: flex;
+    align-items: center;
+}

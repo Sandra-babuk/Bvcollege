@@ -1,0 +1,15 @@
+.card {
+    background-color: rgb(142, 168, 185);
+
+}
+
+.card:hover {
+    transition: 1s;
+    background-color: rgb(3, 37, 58);
+}
+
+
+
+.people-details {
+    background: rgb(122, 123, 123, 0.4);
+}

@@ -1,0 +1,11 @@
+.head hr {
+    width: 6%; /* Adjust width as needed */
+    margin: auto;
+    border: 2px solid rgb(245, 225, 6); /* Makes it bold and yellow */
+  }
+
+.btn{
+    border-color: rgb(237, 188, 28);
+    color: rgb(206, 162, 16);
+
+}

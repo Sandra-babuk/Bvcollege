@@ -1,11 +1,10 @@
 import React, { useState } from 'react';
 import { makeStyles } from '@mui/styles';
 import { Drawer, List, ListItem, ListItemIcon, ListItemText, AppBar, Toolbar, Typography, CssBaseline, Container, Collapse } from '@mui/material';
-import { Add, Visibility, ExitToApp, ExpandLess, ExpandMore } from '@mui/icons-material';
+import { Add, Visibility, ExitToApp, ExpandLess, ExpandMore, Notifications, Assessment } from '@mui/icons-material';
 import { useNavigate } from 'react-router-dom';
 import AddHod from '../components/AddHod';  
-import AddFaculty from '../components/AddFaculty'
-import './AdminHome.css';
+import AddFaculty from '../components/AddFaculty';
 import AddStudent from './AddStudent';
 import AddBatch from './AddBatch';
 import AddDepartment from './AddDepartment';
@@ -13,7 +12,10 @@ import AddCourse from './AddCourse';
 import ViewDepartment from './ViewDepartment';
 import ViewStudent from './ViewStudent';
 import ViewHod from './ViewHod';
-import ViewFaculty from './ViewFaculty'
+import ViewFaculty from './ViewFaculty';
+import './AdminHome.css';
+import Notification from './Notification';
+import ExamResult from './ExamResult';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -145,7 +147,18 @@ function AdminHome() {
             </List>
           </Collapse>
 
-          <ListItem button className={classes.listItem} onClick={() => navigate('/logout')}>
+          {/* Adding Notification and Exam Result menus */}
+          <ListItem button className={classes.listItem} onClick={() => renderComponent(<div><Notification/></div>)}>
+            <ListItemIcon><Notifications /></ListItemIcon>
+            <ListItemText primary="Notification" />
+          </ListItem>
+
+          <ListItem button className={classes.listItem} onClick={() => renderComponent(<div><ExamResult/></div>)}>
+            <ListItemIcon><Assessment /></ListItemIcon>
+            <ListItemText primary="Exam Result" />
+          </ListItem>
+
+          <ListItem button className={classes.listItem} onClick={() => navigate('/')}>
             <ListItemIcon><ExitToApp /></ListItemIcon>
             <ListItemText primary="Logout" />
           </ListItem>
