@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { toast } from "react-toastify";
+import { toast, ToastContainer } from "react-toastify";
 import { loginApi } from "../services/allApi";
 import "./login.css"; // Import the CSS file
 
@@ -114,13 +114,7 @@ function Login() {
           Don't have an account? <Link to="/signup">Click here to signup</Link>
         </p>
       </div>
-
-      <div className="lgImg">
-        <img
-          src="https://img.freepik.com/premium-photo/student-black-man-books-study-home-desk-thinking-reading-studying-college-person-learning-focused-information-page-education-knowledge-working-law-research_590464-177778.jpg"
-          alt="Student studying"
-        />
-      </div>
+      <ToastContainer />
     </div>
   );
 }

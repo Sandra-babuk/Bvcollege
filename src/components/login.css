@@ -1,133 +1,194 @@
-/* login.css */
 .lg-Box {
-    display: flex;
-    min-height: 100vh;
-    align-items: center;
-    justify-content: center;
-    background-color: #f0f2f5;
-  }
-  
-  .lg-content {
-    display: flex;
-    background: white;
-    border-radius: 8px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    overflow: hidden;
-    max-width: 900px;
-  }
-  
-  .lgImg {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background: #f0f2f5;
-    padding: 1rem;
-  }
-  
-  .lgImg img {
-    width: 100%;
-    max-width: 300px;
-    height: auto;
-    border-radius: 8px;
-  }
-  
-  .log-content {
-    padding: 2rem;
-    flex: 1;
-  }
-  
-  .lg-head p {
-    margin: 0;
-    font-size: 1.5rem;
-    color: #333;
-    text-align: center;
-  }
-  
-  .i-box {
-    margin-bottom: 1rem;
-  }
-  
-  .i-box label {
-    display: block;
-    margin-bottom: 0.5rem;
-    font-weight: bold;
-    color: #555;
-  }
-  
-  .i-box input {
-    width: 100%;
-    padding: 0.5rem;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-  }
-  
-  .fp {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 1rem;
-  }
-  
-  .remme {
-    display: flex;
-    align-items: center;
-  }
-  
-  .remme input {
-    margin-right: 0.5rem;
-  }
-  
-  .fp p {
-    color: #007bff;
-    cursor: pointer;
-  }
-  
-  .signBtn, .google {
-    width: 100%;
-    padding: 0.75rem;
-    margin-bottom: 1rem;
-    border: none;
-    border-radius: 4px;
-    font-size: 1rem;
-    font-weight: bold;
-    cursor: pointer;
-  }
-  
-  .signBtn {
-    background: #007bff;
-    color: white;
-  }
-  
-  .google {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background: white;
-    border: 1px solid #ccc;
-    color: #555;
-  }
-  
-  .google img {
-    width: 20px;
-    margin-right: 0.5rem;
-  }
-  
-  .google:hover, .signBtn:hover {
-    background: #0056b3;
-    color: white;
-  }
-  
-  .spf {
-    text-align: center;
-    margin-top: 1rem;
-  }
-  
-  .spf a {
-    color: #007bff;
-    text-decoration: none;
-  }
-  
-  .spf a:hover {
-    text-decoration: underline;
-  }
-  
+  display: flex;
+  justify-content: center; /* Center the form horizontally */
+  align-items: center; /* Center the form vertically */
+  min-height: 100vh;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  padding: 2rem;
+}
+
+.log-content {
+  background: rgba(255, 255, 255, 0.95);
+  padding: 3rem 2.5rem;
+  border-radius: 20px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+  width: 100%;
+  max-width: 400px;
+  position: relative;
+  backdrop-filter: blur(10px);
+}
+
+.lg-head {
+  text-align: center;
+  margin-bottom: 2.5rem;
+}
+
+.lg-head p:first-child {
+  font-size: 2rem;
+  font-weight: 700;
+  color: #2d3748;
+  margin-bottom: 0.5rem;
+  letter-spacing: -0.5px;
+}
+
+.lg-head p:last-child {
+  color: #718096;
+  font-size: 0.95rem;
+}
+
+.i-box {
+  margin-bottom: 1.5rem;
+}
+
+.i-box label {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-weight: 600;
+  color: #4a5568;
+  font-size: 0.9rem;
+}
+
+.i-box input {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  border: 2px solid #e2e8f0;
+  border-radius: 12px;
+  font-size: 1rem;
+  transition: all 0.3s ease;
+  background: white;
+}
+
+.i-box input:focus {
+  outline: none;
+  border-color: #667eea;
+  box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+}
+
+.i-box input::placeholder {
+  color: #a0aec0;
+}
+
+.fp {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem;
+}
+
+.remme {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.remme input[type="checkbox"] {
+  width: 16px;
+  height: 16px;
+  accent-color: #667eea;
+  cursor: pointer;
+}
+
+.remme p {
+  margin: 0;
+  color: #4a5568;
+  font-size: 0.9rem;
+}
+
+.fp p:last-child {
+  color: #667eea;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: color 0.3s ease;
+}
+
+.fp p:last-child:hover {
+  color: #5a67d8;
+}
+
+.signBtn {
+  width: 100%;
+  padding: 0.875rem;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  border: none;
+  border-radius: 12px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  margin-bottom: 1.5rem;
+}
+
+.signBtn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.25);
+}
+
+.google {
+  width: 100%;
+  padding: 0.875rem;
+  background: white;
+  border: 2px solid #e2e8f0;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  font-weight: 600;
+  color: #4a5568;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  margin-bottom: 1.5rem;
+}
+
+.google:hover {
+  background: #f7fafc;
+  border-color: #cbd5e0;
+}
+
+.google img {
+  width: 20px;
+  height: 20px;
+}
+
+.spf {
+  text-align: center;
+  color: #4a5568;
+  font-size: 0.95rem;
+  margin: 0;
+}
+
+.spf a {
+  color: #667eea;
+  text-decoration: none;
+  font-weight: 600;
+  transition: color 0.3s ease;
+}
+
+.spf a:hover {
+  color: #5a67d8;
+}
+
+.lgImg {
+  display: none;
+}
+
+/* Toast Container Customization */
+.Toastify__toast-container {
+  padding: 1rem;
+}
+
+.Toastify__toast {
+  border-radius: 12px;
+  padding: 1rem;
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+}
+
+.Toastify__toast--success {
+  background: linear-gradient(135deg, #31c48d 0%, #0e9f6e 100%);
+}
+
+.Toastify__toast--success {
+  background: linear-gradient(135deg, #31c48d 0%, #0e9f6e 100%);
+}

@@ -1,7 +1,12 @@
 import React, { useState } from 'react';
-import { makeStyles } from '@mui/styles';
-import { Drawer, List, ListItem, ListItemIcon, ListItemText, AppBar, Toolbar, Typography, CssBaseline, Container, Collapse } from '@mui/material';
-import { Add, Visibility, ExitToApp, ExpandLess, ExpandMore, Notifications, Assessment } from '@mui/icons-material';
+import {
+  Drawer, List, ListItem, ListItemIcon, ListItemText, AppBar,
+  Toolbar, Typography, CssBaseline, Container, Collapse
+} from '@mui/material';
+import {
+  Add, Visibility, ExitToApp, ExpandLess, ExpandMore,
+  Notifications, Assessment
+} from '@mui/icons-material';
 import { useNavigate } from 'react-router-dom';
 import AddHod from '../components/AddHod';  
 import AddFaculty from '../components/AddFaculty';
@@ -13,51 +18,15 @@ import ViewDepartment from './ViewDepartment';
 import ViewStudent from './ViewStudent';
 import ViewHod from './ViewHod';
 import ViewFaculty from './ViewFaculty';
-import './AdminHome.css';
 import Notification from './Notification';
 import ExamResult from './ExamResult';
-
-const useStyles = makeStyles((theme) => ({
-  root: {
-    display: 'flex',
-  },
-  drawer: {
-    width: 240,
-    flexShrink: 0,
-  },
-  drawerPaper: {
-    width: 240,
-    backgroundColor: '#f0f0f0',
-  },
-  content: {
-    flexGrow: 1,
-    padding: theme.spacing(3),
-  },
-  toolbar: theme.mixins.toolbar,
-  appBar: {
-    zIndex: theme.zIndex.drawer + 1,
-  },
-  sidebarHeader: {
-    textAlign: 'center',
-    padding: theme.spacing(2),
-    fontWeight: 'bold',
-  },
-  listItem: {
-    '&:hover': {
-      backgroundColor: '#d0e6f7',
-    },
-  },
-  nested: {
-    paddingLeft: theme.spacing(4),
-  },
-}));
+import './AdminHome.css';
 
 function AdminHome() {
-  const classes = useStyles();
   const navigate = useNavigate();
   const [openAdd, setOpenAdd] = useState(false);
   const [openView, setOpenView] = useState(false);
-  const [selectedComponent, setSelectedComponent] = useState(null); 
+  const [selectedComponent, setSelectedComponent] = useState(null);
 
   const handleAddClick = () => {
     setOpenAdd(!openAdd);
@@ -72,100 +41,91 @@ function AdminHome() {
   };
 
   return (
-    <div className={classes.root}>
+    <div className="admin-home">
       <CssBaseline />
-      <AppBar position="fixed" className={classes.appBar}>
+      {/* <AppBar position="fixed" className="admin-appbar">
         <Toolbar>
           <Typography variant="h6" noWrap>
             Admin Portal
           </Typography>
         </Toolbar>
-      </AppBar>
-      <Drawer
-        className={classes.drawer}
-        variant="permanent"
-        classes={{
-          paper: classes.drawerPaper,
-        }}
-      >
-        <div className={classes.toolbar} />
-        <div className={classes.sidebarHeader}>Admin Controls</div>
+      </AppBar> */}
+      <Drawer className="admin-drawer" variant="permanent">
+        <div className="toolbar-spacer" />
+        <div className="sidebar-header">Admin Controls</div>
         <List>
-          <ListItem button className={classes.listItem} onClick={handleAddClick}>
+          {/* Add Section */}
+          <ListItem button className="list-item" onClick={handleAddClick}>
             <ListItemIcon><Add /></ListItemIcon>
             <ListItemText primary="Add" />
             {openAdd ? <ExpandLess /> : <ExpandMore />}
           </ListItem>
           <Collapse in={openAdd} timeout="auto" unmountOnExit>
             <List component="div" disablePadding>
-              <ListItem button className={classes.nested} onClick={() => renderComponent(<AddHod />)}>
+              <ListItem button className="nested-item" onClick={() => renderComponent(<AddHod />)}>
                 <ListItemText primary="Add HOD" />
               </ListItem>
-              <ListItem button className={classes.nested} onClick={() => renderComponent(<div><AddFaculty/></div>)}>
+              <ListItem button className="nested-item" onClick={() => renderComponent(<AddFaculty />)}>
                 <ListItemText primary="Add Faculty" />
               </ListItem>
-              <ListItem button className={classes.nested} onClick={() => renderComponent(<div><AddStudent/></div>)}>
+              <ListItem button className="nested-item" onClick={() => renderComponent(<AddStudent />)}>
                 <ListItemText primary="Add Student" />
               </ListItem>
-              <ListItem button className={classes.nested} onClick={() => renderComponent(<div><AddCourse/> </div>)}>
+              <ListItem button className="nested-item" onClick={() => renderComponent(<AddCourse />)}>
                 <ListItemText primary="Add Course" />
               </ListItem>
-              <ListItem button className={classes.nested} onClick={() => renderComponent(<div><AddBatch/></div>)}>
+              <ListItem button className="nested-item" onClick={() => renderComponent(<AddBatch />)}>
                 <ListItemText primary="Add Batch" />
               </ListItem>
-              <ListItem button className={classes.nested} onClick={() => renderComponent(<div><AddDepartment/></div>)}>
+              <ListItem button className="nested-item" onClick={() => renderComponent(<AddDepartment />)}>
                 <ListItemText primary="Add Department" />
               </ListItem>
             </List>
           </Collapse>
 
-          <ListItem button className={classes.listItem} onClick={handleViewClick}>
+          {/* View Section */}
+          <ListItem button className="list-item" onClick={handleViewClick}>
             <ListItemIcon><Visibility /></ListItemIcon>
             <ListItemText primary="View" />
             {openView ? <ExpandLess /> : <ExpandMore />}
           </ListItem>
           <Collapse in={openView} timeout="auto" unmountOnExit>
             <List component="div" disablePadding>
-              <ListItem button className={classes.nested} onClick={() => renderComponent(<div><ViewHod/></div>)}>
+              <ListItem button className="nested-item" onClick={() => renderComponent(<ViewHod />)}>
                 <ListItemText primary="View HOD" />
               </ListItem>
-              <ListItem button className={classes.nested} onClick={() => renderComponent(<div><ViewFaculty/> </div>)}>
+              <ListItem button className="nested-item" onClick={() => renderComponent(<ViewFaculty />)}>
                 <ListItemText primary="View Faculty" />
               </ListItem>
-              <ListItem button className={classes.nested} onClick={() => renderComponent(<div><ViewStudent/></div>)}>
+              <ListItem button className="nested-item" onClick={() => renderComponent(<ViewStudent />)}>
                 <ListItemText primary="View Student" />
               </ListItem>
-              <ListItem button className={classes.nested} onClick={() => renderComponent(<div>View Course</div>)}>
-                <ListItemText primary="View Course" />
-              </ListItem>
-              <ListItem button className={classes.nested} onClick={() => renderComponent(<div><ViewDepartment/></div>)}>
+              <ListItem button className="nested-item" onClick={() => renderComponent(<ViewDepartment />)}>
                 <ListItemText primary="View Department" />
-              </ListItem>
-              <ListItem button className={classes.nested} onClick={() => renderComponent(<div>View Subject</div>)}>
-                <ListItemText primary="View Subject" />
               </ListItem>
             </List>
           </Collapse>
 
-          {/* Adding Notification and Exam Result menus */}
-          <ListItem button className={classes.listItem} onClick={() => renderComponent(<div><Notification/></div>)}>
+          {/* Notifications & Exam Results */}
+          <ListItem button className="list-item" onClick={() => renderComponent(<Notification />)}>
             <ListItemIcon><Notifications /></ListItemIcon>
             <ListItemText primary="Notification" />
           </ListItem>
 
-          <ListItem button className={classes.listItem} onClick={() => renderComponent(<div><ExamResult/></div>)}>
+          <ListItem button className="list-item" onClick={() => renderComponent(<ExamResult />)}>
             <ListItemIcon><Assessment /></ListItemIcon>
             <ListItemText primary="Exam Result" />
           </ListItem>
 
-          <ListItem button className={classes.listItem} onClick={() => navigate('/')}>
+          {/* Logout */}
+          <ListItem button className="list-item" onClick={() => navigate('/')}>
             <ListItemIcon><ExitToApp /></ListItemIcon>
             <ListItemText primary="Logout" />
           </ListItem>
         </List>
       </Drawer>
-      <main className={classes.content}>
-        <div className={classes.toolbar} />
+      <main className="admin-content">
+        <div className="toolbar-spacer" />
         <Container>
           {selectedComponent}
         </Container>

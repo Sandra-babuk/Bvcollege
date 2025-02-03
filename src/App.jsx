@@ -7,8 +7,9 @@ import AddHod from './components/AddHod'
 import AddStudent from './components/AddStudent'
 import Otp from './components/Otp'
 import Home from './pages/Home'
-import StudentDashboard from './components/StudentDashboard'
+// import StudentDashboard from './components/StudentDashboard'
 import AddCourse from './components/AddCourse'
+import StudentDash from './pages/StudentDash'
 
 const App = () => {
   return (
@@ -24,7 +25,7 @@ const App = () => {
       <Route path="/admin-home" element={<AdminHome />}></Route>
       <Route path="/Otp" element={<Otp />}></Route>
       <Route path="/home" element={<Home />}></Route>
-      <Route path="/student-dashboard" element={<StudentDashboard />}></Route>
+      <Route path="/studentDash" element={<StudentDash />}></Route>
 
 
       </Routes>

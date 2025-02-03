@@ -1,0 +1,62 @@
+
+.notes-container{
+    max-width: 900px;
+    margin: auto;
+    background:#f8f9fa;
+    padding: 20px;
+    border-radius: 15px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+    font-family: 'Arial', sans-serif;
+
+}.note-card {
+    border: 1px solid;
+    justify-content: center;
+    align-items: center;
+    /* background: rgb(213, 216, 219); */
+    background: rgb(236, 243, 245);
+    gap: 10px;
+    padding: 20px 20px 10px 20px;
+    border-radius: 10px;
+}
+
+.pdf {
+    display: flex;
+    justify-content: center;
+}
+
+.note-card p {
+    font-size: 13px;
+    font-style: italic;
+}
+
+.buttons {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+}
+
+.save-note {
+    border: none;
+    /* background: rgb(213, 216, 219); */
+    background: rgb(236, 243, 245);
+
+}
+
+.save-note:hover {
+    border: none;
+    color: white;
+    background-color: rgb(46, 88, 161);
+}
+
+.view-note {
+    border: none;
+    color: white;
+    /* background-color: rgb(213, 216, 219); */
+    background: rgb(236, 243, 245);
+
+
+}
+
+.view-note:hover {
+    background-color: rgb(18, 137, 235);
+}
