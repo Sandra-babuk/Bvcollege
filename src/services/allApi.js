@@ -23,6 +23,27 @@ const refreshToken = async () => {
   }
 };
 
+// Login API
+export const loginApi = async (userDetails) => {
+  return await commonAPI("POST", `${serverUrl}/login/`, userDetails, "");
+};
+
+// Register API
+export const registerApi = async (userDetails) => {
+  return await commonAPI("POST", `${serverUrl}/register/`, userDetails, "");
+};
+
+// OTP Verification API
+export const verifyOtpApi = async (otpDetails) => {
+  return await commonAPI("POST", `${serverUrl}/verify_otp/`, otpDetails, "");
+};
+
+// Resend OTP API
+export const resendOtpApi = async (userDetails) => {
+  return await commonAPI("POST", `${serverUrl}/resend_otp/`, userDetails, "");
+};
+// =====================================================================================================
+
 export const StudentApi = async (token) => {
   try {
     const response = await axios.get(`${serverUrl}/stlist/`, {
@@ -53,26 +74,44 @@ export const StudentApi = async (token) => {
   }
 };
 
+// // studentlist -api
+// export const StudentApi = async () => {
+//   return await commonAPI("GET", `${serverUrl}/stlist/`, "", "");
+// };
 
-// Login API
-export const loginApi = async (userDetails) => {
-  return await commonAPI("POST", `${serverUrl}/login/`, userDetails, "");
+
+//addStudentApi
+export const addStudentApi = async (FormData, reqHeader) => {
+  try {
+    const response = await axios.post(`${serverUrl}/stlist/`, formData, {
+      headers: {
+        ...reqHeader,
+        "Content-Type": "multipart/form-data",
+      },
+    });
+    return response;
+  } catch (err) {
+    console.error("Error in addStudentApi:", err.response || err.message);
+    throw err; // Let the calling function handle errors
+  }
 };
 
-// Register API
-export const registerApi = async (userDetails) => {
-  return await commonAPI("POST", `${serverUrl}/register/`, userDetails, "");
+//delete student api
+export const deleteStudentApi = async (id, token) => {
+  return await commonAPI("DELETE", `${serverUrl}/stlist/${id}/`, "", {
+    Authorization: `Bearer ${token}`,
+  });
 };
 
-// OTP Verification API
-export const verifyOtpApi = async (otpDetails) => {
-  return await commonAPI("POST", `${serverUrl}/verify_otp/`, otpDetails, "");
+//editstudentapi
+export const editStdApi = async (id, studentdetails, token) => {
+  return await commonAPI("PUT", `${serverUrl}/stlist/${id}/`, studentdetails, {
+    Authorization: `Bearer ${token}`,
+  });
 };
 
-// Resend OTP API
-export const resendOtpApi = async (userDetails) => {
-  return await commonAPI("POST", `${serverUrl}/resend_otp/`, userDetails, "");
-};
+
+// ======================================================================================
 
 // department list
 export const getDepartmentsApi = async (token) => {
@@ -109,7 +148,51 @@ export const editDeptApi = async (id, deptdetails, token) => {
     }
   );
 };
+// dept view
+export const departmentApi = async () => {
+  return await commonAPI("GET", `${serverUrl}/departments-list/`, "", "");
+};
 
+// ================================================================
+
+
+// HOD API functions
+export const HodApi = async (token) => {
+  return await commonAPI("GET", `${serverUrl}/hodlist/`, null, {
+    Authorization: `Bearer ${token}`,
+  });
+};
+
+export const deleteHodApi = async (id, token) => {
+  return await commonAPI("DELETE", `${serverUrl}/hodlist/${id}/`, null, {
+    Authorization: `Bearer ${token}`,
+  });
+};
+
+export const editHodApi = async (id, hodDetails, token) => {
+  return await commonAPI("PUT", `${serverUrl}/hodlist/${id}/`, hodDetails, {
+    Authorization: `Bearer ${token}`,
+  });
+};
+
+// faculty
+//Addfacultyapi
+export const addFacultyApi = async (formData, reqHeader) => {
+  try {
+    const response = await axios.post(`${serverUrl}/Faculty/`, formData, {
+      headers: {
+        ...reqHeader, // Include authorization and other necessary headers
+        "Content-Type": "multipart/form-data", // Ensure this matches backend expectations
+      },
+    });
+    return response;
+  } catch (err) {
+    console.error("Error in addFacultyApi:", err.response || err.message);
+    throw err; // Let the calling function handle errors
+  }
+};
+
+// faculty list
 export const facultyApi = async (token) => {
   try {
     const response = await axios.get(`${serverUrl}/falist/`, {
@@ -157,58 +240,6 @@ export const FacultyApi = async () => {
 };
 
 
-
-//Addfacultyapi
-export const addFacultyApi = async (formData, reqHeader) => {
-  try {
-    const response = await axios.post(`${serverUrl}/Faculty/`, formData, {
-      headers: {
-        ...reqHeader, // Include authorization and other necessary headers
-        "Content-Type": "multipart/form-data", // Ensure this matches backend expectations
-      },
-    });
-    return response;
-  } catch (err) {
-    console.error("Error in addFacultyApi:", err.response || err.message);
-    throw err; // Let the calling function handle errors
-  }
-};
-
-// // studentlist -api
-// export const StudentApi = async () => {
-//   return await commonAPI("GET", `${serverUrl}/stlist/`, "", "");
-// };
-
-//addStudentApi
-export const addStudentApi = async (FormData, reqHeader) => {
-  try {
-    const response = await axios.post(`${serverUrl}/stlist/`, formData, {
-      headers: {
-        ...reqHeader,
-        "Content-Type": "multipart/form-data",
-      },
-    });
-    return response;
-  } catch (err) {
-    console.error("Error in addStudentApi:", err.response || err.message);
-    throw err; // Let the calling function handle errors
-  }
-};
-
-//delete student api
-export const deleteStudentApi = async (id, token) => {
-  return await commonAPI("DELETE", `${serverUrl}/stlist/${id}/`, "", {
-    Authorization: `Bearer ${token}`,
-  });
-};
-
-//editstudentapi
-export const editStdApi = async (id, studentdetails, token) => {
-  return await commonAPI("PUT", `${serverUrl}/stlist/${id}/`, studentdetails, {
-    Authorization: `Bearer ${token}`,
-  });
-};
-
 //faculty dash
 
 //student_attendanceapi
@@ -247,25 +278,7 @@ export const delete_Studentnote = async (id, token) => {
   });
 };
 
-// =============================
-// HOD API functions
-export const HodApi = async (token) => {
-  return await commonAPI("GET", `${serverUrl}/hodlist/`, null, {
-    Authorization: `Bearer ${token}`,
-  });
-};
 
-export const deleteHodApi = async (id, token) => {
-  return await commonAPI("DELETE", `${serverUrl}/hodlist/${id}/`, null, {
-    Authorization: `Bearer ${token}`,
-  });
-};
-
-export const editHodApi = async (id, hodDetails, token) => {
-  return await commonAPI("PUT", `${serverUrl}/hodlist/${id}/`, hodDetails, {
-    Authorization: `Bearer ${token}`,
-  });
-};
 // -----------------------------------------------------------------
 export const addCourseApi = async (data, token) => {
   return await commonAPI("POST", `${serverUrl}/courses-list/`, data, {

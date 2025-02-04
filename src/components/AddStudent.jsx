@@ -224,7 +224,6 @@ function StudentRegistration() {
               <button 
                 type="button" 
                 className="btn-secondary"
-                onClick={() => navigate('/')}
               >
                 Cancel
               </button>

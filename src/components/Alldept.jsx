@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import "./dept.css";
+import "./alldept.css";
 import { departmentApi } from "../services/allApi";
 import { Link } from "react-router-dom";
 
@@ -15,7 +15,7 @@ function Departments() {
       try {
         const response = await departmentApi();
         if (response.status === 200 && Array.isArray(response.data)) {
-          setDepartments(response.data.slice(0, 6)); // Display only the first 6 departments
+          setDepartments(response.data); 
         } else {
           setError("Failed to fetch departments data.");
         }
@@ -35,31 +35,31 @@ function Departments() {
   }
 
   if (error) {
-    return <div>{error}</div>; // Display error message
+    return <div>{error}</div>;
   }
 
   if (!departments || departments.length === 0) {
-    return <div>No departments available.</div>; // Fallback if no departments
+    return <div>No departments available.</div>;
   }
 
   return (
     <>
-      <div className="head-course-text my-2">
-        <p className="text-center fs-4">Most Popular Courses</p>
+      <div className="head-course-text my-5">
+        <p className="text-center fs-4 mt-4">All Departments</p>
       </div>
 
-      <div className="course-box">
+      <div className="allcourse-box">
         {departments.map((department, index) => {
           const imageUrl = department.photo;
           return (
-            <div className="dept-card" key={index}>
-              <div className="image-container">
+            <div className="alldept-card" key={index}>
+              <div className="allimage-container">
                 <img
-                  className="dept-img"
+                  className="alldept-img"
                   src={`${serverUrl}${imageUrl}`}
                   alt={department.department_name}
                 />
-                <div className="dept-title">
+                <div className="dep-title">
                   <p className="cp1">{department.department_name}</p>
                   <Link to={{
                     pathname: "/coursedescription" }} state={{ department }} style={{ textDecoration: 'none' }}> 
@@ -72,12 +72,6 @@ function Departments() {
             </div>
           );
         })}
-      </div>
-
-      <div className="see-more-container">
-        <Link to="/alldept" className="see-more-link">
-          See More
-        </Link>
       </div>
     </>
   );

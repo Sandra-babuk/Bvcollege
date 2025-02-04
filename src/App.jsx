@@ -12,6 +12,8 @@ import AddCourse from './components/AddCourse'
 import StudentDash from './pages/StudentDash'
 import HodDash from './pages/HodDash'
 import FacultyDash from './pages/FacultyDash'
+import CourseDescription from './components/CourseDescription'
+import Alldept from './components/Alldept'
 
 const App = () => {
   return (
@@ -30,6 +32,8 @@ const App = () => {
       <Route path="/studentDash" element={<StudentDash />}></Route>
       <Route path="/hodDash" element={<HodDash />}></Route>
       <Route path="/facultyDash" element={<FacultyDash />}></Route>
+      <Route path="/coursedescription" element={<CourseDescription />} ></Route>
+      <Route path="/alldept" element={<Alldept />}></Route>
 
 
       </Routes>

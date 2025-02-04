@@ -1,0 +1,59 @@
+.cd-main{
+    margin:0px;
+    padding: 0px;
+    
+}
+.link-back{
+    padding: 10px;
+    margin-left: 1000px;
+    /* margin-top: 20px; */
+}
+.c-description{
+    margin-left: 200px;
+    height:100vh;
+    width: 75%;
+    border-radius:20px;
+    margin-top: 50px;
+    background-color: aliceblue;
+}
+.c-description-head{
+    padding: 50px;
+   
+}
+.cd-para{
+    margin: 10px;
+}
+.batch-button{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 50px;
+}
+.btech{
+    height: 100px;
+    width: 100px;
+    border-radius: 50%;
+    background-color:antiquewhite;
+    align-items: center;
+    display: flex;
+    justify-content: center;
+    transition: all 0.3s;
+
+}
+.mtech{
+    height: 100px;
+    width: 100px;
+    border-radius: 50%;
+    background-color: antiquewhite;
+    align-items: center;
+    display: flex;
+    justify-content: center;
+    transition: all 0.3s;
+
+}
+.mtech:hover {
+    transform: translateY(-15px);
+  }
+  .btech:hover {
+    transform: translateY(-15px);
+  }

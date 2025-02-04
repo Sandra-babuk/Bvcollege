@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import { StudentApi, deleteStudentApi, editStdApi } from '../services/allApi';
-import './viewStudent.css';
+import './viewstudent.css';
 import { useNavigate } from 'react-router-dom';
-import { Modal, Button, Form, Container, Row, Col, Spinner } from 'react-bootstrap';
+import { Modal, Button, Form, Container, Row, Col, Spinner, Table } from 'react-bootstrap';
 import { toast, ToastContainer } from "react-toastify";
+import { deleteStudentApi, editStdApi, StudentApi } from '../services/allApi';
 
 const ViewStudent = () => {
   const [students, setStudents] = useState([]);
@@ -109,32 +109,49 @@ const ViewStudent = () => {
   };
 
   return (
-    <Container className="py-5">
+    <div className="container">
       <Row className="justify-content-center">
         <Col lg={10}>
-          <h1 className="text-center mb-4">Students List</h1>
-          <div className="student-list">
+
+          <div className="p-2 ">
             {students.length > 0 ? (
-              students.map((student) => (
-                <div key={student.id} className="student-card">
-                  <div className="student-info">
-                    <p><strong>ID:</strong> {student.id}</p>
-                    <p><strong>Name:</strong> {student.full_name}</p>
-                    <p><strong>Email:</strong> {student.email}</p>
-                    <p><strong>Phone:</strong> {student.phone}</p>
-                    <p><strong>Date of Birth:</strong> {student.dob}</p>
-                    <p><strong>Gender:</strong> {student.gender}</p>
-                    <p><strong>Department:</strong> {student.department}</p>
-                    <p><strong>Course:</strong> {student.course}</p>
-                    <p><strong>Batch:</strong> {student.batch}</p>
-                    <p><strong>Role:</strong> {student.role}</p>
-                    <div className="student-actions">
-                      <Button variant="primary" onClick={() => handleEdit(student)} className="me-2">Edit</Button>
-                      <Button variant="danger" onClick={() => handleDelete(student.id)}>Delete</Button>
-                    </div>
-                  </div>
-                </div>
-              ))
+              <Table striped bordered hover className="bg-white">
+                <thead>
+                  <tr>
+                    <th>#</th>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Phone</th>
+                    <th>Department</th>
+                    <th>Course</th>
+                    <th>Batch</th>
+                    <th>Gender</th>
+                    <th>Actions</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {students.map((student, index) => (
+                    <tr key={student.id}>
+                      <td>{index + 1}</td>
+                      <td>{student.full_name}</td>
+                      <td>{student.email}</td>
+                      <td>{student.phone}</td>
+                      <td>{student.department}</td>
+                      <td>{student.course}</td>
+                      <td>{student.batch}</td>
+                      <td>{student.gender}</td>
+                      <td>
+                        <Button variant="outline-primary" size="sm" onClick={() => handleEdit(student)} className="me-2">
+                          Edit
+                        </Button>
+                        <Button variant="outline-danger" size="sm" onClick={() => handleDelete(student.id)}>
+                          Delete
+                        </Button>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </Table>
             ) : (
               <p className="text-center">No students found.</p>
             )}
@@ -142,6 +159,7 @@ const ViewStudent = () => {
         </Col>
       </Row>
 
+      {/* Edit Student Modal */}
       <Modal show={showModal} onHide={() => setShowModal(false)} centered>
         <Modal.Header closeButton>
           <Modal.Title>Edit Student Details</Modal.Title>
@@ -249,9 +267,10 @@ const ViewStudent = () => {
           </Form>
         </Modal.Body>
       </Modal>
+
       <ToastContainer />
-    </Container>
+    </div>
   );
 };
 
-export default ViewStudent;
+export default ViewStudent;
