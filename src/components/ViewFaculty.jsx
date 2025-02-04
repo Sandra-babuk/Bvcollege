@@ -20,7 +20,7 @@ function ViewFaculty() {
 
   // Fetch faculty data
   useEffect(() => {
-    const fetchFacultyData = async () => {
+    const AllFacultyData = async () => {
       try {
         const response = await FacultyApi();
         console.log("API Response:", response);
@@ -37,7 +37,7 @@ function ViewFaculty() {
       }
     };
 
-    fetchFacultyData();
+    AllFacultyData();
   }, []);
 
   // Handle edit faculty details

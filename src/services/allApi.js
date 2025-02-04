@@ -247,7 +247,7 @@ export const delete_Studentnote = async (id, token) => {
   });
 };
 
-
+// =============================
 // HOD API functions
 export const HodApi = async (token) => {
   return await commonAPI("GET", `${serverUrl}/hodlist/`, null, {
@@ -266,7 +266,7 @@ export const editHodApi = async (id, hodDetails, token) => {
     Authorization: `Bearer ${token}`,
   });
 };
-
+// -----------------------------------------------------------------
 export const addCourseApi = async (data, token) => {
   return await commonAPI("POST", `${serverUrl}/courses-list/`, data, {
     Authorization: `Bearer ${token}`,

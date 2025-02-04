@@ -10,6 +10,8 @@ import Home from './pages/Home'
 // import StudentDashboard from './components/StudentDashboard'
 import AddCourse from './components/AddCourse'
 import StudentDash from './pages/StudentDash'
+import HodDash from './pages/HodDash'
+import FacultyDash from './pages/FacultyDash'
 
 const App = () => {
   return (
@@ -26,6 +28,8 @@ const App = () => {
       <Route path="/Otp" element={<Otp />}></Route>
       <Route path="/home" element={<Home />}></Route>
       <Route path="/studentDash" element={<StudentDash />}></Route>
+      <Route path="/hodDash" element={<HodDash />}></Route>
+      <Route path="/facultyDash" element={<FacultyDash />}></Route>
 
 
       </Routes>

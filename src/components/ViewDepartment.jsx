@@ -2,17 +2,18 @@ import React, { useState, useEffect } from 'react';
 import { getDepartmentsApi } from '../services/allApi';
 import './viewdept.css'; // Ensure the CSS file exists in the specified path
 
-const serverUrl = 'http://localhost:8000'; // Update with your server URL
+const serverUrl = 'http://localhost:8000'; 
+
 
 const ViewDepartment = () => {
   const [departments, setDepartments] = useState([]);
   const [selectedCourseType, setSelectedCourseType] = useState('');
 
   useEffect(() => {
-    fetchDepartments();
+    AllDepartments();
   }, []);
 
-  const fetchDepartments = async () => {
+  const AllDepartments = async () => {
     const token = localStorage.getItem('access');
     if (!token) {
       console.log('No token found');

@@ -1,67 +1,90 @@
 /* viewHod.css */
+
 .view-hod {
-    font-family: Arial, sans-serif;
-    padding: 20px;
-    max-width: 800px;
-    margin: 0 auto;
-  }
-  
-  .title {
-    text-align: center;
-    color: #4CAF50;
-    margin-bottom: 20px;
-  }
-  
-  .hod-list {
-    list-style-type: none;
-    padding: 0;
-  }
-  
+  padding: 20px;
+}
+
+.title {
+  text-align: center;
+  margin-bottom: 20px;
+  font-size: 2em;
+  color: #333;
+}
+
+.hod-list {
+  list-style-type: none;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.hod-item {
+  background-color: #fff;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 20px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  transition: transform 0.2s;
+}
+
+.hod-item:hover {
+  transform: scale(1.02);
+}
+
+.hod-details {
+  flex: 1;
+  padding-right: 20px;
+}
+
+.hod-name {
+  font-size: 1.5em;
+  margin: 0 0 10px;
+  color: #333;
+}
+
+.hod-email,
+.hod-phone,
+.hod-department {
+  margin: 5px 0;
+  color: #555;
+}
+
+.hod-actions {
+  display: flex;
+  gap: 10px;
+}
+
+.edit-icon,
+.delete-icon {
+  cursor: pointer;
+  font-size: 1.2em;
+  color: #007bff;
+}
+
+.delete-icon {
+  color: #dc3545;
+}
+
+.edit-icon:hover,
+.delete-icon:hover {
+  color: #0056b3;
+}
+
+.delete-icon:hover {
+  color: #c82333;
+}
+
+@media (max-width: 768px) {
   .hod-item {
-    border: 1px solid #ddd;
-    margin-bottom: 10px;
-    padding: 10px;
-    border-radius: 5px;
-    background-color: #f9f9f9;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-  }
-  
-  .hod-details {
-    display: flex;
     flex-direction: column;
+    align-items: flex-start;
   }
-  
-  .hod-name {
-    font-size: 1.5em;
-    color: #333;
-    margin: 0;
-  }
-  
-  .hod-email,
-  .hod-phone,
-  .hod-department {
-    font-size: 1em;
-    color: #666;
-    margin: 5px 0;
-  }
-  
+
   .hod-actions {
-    display: flex;
-    gap: 10px;
+    margin-top: 10px;
   }
-  
-  .fa {
-    font-size: 1.5em;
-    cursor: pointer;
-  }
-  
-  .edit-icon {
-    color: #007bff;
-  }
-  
-  .delete-icon {
-    color: #dc3545;
-  }
-  
+}

@@ -1,8 +1,8 @@
 import React, { useState } from "react";
-import "./add.css";
+import "./addhod.css";
 import { registerApi } from "../services/allApi";
 import { useNavigate } from "react-router-dom";
-import { toast } from "react-toastify";
+import { toast, ToastContainer } from "react-toastify";
 
 function AddHod() {
   const [userData, setUserData] = useState({
@@ -187,6 +187,7 @@ function AddHod() {
           </form>
         </div>
       </div>
+      <ToastContainer/>
     </div>
   );
 }

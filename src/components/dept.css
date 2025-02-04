@@ -1,41 +1,108 @@
-.dept-card {
-    position: relative;
-    display: inline-block;
-    cursor: pointer;
-    width: 250px;
-    height: 200px;
-    overflow: hidden;
-}
-
-.image-container {
-    position: relative;
-    width: 100%;
-    height: 100%;
-    overflow: hidden;
-    background-color: rgba(0, 0, 0, 0.3); 
-}
-
-.dept-img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    display: block;
-    transition: transform 0.4s ease-in-out;
-}
-
-.dept-title {
-    position: absolute;
-    bottom: 0; 
-    width: 100%;
-    height: 100%;
+.head-course-text {
+    height: 60px;
+    font-size: 20px;
+  
+    margin-top: 70px;
     display: flex;
-    flex-direction: column;
     justify-content: center;
-    text-align: center;    
-    padding: 5px 0 5px 0; 
-    background: rgba(57, 57, 57, 0.7);
+  }
+  
+  .course-box {
+    display: flex;
+    justify-content: space-around;
+    flex-wrap: wrap;
+    margin-top: 40px;
+  }
+  .head-course-text p {
+    border-bottom: 5px solid #e67700;
+    border-radius: 1px;
+  }
+  
+  .course {
+    width: 27%;
+    height: 330px;
+    margin-bottom: 30px;
+  }
+  /* ---------------------------Help-------------------------- */
+  .help {
+    width: 70%;
+    height: 300px;
+  
+    margin: 40px auto 0px auto;
+    display: flex;
+    gap: 30px;
+    align-items: center;
+  }
+  
+  .ht-2 {
+    width: 75%;
+  }
+  .help img {
+    width: 50%;
+    height: 100%;
+  }
+  
+  .re-faq {
+    border: none;
+    width: 100px;
+    height: 30px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #fab005;
     color: white;
-}
-.dept-card:hover .dept-img{
-    transform: scale(1.3);
-}
+    border-radius: 5px;
+    font-size: 12px;
+  }
+  .ht-box {
+    display: flex;
+    gap: 50px;
+    margin-top: 30px;
+  }
+  .ht-box p {
+    color: #fab005;
+  }
+  /* .course img {
+    transition: transform 0.2s ease;
+  }
+  
+  .course img:hover {
+    transform: scale(1.1);
+  }
+  .department-image {
+    width: 50px;
+    height: 150px;
+    object-fit: cover; /* Ensures the image is cropped to fit the size} */
+  
+  
+  /* Styling for course container */
+  .course {
+    position: relative;
+    overflow: hidden;
+    transition: transform 0.3s ease; /* Smooth transition */
+  }
+  
+  /* Hover effect for scaling */
+  .course:hover {
+    transform: scale(1.05); /* Slightly enlarge the image */
+  }
+  
+  /* Optional: Add some background effect on hover */
+  .course:hover img {
+    filter: brightness(0.8); /* Darken image on hover */
+  }
+  
+  /* Optional: Add styles for text inside the course */
+  .cp1 {
+    font-weight: bold;
+  }
+  
+  .cp2 {
+    color: gray;
+    font-size: 14px;
+  }
+  
+  .hover-effect {
+    cursor: pointer; /* Changes cursor to pointer on hover */
+  }
+  

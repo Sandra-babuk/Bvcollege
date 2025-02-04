@@ -8,10 +8,10 @@ const ViewHod = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    fetchHods();
+    AllHods();
   }, []);
 
-  const fetchHods = async () => {
+  const AllHods = async () => {
     const token = localStorage.getItem('access');
     if (!token) {
       console.error('No token found in localStorage');

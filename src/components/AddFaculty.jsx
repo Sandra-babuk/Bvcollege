@@ -1,10 +1,10 @@
 import React, { useState } from "react";
+import './addFac.css';
 import { registerApi } from "../services/allApi";
 import { useNavigate } from "react-router-dom";
 import { toast, ToastContainer } from "react-toastify";
-import { Form, Button, Container, Row, Col, Spinner } from "react-bootstrap";
 
-function AddFaculty() {
+function FacultyRegistration() {
   const [userData, setUserData] = useState({
     full_name: "",
     dob: "",
@@ -109,136 +109,156 @@ function AddFaculty() {
   };
 
   return (
-    <Container className="py-5">
-      <Row className="justify-content-center">
-        <Col lg={8}>
-          <h1 className="text-center mb-4">Add Faculty Details</h1>
-          <Form onSubmit={handleRegistration} className="p-4 border rounded bg-white shadow-sm">
-            {/* Full Name */}
-            <Form.Group controlId="full_name" className="mb-3">
-              <Form.Label>Full Name</Form.Label>
-              <Form.Control
-                type="text"
-                name="full_name"
-                placeholder="Enter your full name"
-                value={userData.full_name}
-                onChange={handleChange}
-                disabled={isLoading}
-              />
-            </Form.Group>
+    <div className="registration-page">
+      <div className="registration-container">
+        <div className="registration-card">
+          <header className="registration-header">
+            <h1>Faculty Registration</h1>
+            <p>Enter faculty details to create a new account</p>
+          </header>
 
-            {/* Date of Birth */}
-            <Form.Group controlId="dob" className="mb-3">
-              <Form.Label>Date of Birth</Form.Label>
-              <Form.Control
-                type="date"
-                name="dob"
-                value={userData.dob}
-                onChange={handleChange}
-                disabled={isLoading}
-              />
-            </Form.Group>
+          <form onSubmit={handleRegistration} className="registration-form">
+            <div className="form-grid">
+              <div className="input-group">
+                <label htmlFor="full_name">Full Name</label>
+                <input
+                  type="text"
+                  id="full_name"
+                  name="full_name"
+                  placeholder="Enter full name"
+                  value={userData.full_name}
+                  onChange={handleChange}
+                  className="input-field"
+                  disabled={isLoading}
+                />
+              </div>
 
-            {/* Gender */}
-            <Form.Group controlId="gender" className="mb-3">
-              <Form.Label>Gender</Form.Label>
-              <Form.Select
-                name="gender"
-                value={userData.gender}
-                onChange={handleChange}
-                disabled={isLoading}
-              >
-                <option value="">Select Gender</option>
-                <option value="male">Male</option>
-                <option value="female">Female</option>
-                <option value="other">Other</option>
-              </Form.Select>
-            </Form.Group>
+              <div className="input-group">
+                <label htmlFor="dob">Date of Birth</label>
+                <input
+                  type="date"
+                  id="dob"
+                  name="dob"
+                  value={userData.dob}
+                  onChange={handleChange}
+                  className="input-field"
+                  disabled={isLoading}
+                />
+              </div>
 
-            {/* Phone */}
-            <Form.Group controlId="phone" className="mb-3">
-              <Form.Label>Phone Number</Form.Label>
-              <Form.Control
-                type="tel"
-                name="phone"
-                placeholder="Enter your phone number"
-                value={userData.phone}
-                onChange={handleChange}
-                disabled={isLoading}
-              />
-            </Form.Group>
+              <div className="input-group">
+                <label htmlFor="gender">Gender</label>
+                <select
+                  id="gender"
+                  name="gender"
+                  value={userData.gender}
+                  onChange={handleChange}
+                  className="select-field"
+                  disabled={isLoading}
+                >
+                  <option value="">Select Gender</option>
+                  <option value="male">Male</option>
+                  <option value="female">Female</option>
+                  <option value="other">Other</option>
+                </select>
+              </div>
 
-            {/* Email */}
-            <Form.Group controlId="email" className="mb-3">
-              <Form.Label>Email</Form.Label>
-              <Form.Control
-                type="email"
-                name="email"
-                placeholder="Enter your email"
-                value={userData.email}
-                onChange={handleChange}
-                disabled={isLoading}
-              />
-            </Form.Group>
+              <div className="input-group">
+                <label htmlFor="phone">Phone Number</label>
+                <input
+                  type="tel"
+                  id="phone"
+                  name="phone"
+                  placeholder="Enter phone number"
+                  value={userData.phone}
+                  onChange={handleChange}
+                  className="input-field"
+                  disabled={isLoading}
+                />
+              </div>
 
-            {/* Password */}
-            <Form.Group controlId="password" className="mb-3">
-              <Form.Label>Password</Form.Label>
-              <Form.Control
-                type="password"
-                name="password"
-                placeholder="Enter password"
-                value={userData.password}
-                onChange={handleChange}
-                disabled={isLoading}
-              />
-            </Form.Group>
+              <div className="input-group">
+                <label htmlFor="email">Email Address</label>
+                <input
+                  type="email"
+                  id="email"
+                  name="email"
+                  placeholder="Enter email address"
+                  value={userData.email}
+                  onChange={handleChange}
+                  className="input-field"
+                  autoComplete="email"
+                  disabled={isLoading}
+                />
+              </div>
 
-            {/* Photo */}
-            <Form.Group controlId="photo" className="mb-3">
-              <Form.Label>Profile Image</Form.Label>
-              <Form.Control
-                type="file"
-                name="photo"
-                onChange={handleChange}
-                disabled={isLoading}
-              />
-            </Form.Group>
+              <div className="input-group">
+                <label htmlFor="password">Password</label>
+                <input
+                  type="password"
+                  id="password"
+                  name="password"
+                  placeholder="Create password"
+                  value={userData.password}
+                  onChange={handleChange}
+                  className="input-field"
+                  autoComplete="new-password"
+                  disabled={isLoading}
+                />
+              </div>
 
-            {/* Department */}
-            <Form.Group controlId="department" className="mb-3">
-              <Form.Label>Department</Form.Label>
-              <Form.Select
-                name="department"
-                value={userData.department}
-                onChange={handleChange}
-                disabled={isLoading}
-              >
-                <option value="">Select Department</option>
-                <option value="1">B.Tech</option>
-                <option value="2">M.Tech</option>
-              </Form.Select>
-            </Form.Group>
+              <div className="input-group">
+                <label htmlFor="photo">Profile Image</label>
+                <input
+                  type="file"
+                  id="photo"
+                  name="photo"
+                  onChange={handleChange}
+                  className="input-field"
+                  disabled={isLoading}
+                />
+              </div>
 
-            {/* Buttons */}
-            <div className="d-flex justify-content-end gap-3">
-              <Button
-                variant="secondary"
-                onClick={() => navigate("/")}
+              <div className="input-group">
+                <label htmlFor="department">Department</label>
+                <select
+                  id="department"
+                  name="department"
+                  value={userData.department}
+                  onChange={handleChange}
+                  className="select-field"
+                  disabled={isLoading}
+                >
+                  <option value="">Select Department</option>
+                  <option value="1">B.Tech</option>
+                  <option value="2">M.Tech</option>
+                </select>
+              </div>
+            </div>
+
+            <div className="form-actions">
+              <button 
+                type="button" 
+                className="btn-secondary"
+                onClick={() => navigate('/')}
                 disabled={isLoading}
               >
                 Cancel
-              </Button>
-              <Button type="submit" variant="primary" disabled={isLoading}>
-                {isLoading ? <Spinner animation="border" size="sm" /> : "Create"}
-              </Button>
+              </button>
+              <button 
+                type="submit" 
+                className="btn-primary"
+                disabled={isLoading}
+              >
+                {isLoading ? 'Processing...' : 'Register Faculty'}
+              </button>
             </div>
-          </Form>
-        </Col>
-      </Row>
-      <ToastContainer />
-    </Container>
+          </form>
+        </div>
+      </div>
+      <ToastContainer/>
+    </div>
   );
 }
 
-export default AddFaculty;
+export default FacultyRegistration;

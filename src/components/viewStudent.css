@@ -1,48 +1,92 @@
-/* viewStudent.css */
-.view-student {
-  font-family: Arial, sans-serif;
-  padding: 20px;
+/* General Styling */
+.container {
   max-width: 1200px;
-  margin: 0 auto;
+  margin: auto;
+  padding: 20px;
 }
 
-.title {
+h1 {
   text-align: center;
-  color: #4CAF50;
+  font-size: 2rem;
+  color: #333;
   margin-bottom: 20px;
 }
 
-.student-table {
-  width: 100%;
-  border-collapse: collapse;
+/* Student List Styling */
+.student-list {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 20px;
 }
 
-.student-table th,
-.student-table td {
-  border: 1px solid #ddd;
-  padding: 8px;
-  text-align: left;
+.student-card {
+  background: #fff;
+  border-radius: 10px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+  width: 300px;
+  transition: transform 0.3s ease;
 }
 
-.student-table th {
-  background-color: #f2f2f2;
+.student-card:hover {
+  transform: scale(1.05);
+}
+
+.student-info p {
+  margin: 5px 0;
+  font-size: 0.9rem;
+  color: #555;
+}
+
+.student-info p strong {
   color: #333;
 }
 
+/* Buttons */
 .student-actions {
   display: flex;
-  gap: 10px;
+  justify-content: space-between;
+  margin-top: 15px;
 }
 
-.edit-icon, .delete-icon {
-  cursor: pointer;
-  font-size: 1.2em;
+.student-actions .btn {
+  font-size: 0.9rem;
+  padding: 5px 10px;
 }
 
-.edit-icon {
-  color: #007bff;
+/* Modal Styling */
+.modal-title {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: #333;
 }
 
-.delete-icon {
-  color: #dc3545;
+.form-label {
+  font-weight: 600;
+  color: #555;
+}
+
+.btn-primary, .btn-danger {
+  font-size: 1rem;
+  padding: 8px 15px;
+  border-radius: 5px;
+}
+
+.btn-primary {
+  background-color: #007bff;
+  border: none;
+}
+
+.btn-danger {
+  background-color: #dc3545;
+  border: none;
+}
+
+.btn-primary:hover {
+  background-color: #0056b3;
+}
+
+.btn-danger:hover {
+  background-color: #a71d2a;
 }
