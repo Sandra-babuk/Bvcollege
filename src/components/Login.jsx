@@ -36,6 +36,9 @@ function Login() {
         localStorage.setItem("department", result.data.department);
         localStorage.setItem("course", result.data.course);
         localStorage.setItem("subject", result.data.subject);
+        // localStorage.setItem("studentId", result.data.studentId);
+        // localStorage.setItem("facultyId", result.data.facultyId);
+        // localStorage.setItem("hodId", result.data.hodId);
 
         setUserData({ email: "", password: "" });
         toast.success("Login successful");

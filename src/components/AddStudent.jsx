@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import './addStudent.css';
-import { registerApi } from '../services/allApi';
+import { departmentApi, registerApi } from '../services/allApi';
 import { useNavigate } from 'react-router-dom';
 import { toast, ToastContainer } from 'react-toastify';
 
@@ -18,8 +18,26 @@ function StudentRegistration() {
     role: 'student',
   });
 
+  const [department, setDepartment] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
+
+  useEffect(() => {
+    const AllDept = async () => {
+      try {
+        const response = await departmentApi();
+        if (response.status === 200) {
+          setDepartment(response.data);
+        } else {
+          toast.error('Failed to get departments');
+        }
+      } catch (error) {
+        console.error('Error fetching departments:', error);
+        toast.error('An unexpected error occurred. Please try again.');
+      }
+    };
+    AllDept();
+  }, []);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -39,6 +57,19 @@ function StudentRegistration() {
     }
 
     try {
+      console.log('Sending data:', {
+        full_name,
+        dob,
+        gender,
+        email,
+        phone,
+        password,
+        course,
+        department,
+        batch,
+        role,
+      });
+
       const response = await registerApi({
         full_name,
         dob,
@@ -71,7 +102,7 @@ function StudentRegistration() {
         toast.error('Registration failed! Please try again.');
       }
     } catch (error) {
-      console.error('Error during registration:', error);
+      console.error('Error during registration:', error.response || error.message);
       toast.error('An unexpected error occurred. Please try again.');
     } finally {
       setIsLoading(false);
@@ -196,11 +227,9 @@ function StudentRegistration() {
                   className="select-field"
                 >
                   <option value="">Select Department</option>
-                  <option value="1">Chemical Engineering</option>
-                  <option value="2">Computer Engineering</option>
-                  <option value="3">Civil Engineering</option>
-                  <option value="4">Electronic Engineering</option>
-                  <option value="5">EC Engineering</option>
+                  {department.map((dept) => (
+                    <option key={dept.id} value={dept.id}>{dept.department_name}</option>
+                  ))}
                 </select>
               </div>
 
@@ -221,14 +250,14 @@ function StudentRegistration() {
             </div>
 
             <div className="form-actions">
-              <button 
-                type="button" 
+              <button
+                type="button"
                 className="btn-secondary"
               >
                 Cancel
               </button>
-              <button 
-                type="submit" 
+              <button
+                type="submit"
                 className="btn-primary"
                 disabled={isLoading}
               >
@@ -238,7 +267,7 @@ function StudentRegistration() {
           </form>
         </div>
       </div>
-      <ToastContainer/>
+      <ToastContainer />
     </div>
   );
 }

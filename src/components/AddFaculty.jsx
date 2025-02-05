@@ -1,6 +1,6 @@
-import React, { useState } from "react";
+import React, { useState,useEffect } from "react";
 import './addFac.css';
-import { registerApi } from "../services/allApi";
+import { departmentApi, registerApi } from "../services/allApi";
 import { useNavigate } from "react-router-dom";
 import { toast, ToastContainer } from "react-toastify";
 
@@ -17,6 +17,7 @@ function FacultyRegistration() {
     role: "faculty",
   });
 
+  const [department, setDepartment] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
 
@@ -107,6 +108,23 @@ function FacultyRegistration() {
       setIsLoading(false);
     }
   };
+
+   useEffect(() => {
+      const AllDept = async () => {
+        try {
+          const response = await departmentApi();
+          if (response.status === 200) {
+            setDepartment(response.data);
+          } else {
+            toast.error('Failed to get departments');
+          }
+        } catch (error) {
+          console.error('Error fetching departments:', error);
+          toast.error('An unexpected error occurred. Please try again.');
+        }
+      };
+      AllDept();
+    }, []);
 
   return (
     <div className="registration-page">
@@ -229,9 +247,13 @@ function FacultyRegistration() {
                   className="select-field"
                   disabled={isLoading}
                 >
-                  <option value="">Select Department</option>
+                  {/* <option value="">Select Department</option>
                   <option value="1">B.Tech</option>
-                  <option value="2">M.Tech</option>
+                  <option value="2">M.Tech</option> */}
+                     <option value="">Select Department</option>
+                  {department.map((dept) => (
+                    <option key={dept.id} value={dept.id}>{dept.department_name}</option>
+                  ))}
                 </select>
               </div>
             </div>
@@ -240,7 +262,7 @@ function FacultyRegistration() {
               <button 
                 type="button" 
                 className="btn-secondary"
-                onClick={() => navigate('/')}
+               
                 disabled={isLoading}
               >
                 Cancel

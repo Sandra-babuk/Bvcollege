@@ -146,7 +146,7 @@ export const editDeptApi = async (id, deptdetails, token) => {
     {
       Authorization: `Bearer ${token}`,
     }
-  );
+  );m
 };
 // dept view
 export const departmentApi = async () => {

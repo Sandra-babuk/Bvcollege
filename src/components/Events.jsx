@@ -22,8 +22,8 @@ const Events = () => {
                         {/* event */}
                         <div className='flex-column'>
                             <h5>Seminar </h5>
-                            <p style={{ fontSize: '15px' }}>Venue</p>
-                            <p style={{ fontSize: '12px', width: '300px' }}>Lorem ipsum dolor sit amet consectetur adipisicing elit. Pariatur dignissimos similique earum maiores incidunt neque unde vitae, </p>
+                            <p style={{ fontSize: '15px',color:'black' }}>Venue</p>
+                            <p style={{ fontSize: '12px', width: '300px',color:'black' }}>Lorem ipsum dolor sit amet consectetur adipisicing elit. Pariatur dignissimos similique earum maiores incidunt neque unde vitae, </p>
                         </div>
                         {/* pic */}
                         <div>
@@ -43,8 +43,8 @@ const Events = () => {
                         {/* event */}
                         <div className='flex-column'>
                             <h5>Seminar </h5>
-                            <p style={{ fontSize: '15px' }}>Venue</p>
-                            <p style={{ fontSize: '12px', width: '300px' }}>Lorem ipsum dolor sit amet consectetur adipisicing elit. Pariatur dignissimos similique earum maiores incidunt neque unde vitae, </p>
+                            <p style={{ fontSize: '15px',color:'black' }}>Venue</p>
+                            <p style={{ fontSize: '12px', width: '300px', color:'black' }}>Lorem ipsum dolor sit amet consectetur adipisicing elit. Pariatur dignissimos similique earum maiores incidunt neque unde vitae, </p>
                         </div>
                         {/* pic */}
                         <div>
@@ -64,8 +64,8 @@ const Events = () => {
                         {/* event */}
                         <div className='flex-column'>
                             <h5>Seminar </h5>
-                            <p style={{ fontSize: '15px' }}>Venue</p>
-                            <p style={{ fontSize: '12px', width: '300px' }}>Lorem ipsum dolor sit amet consectetur adipisicing elit. Pariatur dignissimos similique earum maiores incidunt neque unde vitae, </p>
+                            <p style={{ fontSize: '15px',color:'black' }}>Venue</p>
+                            <p style={{ fontSize: '12px', width: '300px', color:'black' }}>Lorem ipsum dolor sit amet consectetur adipisicing elit. Pariatur dignissimos similique earum maiores incidunt neque unde vitae, </p>
                         </div>
                         {/* pic */}
                         <div>

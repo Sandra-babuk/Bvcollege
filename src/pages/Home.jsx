@@ -9,7 +9,7 @@ const Home = () => {
     <>
       <div className="landingPage">
         <Header />
-        <div className='d-flex flex-column justify-content-center align-items-center ' style={{height:'70%'}}>
+        <div className='d-flex flex-column justify-content-center align-items-center ' style={{ height: '70%' }}>
           <div className="logo-container pt-auto">
             <img
               alt=""
@@ -26,10 +26,10 @@ const Home = () => {
           </div>
         </div>
       </div>
-      <About/>
+      <About />
 
     </>
   )
 }
 
-export default Home;
+export default Home;

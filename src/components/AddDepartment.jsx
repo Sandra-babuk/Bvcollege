@@ -9,7 +9,7 @@ const AddDepartment = () => {
   const [departmentData, setDepartmentData] = useState({
     department_name: "",
     description: "",
-    course_type: "",
+    courses: "",
     photo: null,
   });
   const navigate = useNavigate();
@@ -78,16 +78,16 @@ const AddDepartment = () => {
               ></textarea>
             </div>
             <div className="form-group">
-              <label htmlFor="course_type">Course Type</label>
+              <label htmlFor="courses">Course Type</label>
               <select
-                id="course_type"
-                name="course_type"
-                value={departmentData.course_type}
+                id="courses"
+                name="courses"
+                value={departmentData.courses}
                 onChange={handleChange}
               >
                 <option value="">Select Course Type</option>
-                <option value="M.Tech">M.Tech</option>
-                <option value="B.Tech">B.Tech</option>
+                <option value="2">B.Tech</option>
+                <option value="3">M.Tech</option>
               </select>
             </div>
             <div className="form-group">

@@ -8,6 +8,7 @@ import { IoIosLogOut } from "react-icons/io";
 const Header = () => {
     const username = localStorage.getItem("username");
     const role = localStorage.getItem("role");
+    // const id = localStorage.getItem('')
 
     const navigate = useNavigate();
 

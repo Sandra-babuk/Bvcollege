@@ -1,65 +1,90 @@
-import React, { useState } from 'react';
-// import './addNote.css';
+import React, { useState, useEffect } from 'react';
+import { Form, Button, Container } from 'react-bootstrap';
+import { upload_Studentnote } from '../services/allApi'; 
 
 const AddNote = ({ onNoteAdded }) => {
   const [title, setTitle] = useState('');
   const [file, setFile] = useState(null);
   const [course, setCourse] = useState('');
+  const [facultyId, setFacultyId] = useState('');
+
+  useEffect(() => {
+    // Retrieve the faculty ID from localStorage
+    const id = localStorage.getItem('facultyId');
+    if (id) {
+      setFacultyId(id);
+    } else {
+      console.error('No faculty ID found in localStorage');
+    }
+  }, []);
 
   const handleFileChange = (e) => {
     setFile(e.target.files[0]);
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // Placeholder function for form submission
-    console.log({
-      title,
-      file,
-      course
-    });
-    onNoteAdded && onNoteAdded();
-    setTitle('');
-    setFile(null);
-    setCourse('');
+    const formData = new FormData();
+    formData.append('title', title);
+    formData.append('file', file);
+    formData.append('course', course);
+    formData.append('faculty', facultyId); // Append the faculty ID to the form data
+
+    // Retrieve the token from localStorage
+    const token = localStorage.getItem('access');
+    if (!token) {
+      console.error('No token found in localStorage');
+      return;
+    }
+
+    const reqHeader = {
+      Authorization: `Bearer ${token}`, 
+    };
+
+    try {
+      await upload_Studentnote(formData, reqHeader);
+      onNoteAdded && onNoteAdded();
+      setTitle('');
+      setFile(null);
+      setCourse('');
+    } catch (err) {
+      console.error('Error uploading note:', err);
+    }
   };
 
   return (
-    <div className="add-note-container">
+    <Container className="add-note-container">
       <h2>Upload Note</h2>
-      <form onSubmit={handleSubmit}>
-        <div className="form-group">
-          <label htmlFor="title">Title</label>
-          <input
+      <Form onSubmit={handleSubmit}>
+        <Form.Group controlId="title">
+          <Form.Label>Title</Form.Label>
+          <Form.Control
             type="text"
-            id="title"
             value={title}
             onChange={(e) => setTitle(e.target.value)}
             required
           />
-        </div>
-        <div className="form-group">
-          <label htmlFor="file">File</label>
-          <input
+        </Form.Group>
+        <Form.Group controlId="file">
+          <Form.Label>File</Form.Label>
+          <Form.Control
             type="file"
-            id="file"
             onChange={handleFileChange}
             required
           />
-        </div>
-        <div className="form-group">
-          <label htmlFor="course">Course</label>
-          <input
+        </Form.Group>
+        <Form.Group controlId="course">
+          <Form.Label>Course</Form.Label>
+          <Form.Control
             type="text"
-            id="course"
             value={course}
             onChange={(e) => setCourse(e.target.value)}
             required
           />
-        </div>
-        <button type="submit">Upload</button>
-      </form>
-    </div>
+        </Form.Group>
+        <Button className='my-2' variant="primary" type="submit">Upload</Button>
+      </Form>
+    </Container>
   );
 };
 

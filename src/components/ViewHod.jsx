@@ -1,18 +1,27 @@
 import React, { useState, useEffect } from 'react';
+import { Table, Button, Modal, Form, Spinner, Row, Col } from 'react-bootstrap';
+import { toast, ToastContainer } from 'react-toastify';
 import { HodApi, deleteHodApi, editHodApi } from '../services/allApi';
 import './viewHod.css';
 import { useNavigate } from 'react-router-dom';
+import { FaEdit, FaTrash } from 'react-icons/fa';
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 const ViewHod = () => {
   const [hods, setHods] = useState([]);
+  const [selectedHod, setSelectedHod] = useState(null);
+  const [showModal, setShowModal] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
   const navigate = useNavigate();
+
+  const token = localStorage.getItem("access"); // Fetch the token from localStorage
 
   useEffect(() => {
     AllHods();
   }, []);
 
   const AllHods = async () => {
-    const token = localStorage.getItem('access');
     if (!token) {
       console.error('No token found in localStorage');
       return;
@@ -28,16 +37,18 @@ const ViewHod = () => {
       }
     } catch (error) {
       console.error('Error fetching HODs:', error);
+    } finally {
+      setIsLoading(false);
     }
   };
 
   const handleEdit = (hod) => {
     console.log(`Edit HOD with ID: ${hod.id}`);
-    navigate('/edit-hod', { state: { hod } });
+    setSelectedHod(hod);
+    setShowModal(true);
   };
 
   const handleDelete = async (hodId) => {
-    const token = localStorage.getItem('access');
     if (!token) {
       console.error('No token found in localStorage');
       return;
@@ -61,35 +72,142 @@ const ViewHod = () => {
     }
   };
 
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setSelectedHod((prevHod) => ({
+      ...prevHod,
+      [name]: value,
+    }));
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setIsSubmitting(true);
+
+    const formData = new FormData();
+    formData.append("full_name", selectedHod.full_name);
+    formData.append("email", selectedHod.email);
+    formData.append("phone", selectedHod.phone);
+    formData.append("department", selectedHod.department);
+
+    try {
+      const response = await editHodApi(selectedHod.id, formData, token, true);
+      console.log('API Response:', response);
+
+      if (response.status === 200) {
+        console.log(`HOD with ID: ${selectedHod.id} updated successfully`);
+        setHods(hods.map(hod => (hod.id === selectedHod.id ? response.data : hod)));
+        setShowModal(false);
+        setSelectedHod(null);
+        toast.success("HOD details updated!");
+      } else {
+        console.error('Failed to update HOD');
+        toast.error("Failed to update HOD details.");
+      }
+    } catch (error) {
+      console.error('Error during update:', error.response || error.message);
+      toast.error(error.response?.data?.message || "An error occurred.");
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
   return (
-    <div className="view-hod">
-      <h1 className="title">Heads of Departments</h1>
-      <ul className="hod-list">
-        {hods.length > 0 ? (
-          hods.map((hod) => (
-            <li key={hod.id} className="hod-item">
-              <div className="hod-details">
-                <h2 className="hod-name">{hod.full_name}</h2>
-                <p className="hod-email">Email: {hod.email}</p>
-                <p className="hod-phone">Phone: {hod.phone}</p>
-                <p className="hod-department">Department: {hod.department}</p>
-              </div>
-              <div className="hod-actions">
-                <i
-                  className="fa fa-edit edit-icon"
-                  onClick={() => handleEdit(hod)}
-                ></i>
-                <i
-                  className="fa fa-trash delete-icon"
-                  onClick={() => handleDelete(hod.id)}
-                ></i>
-              </div>
-            </li>
-          ))
-        ) : (
-          <p>No HODs found.</p>
-        )}
-      </ul>
+    <div className="container">
+      <Row className="justify-content-center">
+        <Col lg={10}>
+
+          {isLoading ? (
+            <div className="d-flex justify-content-center">
+              <Spinner animation="border" size="lg" />
+            </div>
+          ) : (
+            <div className="p-4">
+              <Table striped bordered hover className="bg-white w-100">
+                <thead>
+                  <tr>
+                    <th>#</th>
+                    <th>Full Name</th>
+                    <th>Email</th>
+                    <th>Phone</th>
+                    <th>Department</th>
+                    <th>Actions</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {hods.length > 0 ? (
+                    hods.map((hod, index) => (
+                      <tr key={hod.id}>
+                        <td>{index + 1}</td>
+                        <td>{hod.full_name}</td>
+                        <td>{hod.email}</td>
+                        <td>{hod.phone}</td>
+                        <td>{hod.department}</td>
+                        <td>
+                          <Button
+                            variant="outline-primary"
+                            size="sm"
+                            onClick={() => handleEdit(hod)}
+                            className="me-2"
+                          >
+                            <FaEdit />
+                          </Button>
+                          <Button
+                            variant="outline-danger"
+                            size="sm"
+                            onClick={() => handleDelete(hod.id)}
+                          >
+                            <FaTrash />
+                          </Button>
+                        </td>
+                      </tr>
+                    ))
+                  ) : (
+                    <tr>
+                      <td colSpan="6" className="text-center">
+                        No HODs found.
+                      </td>
+                    </tr>
+                  )}
+                </tbody>
+              </Table>
+            </div>
+          )}
+        </Col>
+      </Row>
+
+      <Modal show={showModal} onHide={() => setShowModal(false)} centered>
+        <Modal.Header closeButton>
+          <Modal.Title>Edit HOD Details</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <Form onSubmit={handleSubmit}>
+            <Form.Group>
+              <Form.Label>Full Name</Form.Label>
+              <Form.Control type="text" name="full_name" value={selectedHod?.full_name || ""} onChange={handleChange} />
+            </Form.Group>
+
+            <Form.Group className="mt-3">
+              <Form.Label>Email</Form.Label>
+              <Form.Control type="email" name="email" value={selectedHod?.email || ""} onChange={handleChange} />
+            </Form.Group>
+            <Form.Group className="mt-3">
+              <Form.Label>Phone</Form.Label>
+              <Form.Control type="number" name="phone" value={selectedHod?.phone || ""} onChange={handleChange} />
+            </Form.Group>
+            <Form.Group className="mt-3">
+              <Form.Label>Department</Form.Label>
+              <Form.Control type="text" name="department" value={selectedHod?.department || ""} onChange={handleChange} />
+            </Form.Group>
+
+            <Button variant="primary" type="submit" className="mt-4 w-100" disabled={isSubmitting}>
+              {isSubmitting ? <Spinner animation="border" size="sm" /> : "Update"}
+            </Button>
+          </Form>
+        </Modal.Body>
+      </Modal>
+
+      <ToastContainer />
     </div>
   );
 };
