@@ -46,30 +46,18 @@ function StudentRegistration() {
 
   const handleRegistration = async (e) => {
     e.preventDefault();
-    setIsLoading(true);
+    setIsLoading(true); // Set loading state to true
 
     const { full_name, dob, gender, email, phone, password, course, department, batch, role } = userData;
 
+    // Check if any field is empty
     if (!full_name || !dob || !gender || !email || !phone || !password || !course || !department || !batch) {
       toast.warning('Please fill out all fields');
-      setIsLoading(false);
+      setIsLoading(false); // Reset loading state
       return;
     }
 
     try {
-      console.log('Sending data:', {
-        full_name,
-        dob,
-        gender,
-        email,
-        phone,
-        password,
-        course,
-        department,
-        batch,
-        role,
-      });
-
       const response = await registerApi({
         full_name,
         dob,
@@ -83,7 +71,18 @@ function StudentRegistration() {
         role,
       });
 
+      console.log('User Data:', userData); // Debug log to check data being sent
+
       if (response.status === 200) {
+
+        localStorage.setItem('userId', response.data.id);
+        localStorage.setItem('role', response.data.role);
+        localStorage.setItem('full_name', response.data.full_name);
+        localStorage.setItem('dob', response.data.dob);
+        localStorage.setItem('gender', response.data.gender);
+        localStorage.setItem('email', response.data.email);
+        localStorage.setItem('phone', response.data.phone);
+
         toast.success('OTP sent successfully');
         setUserData({
           full_name: '',
@@ -92,9 +91,9 @@ function StudentRegistration() {
           email: '',
           phone: '',
           password: '',
-          course: '',
-          department: '',
-          batch: '',
+          course: '', 
+          department: '', 
+          batch: '', 
           role: 'student',
         });
         navigate('/Otp', { state: { email } });
@@ -102,10 +101,10 @@ function StudentRegistration() {
         toast.error('Registration failed! Please try again.');
       }
     } catch (error) {
-      console.error('Error during registration:', error.response || error.message);
+      console.error('Error during registration:', error);
       toast.error('An unexpected error occurred. Please try again.');
     } finally {
-      setIsLoading(false);
+      setIsLoading(false); // Reset loading state after the request
     }
   };
 

@@ -1,21 +1,23 @@
 import React, { useState, useEffect } from 'react';
 import { Form, Button, Container } from 'react-bootstrap';
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import { upload_Studentnote } from '../services/allApi'; 
 
 const AddNote = ({ onNoteAdded }) => {
   const [title, setTitle] = useState('');
+  const [username, setUsername] = useState('');
   const [file, setFile] = useState(null);
   const [course, setCourse] = useState('');
-  const [facultyId, setFacultyId] = useState('');
+  const [userId, setUserId] = useState('');
+  const [role, setRole] = useState('');
 
   useEffect(() => {
-    // Retrieve the faculty ID from localStorage
-    const id = localStorage.getItem('facultyId');
-    if (id) {
-      setFacultyId(id);
-    } else {
-      console.error('No faculty ID found in localStorage');
-    }
+    // Retrieve the role and username from localStorage or API
+    const storedRole = localStorage.getItem('role');
+    const storedUsername = localStorage.getItem('username');
+    setRole(storedRole);
+    setUsername(storedUsername);
   }, []);
 
   const handleFileChange = (e) => {
@@ -28,7 +30,7 @@ const AddNote = ({ onNoteAdded }) => {
     formData.append('title', title);
     formData.append('file', file);
     formData.append('course', course);
-    formData.append('faculty', facultyId); // Append the faculty ID to the form data
+    formData.append('user', userId); // Append the user ID (either faculty or HOD)
 
     // Retrieve the token from localStorage
     const token = localStorage.getItem('access');
@@ -43,12 +45,14 @@ const AddNote = ({ onNoteAdded }) => {
 
     try {
       await upload_Studentnote(formData, reqHeader);
+      toast.success("Note uploaded successfully!");
       onNoteAdded && onNoteAdded();
       setTitle('');
       setFile(null);
       setCourse('');
     } catch (err) {
       console.error('Error uploading note:', err);
+      toast.error("Error uploading note.");
     }
   };
 
@@ -82,8 +86,20 @@ const AddNote = ({ onNoteAdded }) => {
             required
           />
         </Form.Group>
+
+        {/* Display the correct ID based on the role */}
+        <Form.Group controlId="username">
+          <Form.Label>{role === "HOD" ? "HOD Username" : "Faculty Username"}</Form.Label>
+          <Form.Control
+            type="text"
+            value={username}
+            readOnly
+          />
+        </Form.Group>
+
         <Button className='my-2' variant="primary" type="submit">Upload</Button>
       </Form>
+      <ToastContainer />
     </Container>
   );
 };

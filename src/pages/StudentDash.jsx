@@ -3,10 +3,10 @@ import './stddash.css';
 import user from '../assets/user.jpg'
 import { RiArrowGoForwardLine } from "react-icons/ri";
 import AssignmentStd from '../components/AssignmentStd';
-import Profile from '../components/Profile';
 import ResultStd from '../components/ResultStd';
 import Notes from '../components/Notes';
 import { useNavigate } from 'react-router-dom';
+import StdProfile from '../components/StdProfile';
 
 const StudentDash = () => {
 
@@ -27,7 +27,7 @@ const StudentDash = () => {
               
         
             default:case "profile":
-            return<Profile/>
+            return<StdProfile/>
             return
         }
     }

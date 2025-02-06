@@ -42,6 +42,8 @@ function FacultyRegistration() {
     }
   };
 
+  
+
   const validateInputs = () => {
     const { full_name, dob, gender, email, phone, password, department, photo } = userData;
 
@@ -59,10 +61,12 @@ function FacultyRegistration() {
 
   const handleRegistration = async (e) => {
     e.preventDefault();
+    setIsLoading(true); // Start loading
 
     const error = validateInputs();
     if (error) {
       toast.warning(error);
+      setIsLoading(false);
       return;
     }
 
@@ -77,11 +81,20 @@ function FacultyRegistration() {
     formData.append("role", userData.role);
     formData.append("photo", userData.photo);
 
-    setIsLoading(true);
     try {
       const response = await registerApi(formData);
 
       if (response.status === 200) {
+
+        // localStorage.setItem('userId', response.data.id);
+        // localStorage.setItem('role', response.data.role);
+        // localStorage.setItem('full_name', response.data.full_name);
+        // localStorage.setItem('dob', response.data.dob);
+        // localStorage.setItem('gender', response.data.gender);
+        // localStorage.setItem('email', response.data.email);
+        // localStorage.setItem('phone', response.data.phone);
+
+
         toast.success("OTP sent successfully.");
         setUserData({
           full_name: "",
@@ -99,13 +112,16 @@ function FacultyRegistration() {
         toast.error("Registration failed! Please try again.");
       }
     } catch (error) {
-      const errorMsg =
-        error.response?.data?.photo?.[0] ||
+      console.error(
+        "Error during registration:",
+        error.response?.data || error.message
+      );
+      toast.error(
         error.response?.data?.error ||
-        "An unexpected error occurred. Please try again.";
-      toast.error(errorMsg);
+          "An unexpected error occurred. Please try again."
+      );
     } finally {
-      setIsLoading(false);
+      setIsLoading(false); // Reset loading state
     }
   };
 

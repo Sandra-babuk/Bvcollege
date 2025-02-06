@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { verifyOtpApi, resendOtpApi } from '../services/allApi';
-import { toast, ToastContainer } from 'react-toastify';
+import { toast } from 'react-toastify';
 
 function Otp() {
   const location = useLocation();
@@ -87,7 +87,6 @@ function Otp() {
             {isResendLoading ? 'Resending...' : 'Resend'}
           </button>
         </div>
-        <ToastContainer/>
       </div>
     </>
   );

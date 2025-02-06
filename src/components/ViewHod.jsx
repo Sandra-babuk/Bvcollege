@@ -44,6 +44,7 @@ const ViewHod = () => {
 
   const handleEdit = (hod) => {
     console.log(`Edit HOD with ID: ${hod.id}`);
+    localStorage.setItem("selectedFacultyId", hod.id);
     setSelectedHod(hod);
     setShowModal(true);
   };
@@ -85,6 +86,7 @@ const ViewHod = () => {
     setIsSubmitting(true);
 
     const formData = new FormData();
+    formData.append("id", selectedHod.id)
     formData.append("full_name", selectedHod.full_name);
     formData.append("email", selectedHod.email);
     formData.append("phone", selectedHod.phone);
@@ -127,6 +129,7 @@ const ViewHod = () => {
                 <thead>
                   <tr>
                     <th>#</th>
+                    <th>id</th>
                     <th>Full Name</th>
                     <th>Email</th>
                     <th>Phone</th>
@@ -139,6 +142,8 @@ const ViewHod = () => {
                     hods.map((hod, index) => (
                       <tr key={hod.id}>
                         <td>{index + 1}</td>
+                        <td>{hod.hodId || hod.id}</td>
+
                         <td>{hod.full_name}</td>
                         <td>{hod.email}</td>
                         <td>{hod.phone}</td>

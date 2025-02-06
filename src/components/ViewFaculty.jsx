@@ -5,6 +5,8 @@ import { useNavigate } from "react-router-dom";
 import { FaEdit, FaTrash } from "react-icons/fa";
 import { deleteFacultyApi, editFacultyApi, FacultyApi } from "../services/allApi";
 
+
+
 import './viewFac.css'
 
 function ViewFaculty() {
@@ -16,6 +18,8 @@ function ViewFaculty() {
   const [showModal, setShowModal] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [departments, setDepartments] = useState([]);
+
   const navigate = useNavigate();
 
   const token = localStorage.getItem("access"); // Fetch the token from localStorage
@@ -44,6 +48,7 @@ function ViewFaculty() {
 
   // Handle edit faculty details
   const handleEdit = (faculty) => {
+    localStorage.setItem("selectedFacultyId", faculty.id);
     setSelectedFaculty(faculty);
     setShowModal(true);
   };
@@ -93,6 +98,7 @@ function ViewFaculty() {
     const formData = new FormData();
     formData.append("full_name", selectedFaculty.full_name);
     formData.append("email", selectedFaculty.email);
+    formData.append("id", selectedFaculty.id)
     // formData.append("password", selectedFaculty.password);
     formData.append("phone", selectedFaculty.phone);
     formData.append("dob", selectedFaculty.dob);
@@ -135,6 +141,7 @@ function ViewFaculty() {
                 <thead>
                   <tr>
                     <th>#</th>
+                    <th>Id</th>
                     <th>Name</th>
                     <th>Email</th>
                     <th>Phone</th>
@@ -149,11 +156,13 @@ function ViewFaculty() {
                     facultyList.map((faculty, index) => (
                       <tr key={faculty.id}>
                         <td>{index + 1}</td>
+                        <td>{faculty.facultyId || faculty.id}</td>
                         <td>{faculty.full_name}</td>
                         <td>{faculty.email}</td>
                         <td>{faculty.phone}</td>
                         <td>{faculty.department}</td>
                         <td>{faculty.gender}</td>
+
                         <td>
                           {faculty.photo ? (
                             <img
@@ -252,4 +261,4 @@ function ViewFaculty() {
   );
 }
 
-export default ViewFaculty;
+export default ViewFaculty;

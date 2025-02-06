@@ -29,6 +29,10 @@ export const loginApi = async (userDetails) => {
 };
 
 // Register API
+// export const registerApi = async (userDetails) => {
+//   return await commonAPI("POST", `${serverUrl}/register/`, userDetails, "");
+// };
+// Register API
 export const registerApi = async (userDetails) => {
   return await commonAPI("POST", `${serverUrl}/register/`, userDetails, "");
 };
@@ -256,6 +260,24 @@ export const student_attendanceapi = async (token) => {
 
 //uploading notes {faculty dash}
 
+// export const upload_Studentnote = async (formData, reqHeader) => {
+//   try {
+//     const response = await axios.post(`${serverUrl}/notes/`, formData, {
+//       headers: {
+//         ...reqHeader,
+//         "Content-Type": "multipart/form-data",
+//       },
+//     });
+//     return response;
+//   } catch (err) {
+//     console.error("Error in upload_Studentnote:", err.response || err.message);
+//     throw err; // Re-throw to let the caller handle it
+//   }
+// };
+
+
+
+
 export const upload_Studentnote = async (formData, reqHeader) => {
   try {
     const response = await axios.post(`${serverUrl}/notes/`, formData, {
@@ -270,6 +292,7 @@ export const upload_Studentnote = async (formData, reqHeader) => {
     throw err; // Re-throw to let the caller handle it
   }
 };
+
 
 //delete_Studentnote
 export const delete_Studentnote = async (id, token) => {
@@ -286,6 +309,17 @@ export const addCourseApi = async (data, token) => {
     'Content-Type': 'application/json'
   })
 }
+
+
+// profile
+export const getUserProfileApi = async (userId, token) => {
+  return axios.get(`http://localhost:8000/api/profile/${userId}/`, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+};
+
 
 
 

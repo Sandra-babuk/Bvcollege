@@ -48,6 +48,8 @@ function AddHod() {
     setIsLoading(true);
 
     const { full_name, dob, gender, email, phone, password, department } = userData;
+
+    // Validation: Check for empty fields
     if (!full_name || !dob || !gender || !email || !phone || !password || !department) {
       toast.warning("Please fill out all fields");
       setIsLoading(false);
@@ -55,19 +57,45 @@ function AddHod() {
     }
 
     try {
-      const response = await registerApi({ ...userData, department: Number(department) });
+      const response = await registerApi({
+        ...userData,
+        department: Number(department),
+      });
+
       if (response.status === 200) {
-        toast.success("OTP sent successfully");
-        setUserData({ full_name: "", dob: "", gender: "", email: "", phone: "", password: "", department: "", role: "hod" });
+
+        localStorage.setItem('userId', response.data.id);
+        localStorage.setItem('role', response.data.role);
+        localStorage.setItem('full_name', response.data.full_name);
+        localStorage.setItem('dob', response.data.dob);
+        localStorage.setItem('gender', response.data.gender);
+        localStorage.setItem('email', response.data.email);
+        localStorage.setItem('phone', response.data.phone);
+
+
+        toast.success("Registration successful");
+        setUserData({
+          full_name: "",
+          dob: "",
+          gender: "",
+          email: "",
+          phone: "",
+          password: "",
+          department: "",
+          role: "hod",
+        });
         navigate("/Otp", { state: { email: userData.email } });
       } else {
         toast.error("Registration failed! Please try again.");
       }
     } catch (error) {
       console.error("Error during registration:", error.response?.data || error.message);
+
+      // Display field-specific error messages
       if (error.response?.data) {
-        Object.keys(error.response.data).forEach((field) => {
-          toast.error(`${field}: ${error.response.data[field].join(", ")}`);
+        const errors = error.response.data;
+        Object.keys(errors).forEach((field) => {
+          toast.error(`${field}: ${errors[field].join(", ")}`);
         });
       } else {
         toast.error("An unexpected error occurred. Please try again.");
@@ -76,7 +104,6 @@ function AddHod() {
       setIsLoading(false);
     }
   };
-
   
   return (
     <div className="registration-page">
