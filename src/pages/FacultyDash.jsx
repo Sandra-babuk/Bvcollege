@@ -3,6 +3,7 @@ import './facdash.css';
 import prof3 from '../assets/prof3.jpg';
 import { RiArrowGoForwardLine } from "react-icons/ri";
 import { FaPlus } from 'react-icons/fa';
+import { MdNotifications } from 'react-icons/md'; // Import notification icon
 import { Button, Modal } from 'react-bootstrap';
 import ResultStd from '../components/ResultStd';
 import Notes from '../components/Notes';
@@ -10,17 +11,17 @@ import FacultyProfile from '../components/FacultyProfile';
 import ViewStudent from '../components/ViewStudent';
 import AddStudent from '../components/AddStudent';
 import AddNote from '../components/AddNote';
-import { getUserProfileApi } from '../services/allApi';
+import { getUserProfileApi, getNotificationsApi } from '../services/allApi'; // Import API for notifications
 import { toast } from 'react-toastify';
 import FacProfile from '../components/FacProfile';
-
-
 
 const FacultyDash = () => {
     const [activeFeature, setActiveFeature] = useState(null);
     const [showModal, setShowModal] = useState(false);
     const [showForm, setShowForm] = useState(null);
     const [showActionMenu, setShowActionMenu] = useState(false);
+    const [showNotifications, setShowNotifications] = useState(false); // State for notification modal
+    const [notifications, setNotifications] = useState([]); // State for notifications
     const [profile, setProfile] = useState({
         full_name: '',
         department: '',
@@ -96,19 +97,40 @@ const FacultyDash = () => {
         setShowActionMenu(!showActionMenu);
     };
 
+    const fetchNotifications = async () => {
+        const token = localStorage.getItem('access'); // Get the token from localStorage
+        try {
+            const response = await getNotificationsApi(token); // Fetch notifications data
+            setNotifications(response.data);
+        } catch (error) {
+            console.error('Error fetching notifications:', error);
+            toast.error('Failed to fetch notifications.');
+        }
+    };
+
+    const handleShowNotifications = () => {
+        fetchNotifications();
+        setShowNotifications(true);
+    };
+
+    const handleCloseNotifications = () => {
+        setShowNotifications(false);
+    };
+
     return (
         <section>
             <div>
                 <div className='container d-flex justify-content-end mt-1 me-auto'>
                     <p className='tohome text-primary'><RiArrowGoForwardLine /> Back to Home </p>
+                    <MdNotifications className='notification-icon' onClick={handleShowNotifications} /> {/* Add notification icon */}
                 </div>
                 <div className='dash'>
                     <div className='stdOptions d-flex justify-content-center p-2 gap-4 mt-2'>
-                        <a href="#profile" onClick={() => handleActiveFeature("profile")}>Profile</a>
+                        <a href="#result" onClick={() => handleActiveFeature("result")}>Profile</a>
                         <a href="#assignment" onClick={() => handleActiveFeature("assignment")}>All Students</a>
                         <a href="#notes" onClick={() => handleActiveFeature("notes")}>Notes</a>
                         <a href="#attendence" onClick={() => handleActiveFeature("attendence")}>Attendance</a>
-                        <a href="#result" onClick={() => handleActiveFeature("result")}>Result</a>
+                        <a href="#profile" onClick={() => handleActiveFeature("profile")}>Result</a>
                     </div>
                 </div>
                 <div className='d-flex row'>
@@ -159,6 +181,27 @@ const FacultyDash = () => {
                         <AddStudent onClose={handleModalClose} />
                     ) : showForm === "Note" && (
                         <AddNote onClose={handleModalClose} />
+                    )}
+                </Modal.Body>
+            </Modal>
+
+            {/* Modal to display notifications */}
+            <Modal show={showNotifications} onHide={handleCloseNotifications} centered>
+                <Modal.Header closeButton>
+                    <Modal.Title>Notifications</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+                    {notifications.length > 0 ? (
+                        <ul>
+                            {notifications.map((notification, index) => (
+                                <li key={index}>
+                                    <h5>{notification.title}</h5>
+                                    <p>{notification.message}</p>
+                                </li>
+                            ))}
+                        </ul>
+                    ) : (
+                        <p>No notifications available.</p>
                     )}
                 </Modal.Body>
             </Modal>

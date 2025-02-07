@@ -3,6 +3,7 @@ import './facdash.css';
 import prof3 from '../assets/prof3.jpg';
 import { RiArrowGoForwardLine } from "react-icons/ri";
 import { FaPlus } from 'react-icons/fa';
+import { MdNotifications } from 'react-icons/md'; 
 import { Modal, Button } from 'react-bootstrap';
 import ViewStudent from '../components/ViewStudent';
 import ViewFaculty from '../components/ViewFaculty';
@@ -13,9 +14,10 @@ import AddFaculty from '../components/AddFaculty';
 import AddDepartment from '../components/AddDepartment';
 import AddNote from '../components/AddNote';
 import { getUserProfileApi } from '../services/allApi';
+import { toast } from 'react-toastify';  // Ensure toast is imported for error messages
 
 const HodDash = () => {
-  const [activeFeature, setActiveFeature] = useState(null);
+  const [activeFeature, setActiveFeature] = useState("profile");
   const [showModal, setShowModal] = useState(false);
   const [showForm, setShowForm] = useState(null);
   const [profile, setProfile] = useState({
@@ -25,25 +27,28 @@ const HodDash = () => {
     phone: '',
     photo: ''
   });
+  const [showNotifications, setShowNotifications] = useState(false);
+  const [notifications, setNotifications] = useState([]);
 
   useEffect(() => {
-    const ProfileDetails = async () => {
-      const token = localStorage.getItem('access'); // Get the token from localStorage
-      const userId = localStorage.getItem('userId'); // Get the user ID from localStorage
+    const fetchProfileDetails = async () => {
+      const token = localStorage.getItem('access');
+      const userId = localStorage.getItem('userId');
+      
       if (!token || !userId) {
-        toast.error('No token or user ID found in localStorage.');
+        toast.error('Authentication error: Missing token or user ID.');
         return;
       }
 
       try {
-        const response = await getUserProfileApi(userId, token); // Fetch user profile data
+        const response = await getUserProfileApi(userId, token);
         const profileData = response.data;
         setProfile({
-          full_name: profileData.full_name,
-          department: profileData.department,
-          email: profileData.email,
-          phone: profileData.phone,
-          photo: profileData.photo // Assuming the API returns the photo URL
+          full_name: profileData.full_name || "N/A",
+          department: profileData.department || "N/A",
+          email: profileData.email || "N/A",
+          phone: profileData.phone || "N/A",
+          photo: profileData.photo || prof3
         });
       } catch (error) {
         console.error('Error fetching profile data:', error);
@@ -51,12 +56,11 @@ const HodDash = () => {
       }
     };
 
-    ProfileDetails();
+    fetchProfileDetails();
   }, []);
 
-
   const handleActiveFeature = (feature) => {
-    setActiveFeature(feature);
+    setActiveFeature(feature || "profile");  // Fallback to prevent crashes
   };
 
   const renderFeature = () => {
@@ -68,7 +72,6 @@ const HodDash = () => {
       case "notes":
         return <Notes />;
       default:
-      case "profile":
         return <HodProfile />;
     }
   };
@@ -82,23 +85,40 @@ const HodDash = () => {
     setShowForm(null);
   };
 
+
+  
+
+  const handleShowNotifications = async () => {
+    await fetchNotifications();  // Fetch first
+    setShowNotifications(true);  // Then show modal
+  };
+  
+
+  const handleCloseNotifications = () => {
+    setShowNotifications(false);
+  };
+
   return (
     <section>
       <div>
-        <div className='container d-flex justify-content-end mt-1 me-auto text-primary'><p className='tohome'><RiArrowGoForwardLine /> Back to Home </p></div>
+        <div className='container d-flex justify-content-end mt-1 me-auto text-primary'>
+          <p className='tohome'><RiArrowGoForwardLine /> Back to Home </p>
+        </div>
         <div className='dash'>
           <div className='stdOptions d-flex justify-content-center p-2 gap-4 mt-2 '>
             <a href="#profile" onClick={() => handleActiveFeature("profile")}>Profile</a>
-            <a href="#assignment" onClick={() => handleActiveFeature("assignment")}>AllStudents</a>
+            <a href="#assignment" onClick={() => handleActiveFeature("assignment")}>All Students</a>
             <a href="#notes" onClick={() => handleActiveFeature("notes")}>Notes</a>
             <a href="#attendence" onClick={() => handleActiveFeature("attendence")}>Attendance</a>
-            <a href="#result" onClick={() => handleActiveFeature("result")}>AllFaculty</a>
+            <a href="#result" onClick={() => handleActiveFeature("result")}>All Faculty</a>
+            <MdNotifications className='notification-icon' onClick={handleShowNotifications} /> 
+
           </div>
         </div>
         <div className='d-flex row'>
           <div className='sidebar col-lg-2 container mb-2 '>
             <div className='photo img-fluid'>
-              <img src={profile.photo  || prof3} alt="Profile" />
+              <img src={profile.photo} alt="Profile" />
             </div>
             <div className='text-center'>
               <h4>{profile.full_name}</h4>
@@ -108,18 +128,19 @@ const HodDash = () => {
               <p>{profile.phone}</p>
             </div>
           </div>
-          <div className="col-lg-8 view" id=''>
+          <div className="col-lg-8 view">
             {renderFeature()}
           </div>
           <div className="col-lg-1"></div>
         </div>
-        {/*  add student or faculty */}
+        
+        {/* Floating Add Button */}
         <div className="fab" onClick={handleAddUser}>
           <FaPlus />
         </div>
       </div>
 
-      {/* Modal to choose Student, Faculty, or Department */}
+      {/* Modal to Choose User Type */}
       <Modal show={showModal} onHide={handleModalClose} centered>
         <Modal.Header closeButton>
           <Modal.Title>{showForm ? `Add ${showForm}` : "Select User Type"}</Modal.Title>
@@ -143,6 +164,9 @@ const HodDash = () => {
           ) : null}
         </Modal.Body>
       </Modal>
+
+      
+
     </section>
   );
 };

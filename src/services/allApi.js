@@ -29,10 +29,6 @@ export const loginApi = async (userDetails) => {
 };
 
 // Register API
-// export const registerApi = async (userDetails) => {
-//   return await commonAPI("POST", `${serverUrl}/register/`, userDetails, "");
-// };
-// Register API
 export const registerApi = async (userDetails) => {
   return await commonAPI("POST", `${serverUrl}/register/`, userDetails, "");
 };
@@ -319,6 +315,43 @@ export const getUserProfileApi = async (userId, token) => {
     },
   });
 };
+
+// notifications
+export const getNotificationsApi = async (token) => {
+  return await commonAPI("GET", `${serverUrl}/notifications/view/`, null, {
+      Authorization: `Bearer ${token}`
+  });
+};
+
+export const getNotificationByIdApi = async (id, token) => {
+    return await commonAPI("GET", `${serverUrl}/notifications/${id}/`, null, {
+        Authorization: `Bearer ${token}`
+    });
+};
+
+export const addNotificationApi = async (data, token) => {
+    return await commonAPI("POST", `${serverUrl}/notifications/`, data, {
+        Authorization: `Bearer ${token}`,
+        'Content-Type': 'application/json'
+    });
+};
+
+export const updateNotificationApi = async (id, data, token) => {
+    return await commonAPI("PUT", `${serverUrl}/notifications/${id}/`, data, {
+        Authorization: `Bearer ${token}`,
+        'Content-Type': 'application/json'
+    });
+};
+
+export const deleteNotificationApi = async (id, token) => {
+    return await commonAPI("DELETE", `${serverUrl}/notifications/${id}/`, null, {
+        Authorization: `Bearer ${token}`
+    });
+};
+
+
+
+
 
 
 

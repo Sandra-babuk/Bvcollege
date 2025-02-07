@@ -46,17 +46,16 @@ function StudentRegistration() {
 
   const handleRegistration = async (e) => {
     e.preventDefault();
-    setIsLoading(true); // Set loading state to true
-
+    setIsLoading(true);
+  
     const { full_name, dob, gender, email, phone, password, course, department, batch, role } = userData;
-
-    // Check if any field is empty
+  
     if (!full_name || !dob || !gender || !email || !phone || !password || !course || !department || !batch) {
       toast.warning('Please fill out all fields');
-      setIsLoading(false); // Reset loading state
+      setIsLoading(false);
       return;
     }
-
+  
     try {
       const response = await registerApi({
         full_name,
@@ -70,32 +69,9 @@ function StudentRegistration() {
         batch,
         role,
       });
-
-      console.log('User Data:', userData); // Debug log to check data being sent
-
+  
       if (response.status === 200) {
-
-        localStorage.setItem('userId', response.data.id);
-        localStorage.setItem('role', response.data.role);
-        localStorage.setItem('full_name', response.data.full_name);
-        localStorage.setItem('dob', response.data.dob);
-        localStorage.setItem('gender', response.data.gender);
-        localStorage.setItem('email', response.data.email);
-        localStorage.setItem('phone', response.data.phone);
-
         toast.success('OTP sent successfully');
-        setUserData({
-          full_name: '',
-          dob: '',
-          gender: '',
-          email: '',
-          phone: '',
-          password: '',
-          course: '', 
-          department: '', 
-          batch: '', 
-          role: 'student',
-        });
         navigate('/Otp', { state: { email } });
       } else {
         toast.error('Registration failed! Please try again.');
@@ -104,9 +80,10 @@ function StudentRegistration() {
       console.error('Error during registration:', error);
       toast.error('An unexpected error occurred. Please try again.');
     } finally {
-      setIsLoading(false); // Reset loading state after the request
+      setIsLoading(false);
     }
   };
+  
 
   return (
     <div className="registration-page">
