@@ -1,84 +1,84 @@
-.tohome{
-    font-size: 15px;
-    color:rgb(106, 106, 245) ;
-    text-decoration: none;
-}
+/* Main container */
 .dash {
-
-    background: rgb(106, 106, 245);
-}
-
-.stdOptions a {
+    background-color: #fff;
+    margin: 20px 0;
+  }
+  
+  /* Navigation menu */
+  .stdOptions {
+    border-bottom: 1px solid #eee;
+  }
+  
+  .stdOptions a {
+    color: #333;
     text-decoration: none;
-    color: white;
-    border: 1px;
-}
-
-.sidebar {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    background: white;
-    border-radius: 10px;
-    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
-    position: relative;
-    top: -80px;
-    max-height: 410px;
-}
-
-.photo {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-.photo img {
-    width: 210px;
-    /* Adjusted image width */
-    height: 210px;
-    /* Ensures the image remains a square */
-    border: 5px solid white;
+    font-size: 15px;
+    padding: 10px;
+  }
+  
+  .stdOptions a:hover {
+    color: #0d6efd;
+  }
+  
+  /* Back to home link */
+  .tohome {
+    cursor: pointer;
+  }
+  
+  /* Sidebar styles */
+  .sidebar {
+    background-color: #fff;
+    padding: 20px;
+    border-right: 1px solid #eee;
+  }
+  
+  .photo {
+    width: 120px;
+    height: 120px;
+    margin: 0 auto;
+  }
+  
+  .photo img {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
     object-fit: cover;
-}
-
-.text-center h4 {
-    font-size: 20px;
-    font-weight: bold;
-}
-
-.text-center p {
-    color: #555;
-}
-
-hr {
-    border: 1px solid #ddd;
-}
-
-.profile {
-    line-height: 1;
-    font-size: 18px;
-}
-.view{
-    margin-top: 30px;
-/* border: 1px solid ; */
-border-radius: 20px;}
-
-.fab {
+  }
+  
+  /* Main content area */
+  .view {
+    padding: 20px;
+  }
+  
+  /* Floating action button */
+  .fab {
     position: fixed;
     bottom: 20px;
     right: 20px;
-    width: 60px;
-    height: 60px;
-    background-color: #007bff;
-    color: white;
+    width: 45px;
+    height: 45px;
     border-radius: 50%;
+    background-color: #0d6efd;
+    color: white;
     display: flex;
-    justify-content: center;
     align-items: center;
-    font-size: 24px;
+    justify-content: center;
     cursor: pointer;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
-    transition: background-color 0.3s ease;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
   }
   
- 
+  /* Notification icon */
+  .notification-icon {
+    cursor: pointer;
+    font-size: 20px;
+    color: #666;
+  }
+  
+  
+  /* Responsive adjustments */
+  @media (max-width: 992px) {
+    .sidebar {
+      border-right: none;
+      border-bottom: 1px solid #eee;
+    }
+  }

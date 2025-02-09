@@ -1,91 +1,119 @@
-/* General Styling */
+/* Table container styles */
 .container {
-  max-width: 1200px;
   padding: 20px;
+  margin-top: 20px;
 }
 
-h1 {
-  text-align: center;
-  font-size: 2rem;
+/* Table styles */
+.table {
+  width: 100%;
+  margin-bottom: 1rem;
+  background-color: #fff;
+  border-radius: 8px;
+}
+
+.table th {
+  background-color: #f8f9fa;
+  padding: 12px;
+  font-weight: 500;
   color: #333;
-  margin-bottom: 20px;
+  border-bottom: 2px solid #dee2e6;
 }
 
-/* Student List Styling */
-.student-list {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 20px;
+.table td {
+  padding: 12px;
+  vertical-align: middle;
 }
 
-.student-card {
-  background: #fff;
-  border-radius: 10px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+/* Button styles */
+.btn-outline-primary {
+  margin-right: 5px;
+  padding: 4px 8px;
+  font-size: 14px;
+}
+
+.btn-outline-danger {
+  padding: 4px 8px;
+  font-size: 14px;
+}
+
+/* Modal styles */
+.modal-content {
+  border-radius: 8px;
+}
+
+.modal-header {
+  border-bottom: 1px solid #eee;
+  padding: 15px 20px;
+}
+
+.modal-body {
   padding: 20px;
-  /* width: 300px; */
-  transition: transform 0.3s ease;
-}
-
-.student-card:hover {
-  transform: scale(1.05);
-}
-
-.student-info p {
-  margin: 5px 0;
-  font-size: 0.9rem;
-  color: #555;
-}
-
-.student-info p strong {
-  color: #333;
-}
-
-/* Buttons */
-.student-actions {
-  display: flex;
-  justify-content: space-between;
-  margin-top: 15px;
-}
-
-.student-actions .btn {
-  font-size: 0.9rem;
-  padding: 5px 10px;
-}
-
-/* Modal Styling */
-.modal-title {
-  font-size: 1.5rem;
-  font-weight: bold;
-  color: #333;
 }
 
 .form-label {
-  font-weight: 600;
-  color: #555;
+  color: #444;
+  font-weight: 500;
+  margin-bottom: 5px;
 }
 
-.btn-primary, .btn-danger {
-  font-size: 1rem;
-  padding: 8px 15px;
-  border-radius: 5px;
+.form-control {
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  padding: 8px 12px;
 }
 
-.btn-primary {
-  background-color: #007bff;
-  border: none;
+.form-control:focus {
+  border-color: #0d6efd;
+  box-shadow: 0 0 0 0.2rem rgba(13, 110, 253, 0.25);
 }
 
-.btn-danger {
-  background-color: #dc3545;
-  border: none;
+/* Responsive styles */
+@media (max-width: 992px) {
+  .table-responsive {
+    overflow-x: auto;
+  }
+  
+  .table th, 
+  .table td {
+    min-width: 120px;
+  }
+  
+  .table td:last-child {
+    min-width: 150px;
+  }
 }
 
-.btn-primary:hover {
-  background-color: #0056b3;
+@media (max-width: 576px) {
+  .container {
+    padding: 10px;
+  }
+  
+  .modal-body {
+    padding: 15px;
+  }
+  
+  .btn {
+    padding: 4px 6px;
+    font-size: 13px;
+  }
 }
 
-.btn-danger:hover {
-  background-color: #a71d2a;
+/* Toast notification styles */
+.Toastify__toast {
+  border-radius: 4px;
+  font-size: 14px;
+}
+
+/* Loading spinner styles */
+.spinner-border {
+  width: 1.2rem;
+  height: 1.2rem;
+  margin-right: 5px;
+}
+
+/* No students found message */
+.text-center {
+  padding: 20px;
+  color: #666;
 }

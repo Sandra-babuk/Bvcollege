@@ -46,16 +46,17 @@ function StudentRegistration() {
 
   const handleRegistration = async (e) => {
     e.preventDefault();
-    setIsLoading(true);
-  
+    setIsLoading(true); // Set loading state to true
+
     const { full_name, dob, gender, email, phone, password, course, department, batch, role } = userData;
-  
+
+    // Check if any field is empty
     if (!full_name || !dob || !gender || !email || !phone || !password || !course || !department || !batch) {
       toast.warning('Please fill out all fields');
-      setIsLoading(false);
+      setIsLoading(false); // Reset loading state
       return;
     }
-  
+
     try {
       const response = await registerApi({
         full_name,
@@ -69,9 +70,23 @@ function StudentRegistration() {
         batch,
         role,
       });
-  
+
+      console.log('User Data:', userData); // Debug log to check data being sent
+
       if (response.status === 200) {
         toast.success('OTP sent successfully');
+        setUserData({
+          full_name: '',
+          dob: '',
+          gender: '',
+          email: '',
+          phone: '',
+          password: '',
+          course: '', 
+          department: '', 
+          batch: '', 
+          role: 'student',
+        });
         navigate('/Otp', { state: { email } });
       } else {
         toast.error('Registration failed! Please try again.');
@@ -80,7 +95,7 @@ function StudentRegistration() {
       console.error('Error during registration:', error);
       toast.error('An unexpected error occurred. Please try again.');
     } finally {
-      setIsLoading(false);
+      setIsLoading(false); // Reset loading state after the request
     }
   };
   

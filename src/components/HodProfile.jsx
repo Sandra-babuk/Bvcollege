@@ -31,7 +31,7 @@ const HodProfile = () => {
           gender: userData.gender,
           email: userData.email,
           phone: userData.phone,
-          department: userData.department,
+          department: userData.department_name,
         });
         setLoading(false);
       } catch (error) {
@@ -84,7 +84,7 @@ const HodProfile = () => {
       <hr />
       <div className="profile-details d-flex flex-row">
         <div className="col-lg-3">Department</div>:
-        <div className="col-lg-5 ms-2">{userDetails.department}</div>
+        <div className="col-lg-5 ms-2">{userDetails.department_name}</div>
       </div>
     </div>
   );

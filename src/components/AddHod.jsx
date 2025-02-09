@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import "./addhod.css";
 import { useNavigate } from "react-router-dom";
 import { toast, ToastContainer } from "react-toastify";
-import { departmentApi, registerApi } from "../services/allApi";
+import { departmentApi, registerApi, verifyOtpApi } from "../services/allApi";
 
 function AddHod() {
   const [userData, setUserData] = useState({
@@ -17,26 +17,25 @@ function AddHod() {
   });
 
   const [isLoading, setIsLoading] = useState(false);
-  const [department,setDepartment] = useState([])
+  const [department, setDepartment] = useState([]);
   const navigate = useNavigate();
 
-
-   useEffect(() => {
-      const AllDept = async () => {
-        try {
-          const response = await departmentApi();
-          if (response.status === 200) {
-            setDepartment(response.data);
-          } else {
-            toast.error('Failed to get departments');
-          }
-        } catch (error) {
-          console.error('Error fetching departments:', error);
-          toast.error('An unexpected error occurred. Please try again.');
+  useEffect(() => {
+    const AllDept = async () => {
+      try {
+        const response = await departmentApi();
+        if (response.status === 200) {
+          setDepartment(response.data);
+        } else {
+          toast.error('Failed to get departments');
         }
-      };
-      AllDept();
-    }, []);
+      } catch (error) {
+        console.error('Error fetching departments:', error);
+        toast.error('An unexpected error occurred. Please try again.');
+      }
+    };
+    AllDept();
+  }, []);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -63,35 +62,14 @@ function AddHod() {
       });
 
       if (response.status === 200) {
-
-        localStorage.setItem('userId', response.data.id);
-        localStorage.setItem('role', response.data.role);
-        localStorage.setItem('full_name', response.data.full_name);
-        localStorage.setItem('dob', response.data.dob);
-        localStorage.setItem('gender', response.data.gender);
-        localStorage.setItem('email', response.data.email);
-        localStorage.setItem('phone', response.data.phone);
-
-
-        toast.success("Registration successful");
-        setUserData({
-          full_name: "",
-          dob: "",
-          gender: "",
-          email: "",
-          phone: "",
-          password: "",
-          department: "",
-          role: "hod",
-        });
-        navigate("/Otp", { state: { email: userData.email } });
+        toast.success("Registration initiated. Please verify OTP.");
+        navigate("/Otp", { state: { email: userData.email, onOtpVerify: handleOtpVerification } });
       } else {
-        toast.error("Registration failed! Please try again.");
+        toast.error("Registration initiation failed! Please try again.");
       }
     } catch (error) {
-      console.error("Error during registration:", error.response?.data || error.message);
+      console.error("Error during registration initiation:", error.response?.data || error.message);
 
-      // Display field-specific error messages
       if (error.response?.data) {
         const errors = error.response.data;
         Object.keys(errors).forEach((field) => {
@@ -104,7 +82,44 @@ function AddHod() {
       setIsLoading(false);
     }
   };
-  
+
+  const handleOtpVerification = async (otp) => {
+    setIsLoading(true);
+    try {
+      const response = await verifyOtpApi({ email: userData.email, otp });
+
+      if (response.status === 200) {
+        toast.success("OTP verified successfully. Registration completed.");
+        setUserData({
+          full_name: "",
+          dob: "",
+          gender: "",
+          email: "",
+          phone: "",
+          password: "",
+          department: "",
+          role: "hod",
+        });
+        navigate("/");
+      } else {
+        toast.error("OTP verification failed! Please try again.");
+      }
+    } catch (error) {
+      console.error("Error during OTP verification:", error.response?.data || error.message);
+
+      if (error.response?.data) {
+        const errors = error.response.data;
+        Object.keys(errors).forEach((field) => {
+          toast.error(`${field}: ${errors[field].join(", ")}`);
+        });
+      } else {
+        toast.error("An unexpected error occurred. Please try again.");
+      }
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
   return (
     <div className="registration-page">
       <div className="registration-container">
@@ -154,9 +169,6 @@ function AddHod() {
               <div className="input-group">
                 <label htmlFor="department">Department</label>
                 <select id="department" name="department" value={userData.department} onChange={handleChange} className="select-field">
-                  {/* <option value="">Select Department</option>
-                  <option value="1">B.Tech</option>
-                  <option value="2">M.Tech</option> */}
                   {department.map((dept) => (
                     <option key={dept.id} value={dept.id}>{dept.department_name}</option>
                   ))}
@@ -176,4 +188,4 @@ function AddHod() {
   );
 }
 
-export default AddHod;
+export default AddHod;

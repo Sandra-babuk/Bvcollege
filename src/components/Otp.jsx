@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { verifyOtpApi, resendOtpApi,registerApi } from '../services/allApi';
+import { verifyOtpApi, resendOtpApi } from '../services/allApi';
 import { toast } from 'react-toastify';
 
 function Otp() {
@@ -16,46 +16,18 @@ function Otp() {
     setOtp(e.target.value);
   };
 
-  // const handleSubmit = async () => {
-
-  //   if (!otp) {
-  //     toast.warning('Please enter the OTP');
-  //     return;
-  //   }
-
-  //   setIsLoading(true);
-  //   try {
-  //     const response = await verifyOtpApi({ otp, email }); 
-  //     if (response.status === 200) {
-  //       toast.success('OTP verified successfully!');
-  //       navigate('/');
-  //     } else {
-  //       toast.error('Invalid OTP. Please try again.');
-  //     }
-  //   } catch (error) {
-  //     toast.error('An error occurred while verifying OTP');
-  //   } finally {
-  //     setIsLoading(false);
-  //   }
-  // };
-
   const handleSubmit = async () => {
     if (!otp) {
       toast.warning('Please enter the OTP');
       return;
     }
-  
+
     setIsLoading(true);
     try {
-      const verifyResponse = await verifyOtpApi({ otp, email }); 
-      if (verifyResponse.status === 200) {
-        const registerResponse = await registerApi({ email, ...otherDetails }); // Call your registration API here
-        if (registerResponse.status === 200) {
-          toast.success('OTP verified and registration successful!');
-          navigate('/');
-        } else {
-          toast.error('Registration failed. Please try again.');
-        }
+      const response = await verifyOtpApi({ otp, email }); 
+      if (response.status === 200) {
+        toast.success('OTP verified successfully!');
+        navigate('/');
       } else {
         toast.error('Invalid OTP. Please try again.');
       }
@@ -65,7 +37,6 @@ function Otp() {
       setIsLoading(false);
     }
   };
-  
 
   const handleResend = async () => {
     setIsResendLoading(true);

@@ -59,71 +59,62 @@ function FacultyRegistration() {
     return null;
   };
 
-  const handleRegistration = async (e) => {
-    e.preventDefault();
-    setIsLoading(true); // Start loading
+// Handle registration
+const handleRegistration = async (e) => {
+  e.preventDefault();
+  setIsLoading(true); // Start loading
 
-    const error = validateInputs();
-    if (error) {
-      toast.warning(error);
-      setIsLoading(false);
-      return;
+  const error = validateInputs();
+  if (error) {
+    toast.warning(error);
+    setIsLoading(false);
+    return;
+  }
+
+  const formData = new FormData();
+  formData.append("full_name", userData.full_name);
+  formData.append("dob", userData.dob);
+  formData.append("gender", userData.gender);
+  formData.append("email", userData.email);
+  formData.append("phone", userData.phone);
+  formData.append("password", userData.password);
+  formData.append("department", userData.department);
+  formData.append("role", userData.role);
+  formData.append("photo", userData.photo);
+
+  try {
+    const response = await registerApi(formData);
+
+    if (response.status === 200) {
+      toast.success("OTP sent successfully.");
+      setUserData({
+        full_name: "",
+        dob: "",
+        gender: "",
+        email: "",
+        phone: "",
+        password: "",
+        department: "",
+        photo: null,
+        role: "faculty",
+      });
+      navigate("/Otp", { state: { email: userData.email } });
+    } else {
+      toast.error("Registration failed! Please try again.");
     }
-
-    const formData = new FormData();
-    formData.append("full_name", userData.full_name);
-    formData.append("dob", userData.dob);
-    formData.append("gender", userData.gender);
-    formData.append("email", userData.email);
-    formData.append("phone", userData.phone);
-    formData.append("password", userData.password);
-    formData.append("department", userData.department);
-    formData.append("role", userData.role);
-    formData.append("photo", userData.photo);
-
-    try {
-      const response = await registerApi(formData);
-
-      if (response.status === 200) {
-
-        // localStorage.setItem('userId', response.data.id);
-        // localStorage.setItem('role', response.data.role);
-        // localStorage.setItem('full_name', response.data.full_name);
-        // localStorage.setItem('dob', response.data.dob);
-        // localStorage.setItem('gender', response.data.gender);
-        // localStorage.setItem('email', response.data.email);
-        // localStorage.setItem('phone', response.data.phone);
-
-
-        toast.success("OTP sent successfully.");
-        setUserData({
-          full_name: "",
-          dob: "",
-          gender: "",
-          email: "",
-          phone: "",
-          password: "",
-          department: "",
-          photo: null,
-          role: "faculty",
-        });
-        navigate("/Otp", { state: { email: userData.email } });
-      } else {
-        toast.error("Registration failed! Please try again.");
-      }
-    } catch (error) {
-      console.error(
-        "Error during registration:",
-        error.response?.data || error.message
-      );
-      toast.error(
-        error.response?.data?.error ||
-          "An unexpected error occurred. Please try again."
-      );
-    } finally {
-      setIsLoading(false); // Reset loading state
-    }
-  };
+  } catch (error) {
+    console.error(
+      "Error during registration:",
+      error.response?.data || error.message
+    );
+    toast.error(
+      error.response?.data?.error ||
+        "An unexpected error occurred. Please try again."
+    );
+  } finally {
+    setIsLoading(false); // Reset loading state
+  }
+};
 
    useEffect(() => {
       const AllDept = async () => {

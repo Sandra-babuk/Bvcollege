@@ -44,7 +44,7 @@ const FacultyDash = () => {
                 const profileData = response.data;
                 setProfile({
                     full_name: profileData.full_name,
-                    department: profileData.department,
+                    department: profileData.department_name,
                     email: profileData.email,
                     phone: profileData.phone,
                     photo: profileData.photo // Assuming the API returns the photo URL
