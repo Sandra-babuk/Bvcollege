@@ -75,28 +75,37 @@ const ViewHod = () => {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setSelectedHod((prevHod) => ({
-      ...prevHod,
-      [name]: value,
-    }));
+    if (name === 'photo') {
+      setSelectedHod((prevHod) => ({
+        ...prevHod,
+        [name]: e.target.files[0],
+      }));
+    } else {
+      setSelectedHod((prevHod) => ({
+        ...prevHod,
+        [name]: value,
+      }));
+    }
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsSubmitting(true);
 
-    const updatedHod = {
-      id: selectedHod.id,
-      full_name: selectedHod.full_name,
-      email: selectedHod.email,
-      phone: selectedHod.phone,
-      department: selectedHod.department,
-      dob: selectedHod.dob,
-      gender: selectedHod.gender
-    };
+    const formData = new FormData();
+    formData.append("id", selectedHod.id);
+    formData.append("full_name", selectedHod.full_name);
+    formData.append("email", selectedHod.email);
+    formData.append("phone", selectedHod.phone);
+    formData.append("department", selectedHod.department);
+    formData.append("dob", selectedHod.dob);
+    formData.append("gender", selectedHod.gender);
+    if (selectedHod.photo) {
+      formData.append("photo", selectedHod.photo);
+    }
 
     try {
-      const response = await editHodApi(selectedHod.id, updatedHod, token);
+      const response = await editHodApi(selectedHod.id, formData, token, true);
       console.log('API Response:', response);
 
       if (response.status === 200) {
@@ -119,7 +128,6 @@ const ViewHod = () => {
     <div className="container">
       <Row className="justify-content-center">
         <Col lg={10}>
-
           {isLoading ? (
             <div className="d-flex justify-content-center">
               <Spinner animation="border" size="lg" />
@@ -137,6 +145,7 @@ const ViewHod = () => {
                     <th>Department</th>
                     <th>Date of Birth</th>
                     <th>Gender</th>
+                    <th>Photos</th>
                     <th>Actions</th>
                   </tr>
                 </thead>
@@ -152,6 +161,7 @@ const ViewHod = () => {
                         <td>{hod.department}</td>
                         <td>{hod.dob}</td>
                         <td>{hod.gender}</td>
+                        <td>{hod.photo}</td>
                         <td>
                           <Button
                             variant="outline-primary"
@@ -195,7 +205,6 @@ const ViewHod = () => {
               <Form.Label>Full Name</Form.Label>
               <Form.Control type="text" name="full_name" value={selectedHod?.full_name || ""} onChange={handleChange} />
             </Form.Group>
-
             <Form.Group className="mt-3">
               <Form.Label>Email</Form.Label>
               <Form.Control type="email" name="email" value={selectedHod?.email || ""} onChange={handleChange} />
@@ -216,7 +225,10 @@ const ViewHod = () => {
               <Form.Label>Gender</Form.Label>
               <Form.Control type="text" name="gender" value={selectedHod?.gender || ""} onChange={handleChange} />
             </Form.Group>
-
+            <Form.Group className="mt-3">
+              <Form.Label>Photo</Form.Label>
+              <Form.Control type="file" name="photo" onChange={handleChange} />
+            </Form.Group>
             <Button variant="primary" type="submit" className="mt-4 w-100" disabled={isSubmitting}>
               {isSubmitting ? <Spinner animation="border" size="sm" /> : "Update"}
             </Button>

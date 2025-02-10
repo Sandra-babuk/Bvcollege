@@ -1,84 +1,183 @@
-/* Main container */
-.dash {
-    background-color: #fff;
-    margin: 20px 0;
+.student-dashboard {
+  width: 100%;
+  min-height: 100vh;
+  background-color: #f5f5f5;
+  padding: 1rem;
+}
+
+.student-header {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 1rem;
+  padding: 0.5rem 1rem;
+}
+
+.back-link {
+  color: #0d6efd;
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  transition: color 0.3s ease;
+}
+
+.back-link:hover {
+  color: #0a58ca;
+}
+
+.notification-btn {
+  font-size: 1.5rem;
+  cursor: pointer;
+  color: #6c757d;
+  transition: color 0.3s ease;
+}
+
+.notification-btn:hover {
+  color: #0d6efd;
+}
+
+.navigation-menu {
+  background-color: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  margin: 1rem 0;
+}
+
+.nav-links {
+  display: flex;
+  justify-content: center;
+  gap: 2rem;
+  padding: 1rem;
+  flex-wrap: wrap;
+}
+
+.nav-links a {
+  text-decoration: none;
+  color: #495057;
+  padding: 0.5rem 1rem;
+  border-radius: 4px;
+  transition: all 0.3s ease;
+}
+
+.nav-links a:hover {
+  background-color: #f8f9fa;
+  color: #0d6efd;
+}
+
+.nav-links a.active {
+  background-color: #0d6efd;
+  color: white;
+}
+
+.dashboard-content {
+  display: grid;
+  grid-template-columns: 300px 1fr;
+  gap: 2rem;
+  margin-top: 2rem;
+}
+
+.profile-sidebar {
+  background-color: white;
+  border-radius: 8px;
+  padding: 1.5rem;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  height: fit-content;
+}
+
+.profile-image {
+  width: 150px;
+  height: 150px;
+  border-radius: 50%;
+  margin: 0 auto 1rem;
+  overflow: hidden;
+}
+
+.profile-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.profile-info {
+  text-align: center;
+}
+
+.profile-info h4 {
+  margin: 0.5rem 0;
+  color: #212529;
+}
+
+.profile-info p {
+  margin: 0.25rem 0;
+  color: #6c757d;
+}
+
+.main-content {
+  background-color: white;
+  border-radius: 8px;
+  padding: 1.5rem;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  min-height: 500px;
+}
+
+.notification-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.notification-item {
+  padding: 1rem;
+  border-bottom: 1px solid #dee2e6;
+}
+
+.notification-item:last-child {
+  border-bottom: none;
+}
+
+/* Responsive Design */
+@media (max-width: 1200px) {
+  .dashboard-content {
+    grid-template-columns: 250px 1fr;
+  }
+}
+
+@media (max-width: 992px) {
+  .dashboard-content {
+    grid-template-columns: 1fr;
   }
   
-  /* Navigation menu */
-  .stdOptions {
-    border-bottom: 1px solid #eee;
-  }
-  
-  .stdOptions a {
-    color: #333;
-    text-decoration: none;
-    font-size: 15px;
-    padding: 10px;
-  }
-  
-  .stdOptions a:hover {
-    color: #0d6efd;
-  }
-  
-  /* Back to home link */
-  .tohome {
-    cursor: pointer;
-  }
-  
-  /* Sidebar styles */
-  .sidebar {
-    background-color: #fff;
-    padding: 20px;
-    border-right: 1px solid #eee;
-  }
-  
-  .photo {
-    width: 120px;
-    height: 120px;
+  .profile-sidebar {
+    max-width: 300px;
     margin: 0 auto;
   }
-  
-  .photo img {
-    width: 100%;
-    height: 100%;
-    border-radius: 50%;
-    object-fit: cover;
+}
+
+@media (max-width: 768px) {
+  .nav-links {
+    gap: 1rem;
   }
   
-  /* Main content area */
-  .view {
-    padding: 20px;
+  .nav-links a {
+    padding: 0.5rem;
+    font-size: 0.9rem;
+  }
+}
+
+@media (max-width: 576px) {
+  .student-header {
+    flex-direction: column;
+    align-items: flex-end;
   }
   
-  /* Floating action button */
-  .fab {
-    position: fixed;
-    bottom: 20px;
-    right: 20px;
-    width: 45px;
-    height: 45px;
-    border-radius: 50%;
-    background-color: #0d6efd;
-    color: white;
-    display: flex;
+  .nav-links {
+    flex-direction: column;
     align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
   }
   
-  /* Notification icon */
-  .notification-icon {
-    cursor: pointer;
-    font-size: 20px;
-    color: #666;
+  .nav-links a {
+    width: 100%;
+    text-align: center;
   }
-  
-  
-  /* Responsive adjustments */
-  @media (max-width: 992px) {
-    .sidebar {
-      border-right: none;
-      border-bottom: 1px solid #eee;
-    }
-  }
+}

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import './stddash.css';
+import './hoddash.css';
 import prof3 from '../assets/prof3.jpg';
 import { RiArrowGoForwardLine } from "react-icons/ri";
 import { FaPlus } from 'react-icons/fa';
@@ -44,13 +44,8 @@ const HodDash = () => {
       try {
         const response = await getUserProfileApi(userId, token);
         const profileData = response.data;
-        console.log('User profile data:', profileData);
-
         const departmentNameResponse = await departmentApi(profileData.department);
-        console.log('Department API response:', departmentNameResponse);
-
         const departmentName = departmentNameResponse.data ? departmentNameResponse.data.name : "N/A";
-        console.log('Fetched department name:', departmentName);
 
         setProfile({
           full_name: profileData.full_name || "N/A",
@@ -69,8 +64,8 @@ const HodDash = () => {
   }, []);
 
   const handleActiveFeature = (feature) => {
-    setShowNotifications(false);  // Reset notifications state
-    setActiveFeature(feature || "profile");  // Fallback to prevent crashes
+    setShowNotifications(false);
+    setActiveFeature(feature || "profile");
   };
 
   const renderFeature = () => {
@@ -99,8 +94,7 @@ const HodDash = () => {
     setShowForm(null);
   };
 
-  const handleShowNotifications = async () => {
-    // await fetchNotifications();
+  const handleShowNotifications = () => {
     setShowNotifications(true);
   };
 
@@ -109,44 +103,79 @@ const HodDash = () => {
   };
 
   return (
-    <section>
-      <div>
-        <div className='container d-flex justify-content-end mt-1 me-auto text-primary'>
-          <p className='tohome'><RiArrowGoForwardLine /> Back to Home </p>
-        </div>
-        <div className='dash'>
-          <div className='stdOptions d-flex justify-content-center p-2 gap-4 mt-2 '>
-            <a href="#profile" onClick={() => handleActiveFeature("profile")}>Profile</a>
-            <a href="#assignment" onClick={() => handleActiveFeature("assignment")}>All Students</a>
-            <a href="#notes" onClick={() => handleActiveFeature("notes")}>Notes</a>
-            <a href="#attendence" onClick={() => handleActiveFeature("attendence")}>Attendance</a>
-            <a href="#result" onClick={() => handleActiveFeature("result")}>All Faculty</a>
-            <MdNotifications className='notification-icon' onClick={handleShowNotifications} />
-          </div>
-        </div>
-        <div className='d-flex row'>
-          <div className='sidebar col-lg-2 container mb-2 '>
-            <div className='photo img-fluid'>
-              <img src={profile.photo} alt="Profile" />
-            </div>
-            <div className='text-center'>
-              <h4>{profile.full_name}</h4>
-              <p>{profile.department_name}</p>
-              <hr />
-              <p>{profile.email}</p>
-              <p>{profile.phone}</p>
-            </div>
-          </div>
-          <div className="col-lg-8 view">
-            {renderFeature()}
-          </div>
-          <div className="col-lg-1"></div>
-        </div>
-
-        <div className="fab" onClick={handleAddUser}>
-          <FaPlus />
-        </div>
+    <div className="hod-dashboard">
+      <div className="hod-header">
+        <p className="back-link">
+          <RiArrowGoForwardLine /> Back to Home
+        </p>
       </div>
+
+      <div className="navigation-menu">
+        <nav className="nav-links">
+          <a 
+            href="#profile" 
+            onClick={() => handleActiveFeature("profile")}
+            className={activeFeature === "profile" ? "active" : ""}
+          >
+            Profile
+          </a>
+          <a 
+            href="#assignment" 
+            onClick={() => handleActiveFeature("assignment")}
+            className={activeFeature === "assignment" ? "active" : ""}
+          >
+            All Students
+          </a>
+          <a 
+            href="#notes" 
+            onClick={() => handleActiveFeature("notes")}
+            className={activeFeature === "notes" ? "active" : ""}
+          >
+            Notes
+          </a>
+          <a 
+            href="#attendence" 
+            onClick={() => handleActiveFeature("attendence")}
+            className={activeFeature === "attendence" ? "active" : ""}
+          >
+            Attendance
+          </a>
+          <a 
+            href="#result" 
+            onClick={() => handleActiveFeature("result")}
+            className={activeFeature === "result" ? "active" : ""}
+          >
+            All Faculty
+          </a>
+          <MdNotifications 
+            className="notification-btn"
+            onClick={handleShowNotifications}
+          />
+        </nav>
+      </div>
+
+      <div className="dashboard-content">
+        <aside className="profile-sidebar">
+          <div className="profile-image">
+            <img src={profile.photo} alt="Profile" />
+          </div>
+          <div className="profile-info">
+            <h4>{profile.full_name}</h4>
+            <p>{profile.department_name}</p>
+            <hr />
+            <p>{profile.email}</p>
+            <p>{profile.phone}</p>
+          </div>
+        </aside>
+
+        <main className="main-content">
+          {renderFeature()}
+        </main>
+      </div>
+
+      <button className="floating-action-btn" onClick={handleAddUser}>
+        <FaPlus />
+      </button>
 
       <Modal show={showModal} onHide={handleModalClose} centered className="custom-modal">
         <Modal.Header closeButton className="custom-modal-header">
@@ -155,10 +184,18 @@ const HodDash = () => {
         <Modal.Body className="custom-modal-body">
           {!showForm ? (
             <div className="d-flex justify-content-around">
-              <Button variant="primary" onClick={() => setShowForm("Student")} className="custom-button m-2">Add Student</Button>
-              <Button variant="success" onClick={() => setShowForm("Faculty")} className="custom-button m-2">Add Faculty</Button>
-              <Button variant='warning' onClick={() => setShowForm("Department")} className="custom-button m-2">Add Department</Button>
-              <Button variant='info' onClick={() => setShowForm("Notes")} className="custom-button m-2">Add Notes</Button>
+              <Button variant="primary" onClick={() => setShowForm("Student")} className="custom-button m-2">
+                Add Student
+              </Button>
+              <Button variant="success" onClick={() => setShowForm("Faculty")} className="custom-button m-2">
+                Add Faculty
+              </Button>
+              <Button variant="warning" onClick={() => setShowForm("Department")} className="custom-button m-2">
+                Add Department
+              </Button>
+              <Button variant="info" onClick={() => setShowForm("Notes")} className="custom-button m-2">
+                Add Notes
+              </Button>
             </div>
           ) : showForm === "Student" ? (
             <AddStudent onClose={handleModalClose} />
@@ -171,8 +208,7 @@ const HodDash = () => {
           ) : null}
         </Modal.Body>
       </Modal>
-
-    </section>
+    </div>
   );
 };
 
