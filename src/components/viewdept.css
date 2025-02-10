@@ -1,20 +1,33 @@
-/* viewDepartment.css */
+/* viewdept.css */
+
 .view-department-container {
-  font-family: Arial, sans-serif;
   padding: 20px;
-  max-width: 1000px;
-  margin: 0 auto;
+  background-color: #f9f9f9;
 }
 
 .title {
   text-align: center;
-  color: #4CAF50;
   margin-bottom: 20px;
+  color: #333;
+}
+
+.filter-container {
+  margin-bottom: 20px;
+}
+
+.filter-container label {
+  margin-right: 10px;
+}
+
+.filter-container select {
+  padding: 5px;
+  font-size: 16px;
 }
 
 .department-table {
   width: 100%;
   border-collapse: collapse;
+  margin-bottom: 20px;
 }
 
 .department-table th,
@@ -25,12 +38,46 @@
 }
 
 .department-table th {
-  background-color: #f2f2f2;
-  color: #333;
+  background-color: #4CAF50;
+  color: white;
 }
 
 .department-photo {
-  max-width: 100px;
-  height: auto;
-  border-radius: 5px;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+}
+
+.department-table button {
+  padding: 5px 10px;
+  margin-right: 5px;
+  border: none;
+  background: none;
+  cursor: pointer;
+}
+
+.department-table button .fa {
+  font-size: 16px;
+  color: #007bff;
+}
+
+.department-table .delete-button .fa {
+  color: #dc3545;
+}
+
+.department-table button:hover .fa {
+  opacity: 0.8;
+}
+
+.modal-title {
+  text-align: center;
+}
+
+.modal-body form {
+  display: flex;
+  flex-direction: column;
+}
+
+.modal-body .form-group {
+  margin-bottom: 15px;
 }

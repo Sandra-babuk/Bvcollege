@@ -273,4 +273,4 @@ const ViewStudent = () => {
   );
 };
 
-export default ViewStudent;
+export default ViewStudent;

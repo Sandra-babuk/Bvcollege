@@ -2,6 +2,9 @@ import React, { useState, useEffect } from 'react';
 import { getDepartmentsApi, editDeptApi, deleteDeptApi } from '../services/allApi';
 import './viewdept.css';
 import { Modal, Button, Form } from 'react-bootstrap';
+import { FaEdit, FaTrashAlt } from 'react-icons/fa';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const serverUrl = 'http://localhost:8000';
 
@@ -19,7 +22,7 @@ const ViewDepartment = () => {
   const AllDepartments = async () => {
     const token = localStorage.getItem('access');
     if (!token) {
-      console.log('No token found');
+      toast.error('No token found');
       return;
     }
     try {
@@ -27,10 +30,10 @@ const ViewDepartment = () => {
       if (response.status === 200) {
         setDepartments(response.data);
       } else {
-        console.error('Failed to fetch departments');
+        toast.error('Failed to fetch departments');
       }
     } catch (error) {
-      console.error('Error fetching departments:', error);
+      toast.error('Error fetching departments:', error);
     }
   };
 
@@ -46,12 +49,12 @@ const ViewDepartment = () => {
   const handleDelete = async (id) => {
     const token = localStorage.getItem('access');
     if (!token) {
-      console.log('No token found');
+      toast.error('No token found');
       return;
     }
 
-    const confirmDelete = window.confirm("Are you sure you want to delete this department");
-    if(!confirmDelete){
+    const confirmDelete = window.confirm("Are you sure you want to delete this department?");
+    if (!confirmDelete) {
       return;
     }
 
@@ -59,12 +62,12 @@ const ViewDepartment = () => {
       const response = await deleteDeptApi(id, token);
       if (response.status === 200) {
         setDepartments(departments.filter(dept => dept.id !== id));
-        console.log('Department deleted successfully');
+        toast.success('Department deleted successfully');
       } else {
-        console.error('Failed to delete department');
+        toast.error('Failed to delete department');
       }
     } catch (error) {
-      console.error('Error deleting department:', error);
+      toast.error('Error deleting department:', error);
     }
   };
 
@@ -88,12 +91,12 @@ const ViewDepartment = () => {
       if (response.status === 200) {
         setDepartments(departments.map(dept => dept.id === id ? response.data : dept));
         setShowModal(false);
-        console.log('Department updated successfully');
+        toast.success('Department updated successfully');
       } else {
-        console.error('Failed to update department');
+        toast.error('Failed to update department');
       }
     } catch (error) {
-      console.error('Error updating department:', error);
+      toast.error('Error updating department:', error);
     } finally {
       setIsSubmitting(false);
     }
@@ -127,9 +130,9 @@ const ViewDepartment = () => {
         </thead>
         <tbody>
           {filteredDepartments.length > 0 ? (
-            filteredDepartments.map((department,index) => (
+            filteredDepartments.map((department, index) => (
               <tr key={department.id}>
-                <td>{index+1}</td>
+                <td>{index + 1}</td>
                 <td>
                   {department.photo && (
                     <img src={`${serverUrl}${department.photo}`} alt={`${department.department_name} photo`} className="department-photo" />
@@ -139,8 +142,12 @@ const ViewDepartment = () => {
                 <td>{department.description}</td>
                 <td>{Array.isArray(department.courses) && department.courses.length > 0 ? department.courses.join(', ') : 'No courses available'}</td>
                 <td>
-                  <button onClick={() => handleEdit(department)}>Edit</button>
-                  <button onClick={() => handleDelete(department.id)} className="delete-button">Delete</button>
+                  <button onClick={() => handleEdit(department)}>
+                    <FaEdit />
+                  </button>
+                  <button onClick={() => handleDelete(department.id)} className="delete-button">
+                    <FaTrashAlt />
+                  </button>
                 </td>
               </tr>
             ))
@@ -177,6 +184,7 @@ const ViewDepartment = () => {
           </Modal.Body>
         </Modal>
       )}
+      <ToastContainer />
     </div>
   );
 };
