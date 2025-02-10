@@ -16,6 +16,7 @@ import AddNote from '../components/AddNote';
 import Notification from '../components/Notification';
 import { getUserProfileApi, departmentApi } from '../services/allApi';
 import { toast } from 'react-toastify';
+import { Link } from 'react-router-dom';
 
 const HodDash = () => {
   const [activeFeature, setActiveFeature] = useState("profile");
@@ -105,9 +106,9 @@ const HodDash = () => {
   return (
     <div className="hod-dashboard">
       <div className="hod-header">
-        <p className="back-link">
+        <Link to="/home" className="back-link">
           <RiArrowGoForwardLine /> Back to Home
-        </p>
+        </Link>
       </div>
 
       <div className="navigation-menu">

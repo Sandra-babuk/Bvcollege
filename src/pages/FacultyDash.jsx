@@ -5,7 +5,7 @@ import { RiArrowGoForwardLine } from "react-icons/ri";
 import { FaPlus } from 'react-icons/fa';
 import { MdNotifications } from 'react-icons/md';
 import { Button, Modal } from 'react-bootstrap';
-import ResultStd from '../components/ResultStd';
+// import ResultStd from '../components/ResultStd';
 import Notes from '../components/Notes';
 import FacultyProfile from '../components/FacultyProfile';
 import ViewStudent from '../components/ViewStudent';
@@ -97,7 +97,7 @@ const FacultyDash = () => {
         setShowActionMenu(!showActionMenu);
     };
 
-    const fetchNotifications = async () => {
+    const allNotifications = async () => {
         const token = localStorage.getItem('access');
         try {
             const response = await getNotificationsApi(token);
@@ -109,7 +109,7 @@ const FacultyDash = () => {
     };
 
     const handleShowNotifications = () => {
-        fetchNotifications();
+        allNotifications();
         setShowNotifications(true);
     };
 

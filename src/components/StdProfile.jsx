@@ -8,7 +8,7 @@ const StdProfile = () => {
     const [error, setError] = useState(null);
 
     useEffect(() => {
-        const stdProfile = async () => {
+        const fetchUserProfile = async () => {
             const token = localStorage.getItem('access');
             const userId = localStorage.getItem('userId');
 
@@ -23,7 +23,14 @@ const StdProfile = () => {
 
             try {
                 const response = await getUserProfileApi(userId, token);
-                console.log('Response data:', response);
+                console.log('Response data:', response.data);
+
+                if (response.data.id !== parseInt(userId)) {
+                    setError('You are only allowed to view your own profile.');
+                    setLoading(false);
+                    return;
+                }
+
                 const userData = response.data;
                 setUserDetails({
                     id: userData.id,
@@ -43,7 +50,8 @@ const StdProfile = () => {
                 setLoading(false);
             }
         };
-        stdProfile();
+
+        fetchUserProfile();
     }, []);
 
     if (loading) {
@@ -59,48 +67,48 @@ const StdProfile = () => {
             <h2>Student Profile</h2>
             <div className="d-flex justify-content-end"><RiEdit2Fill /></div>
             <hr />
-            <div className="profile-details d-flex flex-row ">
-                <div className="col-lg-3">Student Id </div>:
+            <div className="profile-details d-flex flex-row">
+                <div className="col-lg-3">Student Id</div>:
                 <div className="col-lg-5 ms-2">{userDetails.id}</div>
             </div>
             <hr />
-            <div className="profile-details d-flex flex-row ">
-                <div className="col-lg-3">Student Name </div>:
+            <div className="profile-details d-flex flex-row">
+                <div className="col-lg-3">Student Name</div>:
                 <div className="col-lg-5 ms-2">{userDetails.full_name}</div>
             </div>
             <hr />
-            <div className="profile-details d-flex flex-row ">
-                <div className="col-lg-3">Batch </div>:
+            <div className="profile-details d-flex flex-row">
+                <div className="col-lg-3">Batch</div>:
                 <div className="col-lg-5 ms-2">{userDetails.batch}</div>
             </div>
             <hr />
-            <div className="profile-details d-flex flex-row ">
-                <div className="col-lg-3">Department </div>:
+            <div className="profile-details d-flex flex-row">
+                <div className="col-lg-3">Department</div>:
                 <div className="col-lg-5 ms-2">{userDetails.department}</div>
             </div>
             <hr />
-            <div className="profile-details d-flex flex-row ">
-                <div className="col-lg-3">Course </div>:
+            <div className="profile-details d-flex flex-row">
+                <div className="col-lg-3">Course</div>:
                 <div className="col-lg-5 ms-2">{userDetails.course}</div>
             </div>
             <hr />
-            <div className="profile-details d-flex flex-row ">
-                <div className="col-lg-3">DOB </div>:
+            <div className="profile-details d-flex flex-row">
+                <div className="col-lg-3">DOB</div>:
                 <div className="col-lg-5 ms-2">{userDetails.dob}</div>
             </div>
             <hr />
-            <div className="profile-details d-flex flex-row ">
-                <div className="col-lg-3">Gender </div>:
+            <div className="profile-details d-flex flex-row">
+                <div className="col-lg-3">Gender</div>:
                 <div className="col-lg-5 ms-2">{userDetails.gender}</div>
             </div>
             <hr />
-            <div className="profile-details d-flex flex-row ">
-                <div className="col-lg-3">Email </div>:
+            <div className="profile-details d-flex flex-row">
+                <div className="col-lg-3">Email</div>:
                 <div className="col-lg-5 ms-2">{userDetails.email}</div>
             </div>
             <hr />
-            <div className="profile-details d-flex flex-row ">
-                <div className="col-lg-3">Phone </div>:
+            <div className="profile-details d-flex flex-row">
+                <div className="col-lg-3">Phone</div>:
                 <div className="col-lg-5 ms-2">{userDetails.phone}</div>
             </div>
         </div>

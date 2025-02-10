@@ -1,14 +1,23 @@
-
-.notes-container{
+.notes-container {
     max-width: 900px;
     margin: auto;
-    background:#f8f9fa;
+    background: #f8f9fa;
     padding: 20px;
     border-radius: 15px;
     box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
     font-family: 'Arial', sans-serif;
 
-}.note-card {
+}
+
+.card-wrap {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    /* This will create 3 equal columns */
+    gap: 20px;
+    /* Space between the cards */
+}
+
+.note-card {
     border: 1px solid;
     justify-content: center;
     align-items: center;
@@ -59,4 +68,19 @@
 
 .view-note:hover {
     background-color: rgb(18, 137, 235);
+}
+
+
+@media (max-width: 768px) {
+    .card-wrap {
+        grid-template-columns: repeat(2, 1fr);
+        /* 2 cards per row on smaller screens */
+    }
+}
+
+@media (max-width: 480px) {
+    .card-wrap {
+        grid-template-columns: 1fr;
+        /* 1 card per row on mobile screens */
+    }
 }

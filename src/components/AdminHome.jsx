@@ -11,7 +11,7 @@ import { useNavigate } from 'react-router-dom';
 import AddHod from '../components/AddHod';  
 import AddFaculty from '../components/AddFaculty';
 import AddStudent from './AddStudent';
-import AddBatch from './AddBatch';
+// import AddBatch from './AddBatch';
 import AddDepartment from './AddDepartment';
 import AddCourse from './AddCourse';
 import ViewDepartment from './ViewDepartment';
@@ -21,6 +21,9 @@ import ViewFaculty from './ViewFaculty';
 import Notification from './Notification';
 import ExamResult from './ExamResult';
 import './AdminHome.css';
+import AddSubject from './AddSubject'
+import ViewCourse from './ViewCourses';
+import ViewSubject from './ViewSubject';
 
 function AdminHome() {
   const navigate = useNavigate();
@@ -74,8 +77,8 @@ function AdminHome() {
               <ListItem button className="nested-item" onClick={() => renderComponent(<AddCourse />)}>
                 <ListItemText primary="Add Course" />
               </ListItem>
-              <ListItem button className="nested-item" onClick={() => renderComponent(<AddBatch />)}>
-                <ListItemText primary="Add Batch" />
+              <ListItem button className="nested-item" onClick={() => renderComponent(<AddSubject />)}>
+                <ListItemText primary="Add Subject" />
               </ListItem>
               <ListItem button className="nested-item" onClick={() => renderComponent(<AddDepartment />)}>
                 <ListItemText primary="Add Department" />
@@ -102,6 +105,12 @@ function AdminHome() {
               </ListItem>
               <ListItem button className="nested-item" onClick={() => renderComponent(<ViewDepartment />)}>
                 <ListItemText primary="View Department" />
+              </ListItem>
+              <ListItem button className="nested-item" onClick={() => renderComponent(<ViewCourse />)}>
+                <ListItemText primary="View Courses" />
+              </ListItem>
+              <ListItem button className="nested-item" onClick={() => renderComponent(<ViewSubject />)}>
+                <ListItemText primary="View Subject" />
               </ListItem>
             </List>
           </Collapse>
