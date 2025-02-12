@@ -24,6 +24,8 @@ import './AdminHome.css';
 import AddSubject from './AddSubject'
 import ViewCourse from './ViewCourses';
 import ViewSubject from './ViewSubject';
+import AddBatch from './AddBatch';
+import ViewBatch from './ViewBatch';
 
 function AdminHome() {
   const navigate = useNavigate();
@@ -74,6 +76,9 @@ function AdminHome() {
               <ListItem button className="nested-item" onClick={() => renderComponent(<AddStudent />)}>
                 <ListItemText primary="Add Student" />
               </ListItem>
+              <ListItem button className="nested-item" onClick={() => renderComponent(<AddBatch />)}>
+                <ListItemText primary="Add Batch" />
+              </ListItem>
               <ListItem button className="nested-item" onClick={() => renderComponent(<AddCourse />)}>
                 <ListItemText primary="Add Course" />
               </ListItem>
@@ -83,6 +88,7 @@ function AdminHome() {
               <ListItem button className="nested-item" onClick={() => renderComponent(<AddDepartment />)}>
                 <ListItemText primary="Add Department" />
               </ListItem>
+             
             </List>
           </Collapse>
 
@@ -102,6 +108,9 @@ function AdminHome() {
               </ListItem>
               <ListItem button className="nested-item" onClick={() => renderComponent(<ViewStudent />)}>
                 <ListItemText primary="View Student" />
+              </ListItem>
+              <ListItem button className="nested-item" onClick={() => renderComponent(<ViewBatch />)}>
+                <ListItemText primary="View Batch" />
               </ListItem>
               <ListItem button className="nested-item" onClick={() => renderComponent(<ViewDepartment />)}>
                 <ListItemText primary="View Department" />

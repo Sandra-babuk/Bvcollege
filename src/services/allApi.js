@@ -350,7 +350,7 @@ export const deleteNotificationApi = async (id, token) => {
 };
 
 export const get_notes = async (token) => {
-  return await commonAPI("GET", ` ${serverUrl}/notes/`, null, {
+  return await commonAPI("GET", `${serverUrl}/notes/`, null, {
     Authorization: ` Bearer ${token}`
   });
 };
@@ -358,31 +358,69 @@ export const get_notes = async (token) => {
 
 
 // add subject
-// add subject
 export const addSubjectApi = async (token, subjectData) => {
-  try {
-    const response = await commonAPI("POST",`/subjects/`, subjectData, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    });
-    return response.data;
-  } catch (error) {
-    console.error('Error adding subject:', error);
-    throw error;
-  }
+  return axios.post(`${serverUrl}/subjects/`, subjectData, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+      'Content-Type': 'application/json',
+    },
+  });
+};
+
+// get subject
+export const getSubjectApi = async (token, subjectData) => {
+  return await commonAPI("GET", `${serverUrl}/subjects/`, subjectData, {
+    Authorization: `Bearer ${token}`
+  });
+};
+
+// add batch
+export const addbatchApi = async (formData, token) => {
+  return await commonAPI("POST", `${serverUrl}/batches/`, formData, {
+    Authorization: `Bearer ${token}`,
+    'Content-Type': 'application/json'
+  });
+};
+
+export const getBatchApi = async (token) => {
+  return await commonAPI("GET", `${serverUrl}/batches/`, null, {
+    Authorization: `Bearer ${token}`
+  });
+};
+
+
+// all courses
+export const getCoursesApi = async (token) => {
+  return await commonAPI("GET", `${serverUrl}/courses-list/`, "")
+}
+// ........................................assignment........................................
+
+
+// Create a new submission for a specific assignment
+export const addAssignmentApi = async (token, assignmentData) => {
+  return axios.post(`${serverUrl}/assignments/`, assignmentData, {
+    headers: {
+      Authorization: ` Bearer ${token}`,
+      'Content-Type': 'application/json',
+    },
+  });
+};
+
+// get subject
+export const getAssignmentApi = async (token, assignmentData) => {
+  return await commonAPI("GET", `${serverUrl}/assignments/`, assignmentData, {
+    Authorization: `Bearer ${token}`
+  });
+};
+// edit assignments
+export const editAssignmentApi = async (id, assignD, token) => {
+  return await commonAPI("PUT", `${serverUrl}/assignments/${id}/`, assignD, {
+    Authorization: `Bearer ${token}`,
+  });
 };
 
 
 
-
-
-
-
-// all courses
-export const getCoursesApi = async (token) =>{
-  return await commonAPI("GET" ,`${serverUrl}/courses-list/` ,"")
-}
 
 
 

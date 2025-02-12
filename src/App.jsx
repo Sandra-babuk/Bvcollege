@@ -24,7 +24,6 @@ const App = () => {
       <Route path="/admin-home" element={<AdminHome />}></Route>
       <Route path="/add-hod" element={<AddHod />}></Route>
       <Route path="/add-courses" element={<AddCourse />}></Route>
-
       <Route path="/add-student" element={<AddStudent />}></Route>
       <Route path="/admin-home" element={<AdminHome />}></Route>
       <Route path="/Otp" element={<Otp />}></Route>

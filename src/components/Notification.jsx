@@ -146,6 +146,7 @@ const Notification = () => {
                         required
                     >
                         <option value="">Select recipient type</option>
+                        <option value="faculty">All</option>
                         <option value="faculty">Faculty</option>
                         <option value="allStudents">All Students</option>
                         <option value="particularStudent">Particular Student</option>

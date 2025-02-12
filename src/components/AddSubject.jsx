@@ -7,12 +7,12 @@ import { addSubjectApi, departmentApi, getCoursesApi } from '../services/allApi'
 
 const AddSubject = () => {
   const [name, setName] = useState('');
-  const [description, setDescription] = useState(''); // State for description
+  const [description, setDescription] = useState('');
   const [department, setDepartment] = useState('');
   const [course, setCourse] = useState('');
   const [departments, setDepartments] = useState([]);
-  const [courses, setCourses] = useState([]); // State for courses
-  const [token, setToken] = useState(localStorage.getItem('token'));
+  const [courses, setCourses] = useState([]);
+  const [token] = useState(localStorage.getItem('access'));
 
   useEffect(() => {
     const fetchDepartments = async () => {
@@ -27,7 +27,7 @@ const AddSubject = () => {
     const fetchCourses = async () => {
       try {
         const response = await getCoursesApi(token);
-        setCourses(response.data); // Ensure you're accessing response.data
+        setCourses(response.data);
       } catch (error) {
         console.error('Error fetching courses:', error);
       }
@@ -40,13 +40,21 @@ const AddSubject = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     const subjectData = { name, description, department, course };
+
     try {
-      const result = await addSubjectApi(token, subjectData);
+     const response =await addSubjectApi(token, subjectData);
+     console.log(response);
+     
+     if (response.status==201) {
       toast.success('Subject added successfully!');
       setName('');
-      setDescription(''); // Reset description field
+      setDescription('');
       setDepartment('');
       setCourse('');
+      
+     }
+
+    
     } catch (error) {
       console.error('Error adding subject:', error);
       toast.error('Error adding subject. Please try again.');
@@ -80,39 +88,37 @@ const AddSubject = () => {
 
         <Form.Group controlId="department">
           <Form.Label>Department</Form.Label>
-          <select
-            id="department"
-            name="department"
+          <Form.Control
+            as="select"
             value={department}
             onChange={(e) => setDepartment(e.target.value)}
-            className="form-control"
             required
           >
             <option value="">Select Department</option>
             {departments.map((dept) => (
               <option key={dept.id} value={dept.id}>{dept.department_name}</option>
             ))}
-          </select>
+          </Form.Control>
         </Form.Group>
 
         <Form.Group controlId="course">
           <Form.Label>Course</Form.Label>
-          <select
-            id="course"
-            name="course"
+          <Form.Control
+            as="select"
             value={course}
             onChange={(e) => setCourse(e.target.value)}
-            className="form-control"
             required
           >
             <option value="">Select Course</option>
             {courses.map((course) => (
               <option key={course.id} value={course.id}>{course.course_name}</option>
             ))}
-          </select>
+          </Form.Control>
         </Form.Group>
 
-        <Button className='my-2' variant="primary" type="submit">Add Subject</Button>
+        <Button className="my-2" variant="primary" type="submit">
+          Add Subject
+        </Button>
       </Form>
       <ToastContainer />
     </Container>

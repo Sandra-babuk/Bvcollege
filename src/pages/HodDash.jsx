@@ -14,9 +14,12 @@ import AddFaculty from '../components/AddFaculty';
 import AddDepartment from '../components/AddDepartment';
 import AddNote from '../components/AddNote';
 import Notification from '../components/Notification';
-import { getUserProfileApi, departmentApi } from '../services/allApi';
 import { toast } from 'react-toastify';
 import { Link } from 'react-router-dom';
+import Attendance from '../components/Attendance';
+import AddAssignment from '../components/AddAssign';
+import { getUserProfileApi, departmentApi } from '../services/allApi';
+import AssignmentStd from '../components/AssignmentStd';
 
 const HodDash = () => {
   const [activeFeature, setActiveFeature] = useState("profile");
@@ -75,16 +78,21 @@ const HodDash = () => {
     }
 
     switch (activeFeature) {
-      case "assignment":
+      case "student":
         return <ViewStudent />;
       case "result":
         return <ViewFaculty />;
       case "notes":
         return <Notes />;
+        case "assignments":
+          return <AssignmentStd />;
+      case "attendance":
+        return <Attendance />;
       default:
         return <HodProfile />;
     }
   };
+
 
   const handleAddUser = () => {
     setShowModal(true);
@@ -113,42 +121,49 @@ const HodDash = () => {
 
       <div className="navigation-menu">
         <nav className="nav-links">
-          <a 
-            href="#profile" 
+          <a
+            href="#profile"
             onClick={() => handleActiveFeature("profile")}
             className={activeFeature === "profile" ? "active" : ""}
           >
             Profile
           </a>
-          <a 
-            href="#assignment" 
-            onClick={() => handleActiveFeature("assignment")}
-            className={activeFeature === "assignment" ? "active" : ""}
+          <a
+            href="#students"
+            onClick={() => handleActiveFeature("student")}
+            className={activeFeature === "students" ? "active" : ""}
           >
             All Students
           </a>
-          <a 
-            href="#notes" 
+          <a
+            href="#notes"
             onClick={() => handleActiveFeature("notes")}
             className={activeFeature === "notes" ? "active" : ""}
           >
             Notes
           </a>
-          <a 
-            href="#attendence" 
+          <a
+            href="#assignments"
+            onClick={() => handleActiveFeature("assignments")}
+            className={activeFeature === "assignments" ? "active" : ""}
+          >
+            Assignments
+          </a>
+          <a
+            href="#attendence"
             onClick={() => handleActiveFeature("attendence")}
             className={activeFeature === "attendence" ? "active" : ""}
           >
             Attendance
           </a>
-          <a 
-            href="#result" 
+          <a
+            href="#result"
             onClick={() => handleActiveFeature("result")}
             className={activeFeature === "result" ? "active" : ""}
           >
             All Faculty
           </a>
-          <MdNotifications 
+          <MdNotifications
             className="notification-btn"
             onClick={handleShowNotifications}
           />
@@ -197,6 +212,9 @@ const HodDash = () => {
               <Button variant="info" onClick={() => setShowForm("Notes")} className="custom-button m-2">
                 Add Notes
               </Button>
+              <Button variant="success" onClick={() => setShowForm("Assignments")} className="custom-button m-2">
+                Add Assignments
+              </Button>
             </div>
           ) : showForm === "Student" ? (
             <AddStudent onClose={handleModalClose} />
@@ -206,7 +224,10 @@ const HodDash = () => {
             <AddDepartment onClose={handleModalClose} />
           ) : showForm === "Notes" ? (
             <AddNote onClose={handleModalClose} />
+          ) : showForm === "Assignments" ? (
+            <AddAssignment onClose={handleModalClose} />
           ) : null}
+
         </Modal.Body>
       </Modal>
     </div>

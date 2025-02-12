@@ -1,6 +1,6 @@
 import React from 'react'
 
-const ViewCourse = () => {
+const Attendance = () => {
   return (
     <div>
       
@@ -8,4 +8,4 @@ const ViewCourse = () => {
   )
 }
 
-export default ViewCourse
+export default Attendance
