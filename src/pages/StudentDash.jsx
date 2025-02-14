@@ -25,7 +25,7 @@ const StudentDash = () => {
     const renderFeature = () => {
         switch (activeFeature) {
             case "assignment":
-                return <AssignmentStd />;
+                return <AssignmentStd />; 
             case "result":
                 return <ResultStd />;
             case 'notes':

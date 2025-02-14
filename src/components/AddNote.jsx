@@ -2,48 +2,57 @@ import React, { useState, useEffect } from 'react';
 import { Form, Button, Container } from 'react-bootstrap';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import { upload_Studentnote } from '../services/allApi';
+import { upload_Studentnote, HodApi, FacultyApi } from '../services/allApi';
 
 const AddNote = ({ onNoteAdded }) => {
   const [title, setTitle] = useState('');
-  const [userId, setUserId] = useState('');
   const [file, setFile] = useState(null);
   const [course, setCourse] = useState('');
   const [role, setRole] = useState('');
+  const [selectedHod, setSelectedHod] = useState('');
+  const [username, setUsername] = useState('');
+  const [hodList, setHodList] = useState([]);
+  const [facultyList, setFacultyList] = useState([]);
 
   useEffect(() => {
-    // Retrieve the role and userId from localStorage or API
     const storedRole = localStorage.getItem('role');
-    const storedUserId = localStorage.getItem('userId');
+    const storedUsername = localStorage.getItem('username');
     setRole(storedRole);
-    setUserId(storedUserId); // Set the userId in state
+    setUsername(storedUsername);
 
-    // Validate the userId
-    if (!storedUserId) {
-      console.error('No user ID found in localStorage');
-    } else {
-      console.log("User ID:", storedUserId);
-    }
+    const fetchLists = async () => {
+      try {
+        const hodResponse = await HodApi();
+        const facultyResponse = await FacultyApi();
+        setHodList(hodResponse.data);
+        setFacultyList(facultyResponse.data);
+      } catch (error) {
+        console.error('Error fetching lists:', error);
+      }
+    };
+    fetchLists();
   }, []);
 
   const handleFileChange = (e) => {
     setFile(e.target.files[0]);
   };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     const formData = new FormData();
     formData.append('title', title);
     formData.append('file', file);
     formData.append('course', course);
-    formData.append('faculty',userId ); // Append the user ID (either faculty or HOD)
+    if (role === 'HOD') {
+      formData.append('hod', selectedHod);
+    } else {
+      formData.append('faculty', username); // Append the username
 
-    // Logging formData values for debugging
     console.log("Form Data:");
     formData.forEach((value, key) => {
       console.log(key, value);
     });
 
-    // Retrieve the token from localStorage
     const token = localStorage.getItem('access');
     if (!token) {
       console.error('No token found in localStorage');
@@ -62,6 +71,7 @@ const AddNote = ({ onNoteAdded }) => {
         setTitle('');
         setFile(null);
         setCourse('');
+        setSelectedHod('');
       } else {
         console.error("Error response:", response.data);
         toast.error("There was a problem adding the note. Please try again.");
@@ -72,6 +82,7 @@ const AddNote = ({ onNoteAdded }) => {
       toast.error("Error uploading note.");
     }
   };
+}
 
   return (
     <Container className="add-note-container">
@@ -104,15 +115,42 @@ const AddNote = ({ onNoteAdded }) => {
           />
         </Form.Group>
 
-        {/* Display the correct ID based on the role */}
-        <Form.Group controlId="userId">
-          <Form.Label>{role === "HOD" ? "HOD User ID" : "Faculty User ID"}</Form.Label>
-          <Form.Control
-            type="text"
-            value={userId}
-            readOnly
-          />
-        </Form.Group>
+        {/* Display the dropdown based on the role */}
+        {role === 'HOD' ? (
+          <Form.Group controlId="hod">
+            <Form.Label>Select HOD</Form.Label>
+            <Form.Control
+              as="select"
+              value={selectedHod}
+              onChange={(e) => setSelectedHod(e.target.value)}
+              required
+            >
+              <option value="">Select HOD</option>
+              {hodList.map((hod) => (
+                <option key={hod.id} value={hod.id}>
+                  {hod.name}
+                </option>
+              ))}
+            </Form.Control>
+          </Form.Group>
+        ) : (
+          <Form.Group controlId="faculty">
+            <Form.Label>Select Faculty</Form.Label>
+            <Form.Control
+              as="select"
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
+              required
+            >
+              <option value="">Select Faculty</option>
+              {facultyList.map((faculty) => (
+                <option key={faculty.id} value={faculty.id}>
+                  {faculty.full_name}
+                </option>
+              ))}
+            </Form.Control>
+          </Form.Group>
+        )}
 
         <Button className='my-2' variant="primary" type="submit">Upload</Button>
       </Form>
@@ -122,3 +160,6 @@ const AddNote = ({ onNoteAdded }) => {
 };
 
 export default AddNote;
+
+// department,batch
+// permission to fetch batch to faculty

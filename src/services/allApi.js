@@ -349,11 +349,11 @@ export const deleteNotificationApi = async (id, token) => {
   });
 };
 
-export const get_notes = async (token) => {
-  return await commonAPI("GET", `${serverUrl}/notes/`, null, {
-    Authorization: ` Bearer ${token}`
-  });
-};
+// export const get_notes = async (token) => {
+//   return await commonAPI("GET", `${serverUrl}/notes/`, null, {
+//     Authorization: ` Bearer ${token}`
+//   });
+// };
 
 
 
@@ -373,6 +373,21 @@ export const getSubjectApi = async (token, subjectData) => {
     Authorization: `Bearer ${token}`
   });
 };
+
+// delete subject
+export const deleteSubjectApi = async (token, id) => {
+  return await commonAPI("DELETE", `${serverUrl}/subjects/${id}/`, null, {
+    Authorization: `Bearer ${token}`
+  });
+};
+
+// edit subject
+export const editSubjectApi = async (id, subjectData, token) => {
+  return await commonAPI("PUT", `${serverUrl}/subjects/${id}/`, subjectData, {
+    Authorization: `Bearer ${token}`
+  });
+}
+
 
 // add batch
 export const addbatchApi = async (formData, token) => {
@@ -416,8 +431,56 @@ export const getAssignmentApi = async (token, assignmentData) => {
 export const editAssignmentApi = async (id, assignD, token) => {
   return await commonAPI("PUT", `${serverUrl}/assignments/${id}/`, assignD, {
     Authorization: `Bearer ${token}`,
-  });
+  });
 };
+
+
+// delete assignments
+export const deleteAssignmentApi = async (id, token) => {
+  return await commonAPI("DELETE", `${serverUrl}/assignments/${id}/`, null, {
+    Authorization: `Bearer ${token}`
+  });
+};
+
+
+export const getNotes = async (token) => {
+  try {
+    const response = await axios.get(`${serverUrl}/notes/`, {
+      headers: { Authorization: `Bearer ${token}` },
+    });
+    return response.data;
+  } catch (error) {
+    console.error('Error fetching notes:', error);
+    throw error;
+  }
+};
+
+
+// notes
+export const getNoteDetail = async (noteId, token) => {
+  try {
+    const response = await axios.get(`${serverUrl}/notes/${noteId}/`, {
+      headers: { Authorization: `Bearer ${token}` },
+    });
+    return response.data;
+  } catch (error) {
+    console.error('Error fetching note detail:', error);
+    throw error;
+  }
+};
+
+export const getStudentNotesByCourse = async (courseId, token) => {
+  try {
+    const response = await axios.get(`${serverUrl}/notes/course/${courseId}/`, {
+      headers: { Authorization: `Bearer ${token}` },
+    });
+    return response.data;
+  } catch (error) {
+    console.error('Error fetching student notes:', error);
+    throw error;
+  }
+};
+
 
 
 

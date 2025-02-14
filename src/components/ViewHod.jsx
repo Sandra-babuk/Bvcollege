@@ -8,6 +8,10 @@ import { FaEdit, FaTrash } from 'react-icons/fa';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 const ViewHod = () => {
+
+  const serverUrl = 'http://localhost:8000';
+
+
   const [hods, setHods] = useState([]);
   const [selectedHod, setSelectedHod] = useState(null);
   const [showModal, setShowModal] = useState(false);
@@ -134,10 +138,10 @@ const ViewHod = () => {
             </div>
           ) : (
             <div className="p-4">
-              <Table striped bordered hover className="bg-white w-100">
+              <Table striped bordered hover responsive className="bg-white w-100">
                 <thead>
                   <tr>
-                    <th>#</th>
+                    <th >#</th>
                     <th>id</th>
                     <th>Full Name</th>
                     <th>Email</th>
@@ -161,8 +165,17 @@ const ViewHod = () => {
                         <td>{hod.department}</td>
                         <td>{hod.dob}</td>
                         <td>{hod.gender}</td>
-                        <td>{hod.photo}</td>
                         <td>
+                          {hod.photo ? (
+                            <img
+                              src={`${serverUrl}${hod.photo}`}
+                              alt={hod.full_name}
+                              style={{ width: "50px", height: "50px", borderRadius: "50%" }}
+                            />
+                          ) : (
+                            "No Photo"
+                          )}
+                        </td>                        <td>
                           <Button
                             variant="outline-primary"
                             size="sm"

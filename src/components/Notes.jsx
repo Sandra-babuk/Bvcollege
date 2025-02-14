@@ -1,82 +1,45 @@
 import React, { useEffect, useState } from 'react';
-import './notes.css';
-import pdf from '../assets/pdf.png';
-import { MdOutlineSimCardDownload, MdDelete } from "react-icons/md"; // Import the delete icon
-import { FaRegEye } from "react-icons/fa";
-import { delete_Studentnote, get_notes } from '../services/allApi';
+import { getNotes } from '../services/allApi';
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const Notes = () => {
   const [notes, setNotes] = useState([]);
-  const [role, setRole] = useState('');
 
   useEffect(() => {
-    // Retrieve the role from local storage or API
-    const storedRole = localStorage.getItem('role');
-    setRole(storedRole);
+    const fetchNotes = async () => {
+      const token = localStorage.getItem('access');
+      if (!token) {
+        toast.error('Authentication error: Missing token.');
+        return;
+      }
 
-    // Fetch notes from the API
-    const allNotes = async () => {
       try {
-        const response = await get_notes(token)
-        setNotes(response.data);
-      } catch (err) {
-        console.error('Error fetching notes:', err);
+        const notesData = await getNotes(token);
+        console.log('notesData:', notesData);
+        
+        setNotes(notesData);
+      } catch (error) {
+        console.error('Error fetching notes:', error);
+        toast.error('Failed to fetch notes.');
       }
     };
 
-    allNotes();
+    fetchNotes();
   }, []);
 
-  // Handler to delete a note
-  const handleDelete = async (id) => {
-    const token = localStorage.getItem('access');
-    if (!token) {
-      console.error('No token found in localStorage');
-      return;
-    }
-
-    try {
-      const response = await delete_Studentnote(id, token);
-      if (response.status === 200) {
-        // Remove the deleted note from the state
-        setNotes(notes.filter(note => note.id !== id));
-        alert("Note deleted successfully!");
-      } else {
-        console.error("Error deleting note:", response.data);
-      }
-    } catch (err) {
-      console.error('Error deleting note:', err);
-    }
-  };
-
   return (
-    <div className='notes-container'>
-      <div className="card-wrap p-2 gap-1">
+    <div className="notes-container">
+      <h2>Notes</h2>
+      <ul>
         {notes.map(note => (
-          <div className="note-card" key={note.id}>
-            <div className='pdf'>
-              <div><img src={pdf} style={{ width: '100px', height: '110px' }} alt="" /></div>
-            </div>
-            <div className='d-flex flex-column'>
-              <h5>{note.title}</h5>
-              <p>{note.description}</p>
-              <div className='buttons d-flex'>
-                <button className='save-note px-3 py-2'>save</button>
-                {role === 'HOD' || role === 'faculty' ? (
-                  <button
-                    className='delete-note px-3 '
-                    onClick={() => handleDelete(note.id)} // Add onClick handler for delete
-                  >
-                    <MdDelete className='w-100' />
-                  </button>
-                ) : (
-                  <button className='view-note px-3 '><FaRegEye className='w-100' /></button>
-                )}
-              </div>
-            </div>
-          </div>
+          <li key={note.id}>
+            <h3>{note.title}</h3>
+            <p>Course: {note.course}</p>
+            <p>Faculty: {note.faculty}</p>
+          </li>
         ))}
-      </div>
+      </ul>
     </div>
   );
 };
