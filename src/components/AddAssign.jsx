@@ -83,7 +83,7 @@ const AddAssignment = () => {
     const assignmentData = {
       title,
       description,
-      sub,
+      subject: sub, // Update the field name to match backend expectations
       faculty,
       hod,
       batch,
@@ -94,11 +94,10 @@ const AddAssignment = () => {
 
     try {
       const response = await addAssignmentApi(token, assignmentData);
-      console.log(response.data);
+      console.log(response);
 
       if (response.status === 201) {
         toast.success('Assignment uploaded successfully!');
-        navigate('/assignments'); // Redirect to assignments page after successful upload
       } else {
         toast.error('Failed to upload assignment');
       }
@@ -132,6 +131,23 @@ const AddAssignment = () => {
           />
         </Form.Group>
 
+        <Form.Group controlId="batch">
+          <Form.Label>Batch</Form.Label>
+          <Form.Control
+            as="select"
+            value={batch}
+            onChange={(e) => setBatch(e.target.value)}
+            required
+          >
+            <option value="">Select a Batch</option>
+            {batches.map((b) => (
+              <option key={b.id} value={b.id}>
+                {b.batch_name}
+              </option>
+            ))}
+          </Form.Control>
+        </Form.Group>
+
         <Form.Group controlId="subject">
           <Form.Label>Subject</Form.Label>
           <Form.Control
@@ -148,26 +164,9 @@ const AddAssignment = () => {
             ))}
           </Form.Control>
         </Form.Group>
-        
+
         {role?.toLowerCase() === "hod" && (
           <>
-            <Form.Group controlId="batch">
-              <Form.Label>Batch</Form.Label>
-              <Form.Control
-                as="select"
-                value={batch}
-                onChange={(e) => setBatch(e.target.value)}
-                required
-              >
-                <option value="">Select a Batch</option>
-                {batches.map((b) => (
-                  <option key={b.id} value={b.id}>
-                    {b.batch_name}
-                  </option>
-                ))}
-              </Form.Control>
-            </Form.Group>
-
             <Form.Group controlId="hod">
               <Form.Label>Select HOD</Form.Label>
               <Form.Control

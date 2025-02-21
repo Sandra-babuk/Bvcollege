@@ -20,6 +20,7 @@ import { Link } from 'react-router-dom';
 import AssignmentStd from '../components/AssignmentStd';
 import './hoddash.css'
 import AddAssignment from '../components/AddAssign';
+import FacAttendance from '../components/FacAttendance';
 
 const HodDash = () => {
     const [activeFeature, setActiveFeature] = useState("profile");
@@ -78,23 +79,23 @@ const HodDash = () => {
         if (showNotifications) {
             return <Notification notifications={notifications} onClose={handleCloseNotifications} />;
         }
-
+    
         switch (activeFeature) {
             case "students":
                 return <ViewStudent />;
             case "faculties":
                 return <ViewFaculty />;
             case "attendence":
-                return <AttendenceView />;
+                return <FacAttendance />;
             case "notes":
                 return <Notes />;
             case "assignments":
                 return <AssignmentStd />;
-
             default:
                 return <HodProfile />;
         }
     };
+    
 
     const handleAddUser = () => {
         setShowModal(true);
@@ -175,17 +176,17 @@ const HodDash = () => {
                         >
                             Attendance
                         </a>
-                        <MdNotifications className="notification-btn" />
-                    </Nav>
+                        <MdNotifications className="notification-btn" onClick={handleShowNotifications} />
+                        </Nav>
                 </Navbar.Collapse>
             </Navbar>
 
             {/* Profile Sidebar - positioned below the navbar */}
             {sidebarVisible && (
                 <aside className="profile-sidebar">
-                    <div className="profile-image">
+                    {/* <div className="profile-image">
                         <img src={profile.photo} alt="Profile" />
-                    </div>
+                    </div> */}
                     <div className="profile-info">
                         <h4>{profile.full_name}</h4>
                         <p>{profile.department_name}</p>

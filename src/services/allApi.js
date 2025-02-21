@@ -192,22 +192,22 @@ export const addFacultyApi = async (formData, reqHeader) => {
   }
 };
 
-// faculty list
-export const facultyApi = async (token) => {
-  try {
-    const response = await axios.get(`${serverUrl}/falist/`, {
-      headers: {
-        "Content-Type": "multipart/form-data",
-        Authorization: `Bearer ${token}`,
-        // Pass token in Authorization header
-      },
-    });
-    return response;
-  } catch (error) {
-    console.error("Error fetching faculty data", error);
-    throw error; // Rethrow error for proper handling in the component
-  }
-};
+// // faculty list
+// export const facultyApi = async (token) => {
+//   try {
+//     const response = await axios.get(`${serverUrl}/falist/`, {
+//       headers: {
+//         "Content-Type": "multipart/form-data",
+//         Authorization: `Bearer ${token}`,
+//         // Pass token in Authorization header
+//       },
+//     });
+//     return response;
+//   } catch (error) {
+//     console.error("Error fetching faculty data", error);
+//     throw error; // Rethrow error for proper handling in the component
+//   }
+// };
 
 //delete faculty
 export const deleteFacultyApi = async (id, token) => {
@@ -237,56 +237,6 @@ export const FacultyApi = async () => {
   return await commonAPI("GET", `${serverUrl}/falist/`, null, {
     Authorization: `Bearer ${token}`,
   });
-};
-
-
-//faculty dash
-
-//student_attendanceapi
-export const student_attendanceapi = async (token) => {
-  return await commonAPI(
-    "GET",
-    `${serverUrl}/student_attendance/${id}/`,
-    studentdetails,
-    {
-      Authorization: `Bearer ${token}`,
-    }
-  );
-};
-
-//uploading notes {faculty dash}
-
-// export const upload_Studentnote = async (formData, reqHeader) => {
-//   try {
-//     const response = await axios.post(`${serverUrl}/notes/`, formData, {
-//       headers: {
-//         ...reqHeader,
-//         "Content-Type": "multipart/form-data",
-//       },
-//     });
-//     return response;
-//   } catch (err) {
-//     console.error("Error in upload_Studentnote:", err.response || err.message);
-//     throw err; // Re-throw to let the caller handle it
-//   }
-// };
-
-
-
-
-export const upload_Studentnote = async (formData, reqHeader) => {
-  try {
-    const response = await axios.post(`${serverUrl}/notes/`, formData, {
-      headers: {
-        ...reqHeader,
-        "Content-Type": "multipart/form-data",
-      },
-    });
-    return response;
-  } catch (err) {
-    console.error("Error in upload_Studentnote:", err.response || err.message);
-    throw err; // Re-throw to let the caller handle it
-  }
 };
 
 
@@ -323,11 +273,11 @@ export const getNotificationsApi = async (token) => {
   });
 };
 
-export const getNotificationByIdApi = async (id, token) => {
-  return await commonAPI("GET", `${serverUrl}/notifications/${id}/`, null, {
-    Authorization: `Bearer ${token}`
-  });
-};
+// export const getNotificationByIdApi = async (id, token) => {
+//   return await commonAPI("GET", `${serverUrl}/notifications/${id}/`, null, {
+//     Authorization: `Bearer ${token}`
+//   });
+// };
 
 export const addNotificationApi = async (data, token) => {
   return await commonAPI("POST", `${serverUrl}/notifications/`, data, {
@@ -406,7 +356,10 @@ export const getBatchApi = async (token) => {
 
 // all courses
 export const getCoursesApi = async (token) => {
-  return await commonAPI("GET", `${serverUrl}/courses-list/`, "")
+  return await commonAPI("GET", `${serverUrl}/courses-list/`, "",{
+    Authorization: `Bearer ${token}`
+
+  })
 }
 // ........................................assignment........................................
 
@@ -434,6 +387,15 @@ export const editAssignmentApi = async (id, assignD, token) => {
   });
 };
 
+// Fetch assignments by batch ID
+export const getAssignmentsByBatch = async (token, batchId) => {
+  return await axios.get(`${serverUrl}/student/assignments/${batchId}/`, {
+    headers: {
+      Authorization: `Bearer ${token}`
+    }
+  });
+};
+
 
 // delete assignments
 export const deleteAssignmentApi = async (id, token) => {
@@ -442,7 +404,56 @@ export const deleteAssignmentApi = async (id, token) => {
   });
 };
 
+// get assignment submission
+export const getAssignmentSubmissions = async (token, assignmentId) => {
+  return await axios.get(`${serverUrl}/assignments/${assignmentId}/submissions/`, {
+    headers: {
+      Authorization: `Bearer ${token}`
+    }
+  });
+};
 
+export const createSubmissionApi = async (token, assignmentId, submissionData) => {
+  try {
+    const response = await commonAPI("POST", `${serverUrl}/assignments/${assignmentId}/submissions/`, submissionData, {
+      Authorization: `Bearer ${token}`,
+    });
+    console.log(response); // Log the response to inspect
+    return response;
+  } catch (error) {
+    console.error("Error submitting assignment:", error);
+    throw error; // Propagate the error
+  }
+};
+
+
+// Delete a specific submission
+export const deleteSubmissionApi = async (token, assignmentId, submissionId) => {
+  return await commonAPI("DELETE", `${serverUrl}/assignments/${assignmentId}/submissions/${submissionId}/`, null, {
+    Authorization: `Bearer ${token}`
+  });
+};
+
+
+
+
+// upload notes
+export const upload_Studentnote = async (formData, reqHeader) => {
+  try {
+    const response = await axios.post(`${serverUrl}/notes/`, formData, {
+      headers: {
+        ...reqHeader,
+        "Content-Type": "multipart/form-data",
+      },
+    });
+    return response;
+  } catch (err) {
+    console.error("Error in upload_Studentnote:", err.response || err.message);
+    throw err; // Re-throw to let the caller handle it
+  }
+};
+
+// get notes
 export const getNotes = async (token) => {
   try {
     const response = await axios.get(`${serverUrl}/notes/`, {
@@ -469,6 +480,7 @@ export const getNoteDetail = async (noteId, token) => {
   }
 };
 
+// student note by course
 export const getStudentNotesByCourse = async (courseId, token) => {
   try {
     const response = await axios.get(`${serverUrl}/notes/course/${courseId}/`, {
@@ -480,6 +492,122 @@ export const getStudentNotesByCourse = async (courseId, token) => {
     throw error;
   }
 };
+
+// Edit note data
+export const editNoteApi = async (id, data, token) => {
+  return await commonAPI("PUT", `${serverUrl}/notes/${id}/`, data, {
+    Authorization: `Bearer ${token}`,
+    'Content-Type': 'application/json',
+  });
+};
+
+// Delete note data
+export const deleteNoteApi = async (id, token) => {
+  return await commonAPI("DELETE", `${serverUrl}/notes/${id}/`, null, {
+    Authorization: `Bearer ${token}`,
+  });
+}
+
+
+
+
+
+// Fetch all faculty attendance records
+export const getFacultyAttendanceApi = async (token) => {
+  return await commonAPI("GET", `${serverUrl}/faculty-attendance/`, null, {
+    Authorization: `Bearer ${token}`
+  });
+};
+
+// Create a new faculty attendance record
+export const createFacultyAttendanceApi = async (token, data) => {
+  return await commonAPI("POST", `${serverUrl}/faculty-attendance/`, data, {
+    Authorization: `Bearer ${token}`
+  });
+};
+
+// Update an existing faculty attendance record
+export const updateFacultyAttendanceApi = async (token, attendanceId, data) => {
+  return await commonAPI("PUT", `${serverUrl}/faculty-attendance/${attendanceId}/`, data, {
+    Authorization: `Bearer ${token}`
+  });
+};
+
+
+
+// ------------------------------------------
+
+// Fetch student attendance
+export const getStudentAttendanceApi = async (params, token) => {
+  return await commonAPI("GET", `${serverUrl}/student_attendance/`, null, {
+    Authorization: `Bearer ${token}`,
+    ...params, 
+  });
+};
+
+// Create student attendance
+export const createStudentAttendanceApi = async (data, token) => {
+  return await commonAPI("POST", `${serverUrl}/student_attendance/`, data, {
+    Authorization: `Bearer ${token}`,
+    'Content-Type': 'application/json',
+  });
+};
+
+// Update student attendance
+export const updateStudentAttendanceApi = async (id, data, token) => {
+  return await commonAPI("PUT", `${serverUrl}/student_attendance/${id}/`, data, {
+    Authorization: `Bearer ${token}`,
+    'Content-Type': 'application/json',
+  });
+};
+
+// Fetch specific student attendance record by ID
+export const getStudentAttendanceByIdApi = async (id, token) => {
+  return await commonAPI(
+    "GET",
+    `${serverUrl}/student_attendance/${id}/`,
+    null,
+    {
+      Authorization: `Bearer ${token}`,
+    }
+  );
+};
+
+
+// ==========================
+
+// Post exam result data
+export const ExamResultApi = async (examResult, token) => {
+  try {
+    const response = await axios.post('http://localhost:8000/exam_result/', examResult, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+        'Content-Type': 'application/json'
+      }
+    });
+    return response.data;
+  } catch (error) {
+    console.error('There was an error posting the exam result!', error);
+    throw error;
+  }
+};
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

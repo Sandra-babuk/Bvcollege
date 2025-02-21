@@ -1,6 +1,6 @@
-import React, { useState,useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import './addFac.css';
-import { departmentApi, registerApi } from "../services/allApi";
+import { departmentApi, getBatchApi, getCoursesApi, getSubjectApi, registerApi } from "../services/allApi";
 import { useNavigate } from "react-router-dom";
 import { toast, ToastContainer } from "react-toastify";
 
@@ -13,11 +13,17 @@ function FacultyRegistration() {
     phone: "",
     password: "",
     department: "",
+    course: "",
+    batch: "",
+    subject: "",
     photo: null,
     role: "faculty",
   });
 
-  const [department, setDepartment] = useState([]);
+  const [departments, setDepartments] = useState([]);
+  const [courses, setCourses] = useState([]);
+  const [batches, setBatches] = useState([]);
+  const [subjects, setSubjects] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
 
@@ -42,10 +48,11 @@ function FacultyRegistration() {
     }
   };
 
-  
+
+
 
   const validateInputs = () => {
-    const { full_name, dob, gender, email, phone, password, department, photo } = userData;
+    const { full_name, dob, gender, email, phone, password, department, course, batch, photo } = userData;
 
     if (!full_name.trim()) return "Full Name is required.";
     if (!dob) return "Date of Birth is required.";
@@ -54,84 +61,115 @@ function FacultyRegistration() {
     if (!/^\d{10}$/.test(phone)) return "Phone number must be 10 digits.";
     if (password.length < 6) return "Password must be at least 6 characters long.";
     if (!department) return "Department is required.";
+    if (!course.trim()) return "Course is required.";
+    if (!batch.trim()) return "Batch is required.";
     if (!photo) return "Photo is required.";
 
     return null;
   };
 
-// Handle registration
-const handleRegistration = async (e) => {
-  e.preventDefault();
-  setIsLoading(true); // Start loading
 
-  const error = validateInputs();
-  if (error) {
-    toast.warning(error);
-    setIsLoading(false);
-    return;
-  }
+  // Handle registration
+  const handleRegistration = async (e) => {
+    e.preventDefault();
+    setIsLoading(true); // Start loading
 
-  const formData = new FormData();
-  formData.append("full_name", userData.full_name);
-  formData.append("dob", userData.dob);
-  formData.append("gender", userData.gender);
-  formData.append("email", userData.email);
-  formData.append("phone", userData.phone);
-  formData.append("password", userData.password);
-  formData.append("department", userData.department);
-  formData.append("role", userData.role);
-  formData.append("photo", userData.photo);
-
-  try {
-    const response = await registerApi(formData);
-
-    if (response.status === 200) {
-      toast.success("OTP sent successfully.");
-      setUserData({
-        full_name: "",
-        dob: "",
-        gender: "",
-        email: "",
-        phone: "",
-        password: "",
-        department: "",
-        photo: null,
-        role: "faculty",
-      });
-      navigate("/Otp", { state: { email: userData.email } });
-    } else {
-      toast.error("Registration failed! Please try again.");
+    const error = validateInputs();
+    if (error) {
+      toast.warning(error);
+      setIsLoading(false);
+      return;
     }
-  } catch (error) {
-    console.error(
-      "Error during registration:",
-      error.response?.data || error.message
-    );
-    toast.error(
-      error.response?.data?.error ||
-        "An unexpected error occurred. Please try again."
-    );
-  } finally {
-    setIsLoading(false); // Reset loading state
-  }
-};
 
-   useEffect(() => {
-      const AllDept = async () => {
-        try {
-          const response = await departmentApi();
-          if (response.status === 200) {
-            setDepartment(response.data);
-          } else {
-            toast.error('Failed to get departments');
-          }
-        } catch (error) {
-          console.error('Error fetching departments:', error);
-          toast.error('An unexpected error occurred. Please try again.');
+    const formData = new FormData();
+    formData.append("full_name", userData.full_name);
+    formData.append("dob", userData.dob);
+    formData.append("gender", userData.gender);
+    formData.append("email", userData.email);
+    formData.append("phone", userData.phone);
+    formData.append("password", userData.password);
+    formData.append("department", userData.department);
+    formData.append("course", userData.course);
+    formData.append("batch", userData.batch);
+    formData.append("role", userData.role);
+    formData.append("photo", userData.photo);
+
+
+    try {
+      const response = await registerApi(formData);
+
+      if (response.status === 200) {
+        toast.success("OTP sent successfully.");
+        setUserData({
+          full_name: "",
+          dob: "",
+          gender: "",
+          email: "",
+          phone: "",
+          password: "",
+          department: "",
+          course: "",
+          batch: "",
+          photo: null,
+          role: "faculty",
+        });
+        navigate("/Otp", { state: { email: userData.email } });
+      } else {
+        toast.error("Registration failed! Please try again.");
+      }
+    } catch (error) {
+      console.error(
+        "Error during registration:",
+        error.response?.data || error.message
+      );
+      toast.error(
+        error.response?.data?.error ||
+        "An unexpected error occurred. Please try again."
+      );
+    } finally {
+      setIsLoading(false); // Reset loading state
+    }
+  };
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const departmentResponse = await departmentApi();
+        if (departmentResponse.status === 200) {
+          setDepartments(departmentResponse.data);
+        } else {
+          toast.error('Failed to fetch departments');
         }
-      };
-      AllDept();
-    }, []);
+
+        const courseResponse = await getCoursesApi();
+        if (courseResponse.status === 200) {
+          setCourses(courseResponse.data);
+        } else {
+          toast.error('Failed to fetch courses');
+        }
+
+        const batchResponse = await getBatchApi();
+        if (batchResponse.status === 200) {
+          setBatches(batchResponse.data);
+        } else {
+          toast.error('Failed to fetch batches');
+        }
+
+        const subjectResponse = await getSubjectApi();
+        if (subjectResponse.status === 200) {
+          setSubjects(subjectResponse.data);
+        } else {
+          toast.error('Failed to fetch subjects');
+        }
+      } catch (error) {
+        console.error('Error fetching data:', error);
+        toast.error('An unexpected error occurred. Please try again.');
+      }
+    };
+
+    fetchData();
+  }, []);
+
 
   return (
     <div className="registration-page">
@@ -244,6 +282,8 @@ const handleRegistration = async (e) => {
                 />
               </div>
 
+
+
               <div className="input-group">
                 <label htmlFor="department">Department</label>
                 <select
@@ -254,28 +294,87 @@ const handleRegistration = async (e) => {
                   className="select-field"
                   disabled={isLoading}
                 >
-                  {/* <option value="">Select Department</option>
-                  <option value="1">B.Tech</option>
-                  <option value="2">M.Tech</option> */}
-                     <option value="">Select Department</option>
-                  {department.map((dept) => (
-                    <option key={dept.id} value={dept.id}>{dept.department_name}</option>
+                  <option value="">Select Department</option>
+                  {departments.map((dept) => (
+                    <option key={dept.id} value={dept.id}>
+                      {dept.department_name}
+                    </option>
+                  ))}
+                </select>
+              </div>
+
+              <div className="input-group">
+                <label htmlFor="course">Course</label>
+                <select
+                  id="course"
+                  name="course"
+                  value={userData.course}
+                  onChange={handleChange}
+                  className="select-field"
+                  disabled={isLoading}
+                >
+                  <option value="">Select Course</option>
+                  {courses.map((course) => (
+                    <option key={course.id} value={course.id}>
+                      {course.course_name}
+                    </option>
+                  ))}
+                </select>
+              </div>
+
+              <div className="input-group">
+                <label htmlFor="batch">Batch</label>
+                <select
+                  id="batch"
+                  name="batch"
+                  value={userData.batch}
+                  onChange={handleChange}
+                  className="select-field"
+                  disabled={isLoading}
+                >
+                  <option value="">Select Batch</option>
+                  {batches.map((batch) => (
+                    <option key={batch.id} value={batch.id}>
+                      {batch.batch_name}
+                    </option>
+                  ))}
+                </select>
+              </div>
+
+              <div className="input-group">
+                <label htmlFor="subject">Subject</label>
+                <select
+                  id="subject"
+                  name="subject"
+                  value={userData.subject}
+                  onChange={handleChange}
+                  className="select-field"
+                  disabled={isLoading}
+                >
+                  <option value="">Select Subject</option>
+                  {subjects.map((subject) => (
+                    <option key={subject.id} value={subject.id}>
+                      {subject.name}
+                    </option>
                   ))}
                 </select>
               </div>
             </div>
 
+
+
+
             <div className="form-actions">
-              <button 
-                type="button" 
+              <button
+                type="button"
                 className="btn-secondary"
-               
+
                 disabled={isLoading}
               >
                 Cancel
               </button>
-              <button 
-                type="submit" 
+              <button
+                type="submit"
                 className="btn-primary"
                 disabled={isLoading}
               >
@@ -285,7 +384,7 @@ const handleRegistration = async (e) => {
           </form>
         </div>
       </div>
-      <ToastContainer/>
+      <ToastContainer />
     </div>
   );
 }

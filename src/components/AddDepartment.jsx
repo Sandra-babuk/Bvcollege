@@ -1,24 +1,59 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import Select from 'react-select';
 import { useNavigate } from "react-router-dom";
 import { toast, ToastContainer } from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
 // import "./addDepartment.css";
-import { addDepartmentApi } from "../services/allApi";
+import { addDepartmentApi, getCoursesApi } from "../services/allApi";
 
 const AddDepartment = () => {
   const [departmentData, setDepartmentData] = useState({
     department_name: "",
     description: "",
-    courses: "",
+    courses: [],
     photo: null,
   });
+  const [courses, setCourses] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
 
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setDepartmentData({ ...departmentData, [name]: value });
+  useEffect(() => {
+    fetchCourses();
+  }, []);
+
+  const fetchCourses = async () => {
+    const token = localStorage.getItem('access');
+    if (!token) {
+      toast.error("No token found");
+      return;
+    }
+    try {
+      const response = await getCoursesApi(token);
+      if (response.status === 200) {
+        setCourses(response.data.map(course => ({
+          value: course.id,
+          label: course.course_name,
+        })));
+      } else {
+        toast.error("Failed to fetch courses");
+      }
+    } catch (error) {
+      toast.error("Error fetching courses:", error);
+    }
   };
+
+  const handleChange = (e) => {
+    if (e.target) {
+      // Handling normal input fields
+      const { name, value } = e.target;
+      setDepartmentData((prevData) => ({ ...prevData, [name]: value }));
+    } else {
+      // Handling the multi-select courses field
+      const selectedCourses = e ? e.map(option => option.value) : [];
+      setDepartmentData((prevData) => ({ ...prevData, courses: selectedCourses }));
+    }
+  };
+  
 
   const handleFileChange = (e) => {
     setDepartmentData({ ...departmentData, photo: e.target.files[0] });
@@ -36,7 +71,11 @@ const AddDepartment = () => {
 
     const formData = new FormData();
     for (const key in departmentData) {
-      formData.append(key, departmentData[key]);
+      if (key === "courses") {
+        departmentData.courses.forEach(course => formData.append("courses", course));
+      } else {
+        formData.append(key, departmentData[key]);
+      }
     }
 
     try {
@@ -46,7 +85,7 @@ const AddDepartment = () => {
         setDepartmentData({
           department_name: "",
           description: "",
-          courses: "",
+          courses: [],
           photo: null,
         });
       } else {
@@ -69,7 +108,7 @@ const AddDepartment = () => {
           </header>
 
           <form onSubmit={handleSubmit} className="registration-form">
-            <div className="form-grid ">
+            <div className="form-grid">
               <div className="input-group">
                 <label htmlFor="department_name">Department Name</label>
                 <input
@@ -84,18 +123,15 @@ const AddDepartment = () => {
               </div>
 
               <div className="input-group">
-                <label htmlFor="courses">Course Type</label>
-                <select
+                <label htmlFor="courses">Courses</label>
+                <Select
                   id="courses"
                   name="courses"
-                  value={departmentData.courses}
+                  isMulti
+                  options={courses}
                   onChange={handleChange}
-                  className="select-field"
-                >
-                  <option value="">Select Course Type</option>
-                  <option value="2">B.Tech</option>
-                  <option value="3">M.Tech</option>
-                </select>
+                  isDisabled={isLoading}
+                />
               </div>
 
               <div className="input-group full-width">

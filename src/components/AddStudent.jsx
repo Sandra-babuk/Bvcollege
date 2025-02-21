@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import './addStudent.css';
-import { departmentApi, registerApi } from '../services/allApi';
+import { departmentApi, registerApi, getCoursesApi, getBatchApi } from '../services/allApi';
 import { useNavigate } from 'react-router-dom';
 import { toast, ToastContainer } from 'react-toastify';
 
@@ -19,24 +19,40 @@ function StudentRegistration() {
   });
 
   const [department, setDepartment] = useState([]);
+  const [courses, setCourses] = useState([]);
+  const [batches, setBatches] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
-    const AllDept = async () => {
+    const fetchData = async () => {
       try {
-        const response = await departmentApi();
-        if (response.status === 200) {
-          setDepartment(response.data);
+        const deptResponse = await departmentApi();
+        if (deptResponse.status === 200) {
+          setDepartment(deptResponse.data);
         } else {
           toast.error('Failed to get departments');
         }
+
+        const courseResponse = await getCoursesApi();
+        if (courseResponse.status === 200) {
+          setCourses(courseResponse.data);
+        } else {
+          toast.error('Failed to get courses');
+        }
+
+        const batchResponse = await getBatchApi();
+        if (batchResponse.status === 200) {
+          setBatches(batchResponse.data);
+        } else {
+          toast.error('Failed to get batches');
+        }
       } catch (error) {
-        console.error('Error fetching departments:', error);
+        console.error('Error fetching data:', error);
         toast.error('An unexpected error occurred. Please try again.');
       }
     };
-    AllDept();
+    fetchData();
   }, []);
 
   const handleChange = (e) => {
@@ -82,9 +98,9 @@ function StudentRegistration() {
           email: '',
           phone: '',
           password: '',
-          course: '', 
-          department: '', 
-          batch: '', 
+          course: '',
+          department: '',
+          batch: '',
           role: 'student',
         });
         navigate('/Otp', { state: { email } });
@@ -98,7 +114,6 @@ function StudentRegistration() {
       setIsLoading(false); // Reset loading state after the request
     }
   };
-  
 
   return (
     <div className="registration-page">
@@ -203,8 +218,9 @@ function StudentRegistration() {
                   className="select-field"
                 >
                   <option value="">Select Batch</option>
-                  <option value="1">2020</option>
-                  <option value="2">2021</option>
+                  {batches.map((batch) => (
+                    <option key={batch.id} value={batch.id}>{batch.batch_name}</option>
+                  ))}
                 </select>
               </div>
 
@@ -234,8 +250,9 @@ function StudentRegistration() {
                   className="select-field"
                 >
                   <option value="">Select Course</option>
-                  <option value="3">B.Tech</option>
-                  <option value="2">M.Tech</option>
+                  {courses.map((course) => (
+                    <option key={course.id} value={course.id}>{course.course_name}</option>
+                  ))}
                 </select>
               </div>
             </div>

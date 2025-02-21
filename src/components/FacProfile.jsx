@@ -25,7 +25,7 @@ const FacProfile = () => {
         setUserDetails({
           id: userData.id,
           full_name: userData.full_name,
-          department: userData.department,
+          department: userData.department_name,
           dob: userData.dob,
           gender: userData.gender,
           email: userData.email,
@@ -68,7 +68,7 @@ const FacProfile = () => {
         <hr />
         <div className='profile-details d-flex flex-row '>
           <div className='col-lg-3'>Department </div>:
-          <div className='col-lg-5 ms-2'>{userDetails.department}</div>
+          <div className='col-lg-5 ms-2'>{userDetails.department_name}</div>
         </div>
         <hr />
         <div className='profile-details d-flex flex-row '>

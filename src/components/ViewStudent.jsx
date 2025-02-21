@@ -43,33 +43,33 @@ const ViewStudent = () => {
     const fetchData = async () => {
       try {
         const studentResponse = await StudentApi(token);
-        console.log('Student Response:', studentResponse);
-
         if (Array.isArray(studentResponse.data)) {
           setStudents(studentResponse.data);
           setFilteredStudents(studentResponse.data);
         }
 
         const deptResponse = await departmentApi(token);
-        console.log('Department Response:', deptResponse);
-
-        setDepartments(deptResponse.data);
+        setDepartments(Array.isArray(deptResponse.data) ? deptResponse.data : []);
 
         const courseResponse = await getCoursesApi(token);
-        setCourses(courseResponse.data);
-        console.log('Course Response:', courseResponse);
-
+        setCourses(Array.isArray(courseResponse.data) ? courseResponse.data : []);
 
         const batchResponse = await getBatchApi(token);
-        setBatches(batchResponse.data);
-        console.log('Batch Response:', batchResponse);
+        console.log("Batch Response:", batchResponse.data); // Debugging API response
 
+        if (Array.isArray(batchResponse.data)) {
+          setBatches(batchResponse.data);
+        } else {
+          setBatches([]); // Ensure batches is always an array
+        }
 
       } catch (error) {
         console.error('Error fetching data:', error);
         toast.error('Failed to load data');
       }
     };
+
+
 
     fetchData();
   }, [navigate]);
@@ -154,10 +154,15 @@ const ViewStudent = () => {
         <Col md={4}>
           <Form.Select value={filterBatch} onChange={(e) => setFilterBatch(e.target.value)}>
             <option value="">Filter by Batch</option>
-            {batches.map(batch => (
-              <option key={batch.id} value={batch.id}>{batch.batch_name}</option>
-            ))}
+            {Array.isArray(batches) && batches.length > 0 ? (
+              batches.map((batch) => (
+                <option key={batch.id} value={batch.id}>{batch.batch_name}</option>
+              ))
+            ) : (
+              <option disabled>No batches available</option>
+            )}
           </Form.Select>
+
         </Col>
         <Col md={4}>
           <Form.Select value={filterDepartment} onChange={(e) => setFilterDepartment(e.target.value)}>
@@ -170,10 +175,15 @@ const ViewStudent = () => {
         <Col md={4}>
           <Form.Select value={filterCourse} onChange={(e) => setFilterCourse(e.target.value)}>
             <option value="">Filter by Course</option>
-            {courses.map(course => (
-              <option key={course.id} value={course.id}>{course.course_name}</option>
-            ))}
+            {Array.isArray(courses) && courses.length > 0 ? (
+              courses.map((course) => (
+                <option key={course.id} value={course.id}>{course.course_name}</option>
+              ))
+            ) : (
+              <option disabled>No courses available</option>
+            )}
           </Form.Select>
+
         </Col>
       </Row>
 

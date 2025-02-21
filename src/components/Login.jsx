@@ -18,16 +18,15 @@ function Login() {
 
   const handleLogin = async (e) => {
     e.preventDefault();
-
     if (!userData.email || !userData.password) {
       toast.error("Please enter all fields");
       return;
     }
-
+  
     try {
       const result = await loginApi(userData);
+      console.log("Login Response:", result); // Debug response
       if (result.status === 200) {
-        // Storing the token and user data in localStorage
         localStorage.setItem("loggedUser", JSON.stringify(result.data));
         localStorage.setItem("access", result.data.access);
         localStorage.setItem("username", result.data.full_name);
@@ -36,23 +35,22 @@ function Login() {
         localStorage.setItem("department", result.data.department);
         localStorage.setItem("course", result.data.course);
         localStorage.setItem("subject", result.data.subject);
-        // localStorage.setItem("studentId", result.data.studentId);
-        // localStorage.setItem("facultyId", result.data.facultyId);
-        // localStorage.setItem("hodId", result.data.hodId);
-
+  
         setUserData({ email: "", password: "" });
         toast.success("Login successful");
         navigate("/home");
-      } else if (result.status === 401) {
-        toast.error("Invalid email or password");
-      } else {
-        toast.error("Something went wrong");
-      }
+      } 
     } catch (error) {
-      console.error("Login error:", error);
-      toast.error("An unexpected error occurred");
+      console.error("Login Error:", error.response || error);
+      
+      if (error.response?.status === 401) {
+        toast.error(error.response.data?.error || "Invalid credentials. Please try again.");
+      } else {
+        toast.error("An unexpected error occurred");
+      }
     }
   };
+  
 
   return (
     <div className="lg-Box">

@@ -1,12 +1,26 @@
 import React, { useEffect, useState } from 'react';
 import { getNotes } from '../services/allApi';
-import { toast } from 'react-toastify';
+import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import './notes.css';
 
 const Notes = () => {
   const [notes, setNotes] = useState([]);
+  const [course, setCourse] = useState('');
+  const [userRole, setUserRole] = useState('');
 
   useEffect(() => {
+    const storedRole = localStorage.getItem('role');
+    const storedCourse = localStorage.getItem('course');
+
+    if (storedRole) {
+      setUserRole(storedRole);
+    }
+
+    if (storedCourse) {
+      setCourse(storedCourse);
+    }
+
     const fetchNotes = async () => {
       const token = localStorage.getItem('access');
       if (!token) {
@@ -15,10 +29,19 @@ const Notes = () => {
       }
 
       try {
+        // Fetch all notes regardless of the user's role
         const notesData = await getNotes(token);
-        console.log('notesData:', notesData);
-        
-        setNotes(notesData);
+
+        console.log('Notes:', notesData);
+
+        const notesWithDetails = notesData.map(note => ({
+          ...note,
+          facultyName: note.faculty_name || 'Unknown',
+          courseName: note.course_name || 'Unknown',
+          fileUrl: note.file ? `http://localhost:8000${note.file}` : null
+        }));
+
+        setNotes(notesWithDetails);
       } catch (error) {
         console.error('Error fetching notes:', error);
         toast.error('Failed to fetch notes.');
@@ -26,20 +49,28 @@ const Notes = () => {
     };
 
     fetchNotes();
-  }, []);
+  }, [course, userRole]);
 
   return (
-    <div className="notes-container">
-      <h2>Notes</h2>
-      <ul>
+    <div className="notes-page">
+      <h1 className="notes-title">Notes Management</h1>
+      <div className="notes-grid-container">
         {notes.map(note => (
-          <li key={note.id}>
-            <h3>{note.title}</h3>
-            <p>Course: {note.course}</p>
-            <p>Faculty: {note.faculty}</p>
-          </li>
+          <div className="note-card" key={note.id}>
+            <h3 className="note-title">{note.title}</h3>
+            <p className="note-info">Course: {note.courseName}</p>
+            <p className="note-info">Faculty: {note.facultyName}</p>
+            {note.fileUrl ? (
+              <a className="note-link" href={note.fileUrl} target="_blank" rel="noopener noreferrer">
+                Open PDF
+              </a>
+            ) : (
+              <p className="note-info">No PDF available</p>
+            )}
+          </div>
         ))}
-      </ul>
+      </div>
+      <ToastContainer />
     </div>
   );
 };

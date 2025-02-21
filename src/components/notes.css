@@ -1,86 +1,86 @@
-.notes-container {
-    max-width: 900px;
+/* notes.css */
+.notes-page {
+    max-width: 1000px;
     margin: auto;
-    background: #f8f9fa;
     padding: 20px;
-    border-radius: 15px;
-    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
-    font-family: 'Arial', sans-serif;
-
-}
-
-.card-wrap {
+    text-align: center;
+  }
+  
+  .notes-title {
+    font-size: 26px;
+    margin-bottom: 20px;
+    color: #222;
+    font-weight: bold;
+  }
+  
+  .notes-grid-container {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    /* This will create 3 equal columns */
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
     gap: 20px;
-    /* Space between the cards */
-}
-
-.note-card {
-    border: 1px solid;
-    justify-content: center;
+  }
+  
+  .note-card {
+    background: #ffffff;
+    padding: 18px;
+    border-radius: 12px;
+    box-shadow: 0 3px 12px rgba(0, 0, 0, 0.15);
+    text-align: left;
+    transition: transform 0.2s, box-shadow 0.2s;
+  }
+  
+  .note-card:hover {
+    transform: scale(1.03);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+  }
+  
+  .note-title {
+    font-size: 20px;
+    font-weight: bold;
+    margin-bottom: 8px;
+    color: #333;
+  }
+  
+  .note-info {
+    margin: 6px 0;
+    color: #666;
+    font-size: 14px;
+  }
+  
+  .note-link {
+    display: inline-block;
+    margin-top: 12px;
+    padding: 8px 14px;
+    background: #007bff;
+    color: #fff;
+    text-decoration: none;
+    border-radius: 6px;
+    font-size: 14px;
+    transition: background 0.3s;
+  }
+  
+  .note-link:hover {
+    background: #0056b3;
+  }
+  
+  .action-buttons {
+    margin-top: 15px;
+    display: flex;
+    justify-content: space-between;
     align-items: center;
-    /* background: rgb(213, 216, 219); */
-    background: rgb(236, 243, 245);
-    gap: 10px;
-    padding: 20px 20px 10px 20px;
-    border-radius: 10px;
-}
-
-.pdf {
-    display: flex;
-    justify-content: center;
-}
-
-.note-card p {
-    font-size: 13px;
-    font-style: italic;
-}
-
-.buttons {
-    display: flex;
-    justify-content: flex-end;
-    gap: 10px;
-}
-
-.save-note {
-    border: none;
-    /* background: rgb(213, 216, 219); */
-    background: rgb(236, 243, 245);
-
-}
-
-.save-note:hover {
-    border: none;
-    color: white;
-    background-color: rgb(46, 88, 161);
-}
-
-.view-note {
-    border: none;
-    color: white;
-    /* background-color: rgb(213, 216, 219); */
-    background: rgb(236, 243, 245);
-
-
-}
-
-.view-note:hover {
-    background-color: rgb(18, 137, 235);
-}
-
-
-@media (max-width: 768px) {
-    .card-wrap {
-        grid-template-columns: repeat(2, 1fr);
-        /* 2 cards per row on smaller screens */
-    }
-}
-
-@media (max-width: 480px) {
-    .card-wrap {
-        grid-template-columns: 1fr;
-        /* 1 card per row on mobile screens */
-    }
-}
+  }
+  
+  .action-icon {
+    cursor: pointer;
+    font-size: 20px;
+    padding: 6px;
+    transition: color 0.2s;
+  }
+  
+  .edit-icon:hover {
+    color: #f0ad4e;
+  }
+  
+  .delete-icon:hover {
+    color: #d9534f;
+  }
+  

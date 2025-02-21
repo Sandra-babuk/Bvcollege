@@ -1,127 +1,175 @@
 .send-notification-page {
-    max-width: 600px;
-    margin: 2rem auto;
-    padding: 2rem;
-    background-color: #fff;
-    border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  }
-  
-  .send-notification-page h2 {
-    color: #333;
-    margin-bottom: 1.5rem;
-    text-align: center;
-  }
-  
-  .form-group {
-    margin-bottom: 1.5rem;
-  }
-  
-  .form-group label {
-    display: block;
-    margin-bottom: 0.5rem;
-    color: #555;
-    font-weight: 500;
-  }
-  
-  .form-group input,
-  .form-group select,
-  .form-group textarea {
-    width: 100%;
-    padding: 0.75rem;
-    border: 1px solid #ddd;
-    border-radius: 4px;
-    font-size: 1rem;
-    transition: border-color 0.3s ease;
-  }
-  
-  .form-group input:focus,
-  .form-group select:focus,
-  .form-group textarea:focus {
-    outline: none;
-    border-color: #007bff;
-    box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.1);
-  }
-  
-  .form-group textarea {
-    min-height: 120px;
-    resize: vertical;
-  }
-  
-  button[type="submit"] {
-    width: 100%;
-    padding: 0.75rem;
-    background-color: #007bff;
-    color: white;
-    border: none;
-    border-radius: 4px;
-    font-size: 1rem;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-  }
-  
-  button[type="submit"]:hover {
-    background-color: #0056b3;
-  }
-  
-  button[type="submit"]:disabled {
-    background-color: #ccc;
-    cursor: not-allowed;
-  }
-  
-  /* Toast container custom styles */
-  .Toastify__toast-container {
-    width: 320px;
-  }
-  
-  .Toastify__toast {
-    border-radius: 4px;
-    font-size: 14px;
-  }
-  
-  /* Responsive styles */
-  @media (max-width: 768px) {
-    .send-notification-page {
-      margin: 1rem;
-      padding: 1.5rem;
-    }
-  
-    .form-group {
-      margin-bottom: 1rem;
-    }
-  
-    .form-group input,
-    .form-group select,
-    .form-group textarea {
-      padding: 0.625rem;
-    }
-  
-    button[type="submit"] {
-      padding: 0.625rem;
-    }
-  }
-  
-  @media (max-width: 480px) {
-    .send-notification-page {
-      margin: 0.5rem;
-      padding: 1rem;
-    }
-  
-    .send-notification-page h2 {
-      font-size: 1.5rem;
-    }
-  
-    .form-group label {
-      font-size: 0.9rem;
-    }
-  
-    .form-group input,
-    .form-group select,
-    .form-group textarea {
-      font-size: 0.9rem;
-    }
-  
-    .Toastify__toast-container {
-      width: 280px;
-    }
-  }
+  max-width: 800px;
+  margin: 2rem auto;
+  padding: 2rem;
+  background-color: #ffffff;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.send-notification-page h2 {
+  color: #333;
+  margin-bottom: 1.5rem;
+  font-size: 1.8rem;
+}
+
+.form-group {
+  margin-bottom: 1.5rem;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 0.5rem;
+  color: #555;
+  font-weight: 500;
+}
+
+.form-group input,
+.form-group textarea,
+.form-group select {
+  width: 100%;
+  padding: 0.75rem;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 1rem;
+  transition: border-color 0.2s ease;
+}
+
+.form-group input:focus,
+.form-group textarea:focus,
+.form-group select:focus {
+  outline: none;
+  border-color: #4a90e2;
+  box-shadow: 0 0 0 2px rgba(74, 144, 226, 0.1);
+}
+
+.form-group textarea {
+  min-height: 120px;
+  resize: vertical;
+}
+
+/* React-Select custom styles */
+.form-group .select__control {
+  border-color: #ddd;
+}
+
+.form-group .select__control:hover {
+  border-color: #bbb;
+}
+
+.form-group .select__control--is-focused {
+  border-color: #4a90e2;
+  box-shadow: 0 0 0 2px rgba(74, 144, 226, 0.1);
+}
+
+/* Button styles */
+.btn {
+  padding: 0.75rem 1.5rem;
+  border: none;
+  border-radius: 4px;
+  font-size: 1rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.btn-primary {
+  background-color: #4a90e2;
+  color: white;
+}
+
+.btn-primary:hover {
+  background-color: #357abd;
+}
+
+.btn-secondary {
+  background-color: #6c757d;
+  color: white;
+  margin-top: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.btn-secondary:hover {
+  background-color: #5a6268;
+}
+
+/* Notifications list styles */
+.notifications-list {
+  margin-top: 2rem;
+  padding-top: 2rem;
+  border-top: 1px solid #eee;
+}
+
+.notifications-list h3 {
+  color: #333;
+  margin-bottom: 1rem;
+  font-size: 1.5rem;
+}
+
+.notifications-list ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.notifications-list li {
+  background-color: #f8f9fa;
+  border: 1px solid #eee;
+  border-radius: 4px;
+  padding: 1rem;
+  margin-bottom: 1rem;
+}
+
+.notifications-list h4 {
+  color: #333;
+  margin: 0 0 0.5rem 0;
+  font-size: 1.2rem;
+}
+
+.notifications-list p {
+  color: #666;
+  margin: 0 0 1rem 0;
+}
+
+.notifications-list button {
+  padding: 0.5rem 1rem;
+  margin-right: 0.5rem;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  transition: all 0.2s ease;
+}
+
+.notifications-list button:first-of-type {
+  background-color: #ffc107;
+  color: #000;
+}
+
+.notifications-list button:first-of-type:hover {
+  background-color: #e0a800;
+}
+
+.notifications-list button:last-of-type {
+  background-color: #dc3545;
+  color: white;
+}
+
+.notifications-list button:last-of-type:hover {
+  background-color: #c82333;
+}
+
+/* Toast container custom styles */
+.Toastify__toast {
+  border-radius: 4px;
+}
+
+.Toastify__toast--success {
+  background-color: #28a745;
+}
+
+.Toastify__toast--error {
+  background-color: #dc3545;
+}

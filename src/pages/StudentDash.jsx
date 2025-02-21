@@ -5,16 +5,17 @@ import { RiArrowGoForwardLine } from "react-icons/ri";
 import { MdNotifications } from 'react-icons/md';
 import AssignmentStd from '../components/AssignmentStd';
 import ResultStd from '../components/ResultStd';
-import Notes from '../components/Notes';
 import { useNavigate } from 'react-router-dom';
 import StdProfile from '../components/StdProfile';
 import { Modal } from 'react-bootstrap';
 import { getNotificationsApi } from '../services/allApi';
+import StudentNotesView from '../components/StudentNoteView'; // Import the new component
 
 const StudentDash = () => {
     const [activeFeature, setActiveFeature] = useState(null);
     const [showNotifications, setShowNotifications] = useState(false);
     const [notifications, setNotifications] = useState([]);
+    const [courseId] = useState(1); // Example course ID, update as necessary
 
     const navigate = useNavigate();
     
@@ -29,7 +30,7 @@ const StudentDash = () => {
             case "result":
                 return <ResultStd />;
             case 'notes':
-                return <Notes />;
+                return <StudentNotesView courseId={courseId} />; // Pass courseId as a prop
             default:
             case "profile":
                 return <StdProfile />;
