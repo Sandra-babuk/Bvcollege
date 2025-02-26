@@ -21,6 +21,8 @@ const ViewHod = () => {
   const [departments, setDepartments] = useState([]);
   const [filteredHods, setFilteredHods] = useState([]); // Store filtered HODs
   const [filterDepartment, setFilterDepartment] = useState('');
+  const [isDeleting, setIsDeleting] = useState(false);
+
 
 
 
@@ -107,23 +109,30 @@ const ViewHod = () => {
 
     try {
       const response = await deleteHodApi(hodId, token);
+      console.log('Delete Response:', response); // Add this log to inspect the response
+
       if (response.status === 204) {
         console.log(`HOD with ID: ${hodId} deleted successfully`);
-        setHods(hods.filter(hod => hod.id !== hodId));
+        setHods(hods.filter(hod => hod.id !== hodId)); // Update UI
+        toast.success("HOD deleted successfully!");
       } else {
         console.error('Failed to delete HOD');
+        toast.error("Failed to delete HOD.");
       }
     } catch (error) {
       console.error('Error deleting HOD:', error);
+      toast.error("Error deleting HOD.");
     }
   };
 
+
   const handleChange = (e) => {
-    const { name, value } = e.target;
-    if (name === 'photo') {
+    const { name, value, files } = e.target;
+
+    if (name === "photo" && files.length > 0) {
       setSelectedHod((prevHod) => ({
         ...prevHod,
-        [name]: e.target.files[0],
+        photo: files[0], // Store file object
       }));
     } else {
       setSelectedHod((prevHod) => ({
@@ -132,6 +141,8 @@ const ViewHod = () => {
       }));
     }
   };
+
+
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -145,8 +156,9 @@ const ViewHod = () => {
     formData.append("department", selectedHod.department);
     formData.append("dob", selectedHod.dob);
     formData.append("gender", selectedHod.gender);
-    if (selectedHod.photo) {
-      formData.append("photo", selectedHod.photo);
+
+    if (selectedHod.photo instanceof File) {
+      formData.append("photo", selectedHod.photo); // Append only if it's a File
     }
 
     try {
@@ -168,6 +180,7 @@ const ViewHod = () => {
       setIsSubmitting(false);
     }
   };
+
 
   return (
     <div className="container">
@@ -234,9 +247,15 @@ const ViewHod = () => {
                           <Button variant="outline-primary" size="sm" onClick={() => handleEdit(hod)} className="me-2">
                             <FaEdit />
                           </Button>
-                          <Button variant="outline-danger" size="sm" onClick={() => handleDelete(hod.id)}>
-                            <FaTrash />
+                          <Button
+                            variant="outline-danger"
+                            size="sm"
+                            onClick={() => handleDelete(hod.id)}
+                            // disabled={}
+                          >
+                            {isDeleting ? <Spinner animation="border" size="sm" /> : <FaTrash />}
                           </Button>
+
                         </td>
                       </tr>
                     ))
@@ -258,7 +277,7 @@ const ViewHod = () => {
           <Modal.Title>Edit HOD Details</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          <Form onSubmit={handleSubmit}>
+          <Form onSubmit={handleSubmit} encType="multipart/form-data">
             <Form.Group>
               <Form.Label>Full Name</Form.Label>
               <Form.Control type="text" name="full_name" value={selectedHod?.full_name || ""} onChange={handleChange} />
@@ -295,16 +314,25 @@ const ViewHod = () => {
             <Form.Group className="mt-3">
               <Form.Label>Current Photo</Form.Label>
               <div>
-                {selectedHod?.photo && (
+                {selectedHod?.preview ? (
+                  <img
+                    src={selectedHod.preview}  // Display the preview if a new image is selected
+                    alt="Preview"
+                    style={{ width: "80px", height: "80px", borderRadius: "50%", marginBottom: "10px" }}
+                  />
+                ) : selectedHod?.photo ? (
                   <img
                     src={selectedHod.photo instanceof File ? URL.createObjectURL(selectedHod.photo) : `${serverUrl}${selectedHod.photo}`}
                     alt="HOD"
                     style={{ width: "80px", height: "80px", borderRadius: "50%", marginBottom: "10px" }}
                   />
+                ) : (
+                  <p>No Photo</p>
                 )}
               </div>
               <Form.Control type="file" name="photo" onChange={handleChange} />
             </Form.Group>
+
 
             <Button variant="primary" type="submit" className="mt-4 w-100" disabled={isSubmitting}>
               {isSubmitting ? <Spinner animation="border" size="sm" /> : "Update"}

@@ -6,21 +6,21 @@ import { MdNotifications } from 'react-icons/md';
 import { Modal, Button, Navbar, Nav } from 'react-bootstrap';
 import ViewStudent from '../components/ViewStudent';
 import ViewFaculty from '../components/ViewFaculty';
-import Notes from '../components/Notes';
+// import Notes from '../components/Notes';
 import HodProfile from '../components/HodProfile';
 import AddStudent from '../components/AddStudent';
 import AddFaculty from '../components/AddFaculty';
 import AddDepartment from '../components/AddDepartment';
-import AddNote from '../components/AddNote';
+// import AddNote from '../components/AddNote';
 import Notification from '../components/Notification';
 // import AttendenceView from '../components/AttendenceView';
 import { getUserProfileApi, departmentApi } from '../services/allApi';
 import { toast } from 'react-toastify';
 import { Link } from 'react-router-dom';
-import AssignmentStd from '../components/AssignmentStd';
 import './hoddash.css'
 import AddAssignment from '../components/AddAssign';
 import FacAttendance from '../components/FacAttendance';
+import AssignmentView from '../components/AssignmentView';
 
 const HodDash = () => {
     const [activeFeature, setActiveFeature] = useState("profile");
@@ -87,10 +87,10 @@ const HodDash = () => {
                 return <ViewFaculty />;
             case "attendence":
                 return <FacAttendance />;
-            case "notes":
-                return <Notes />;
+            // case "notes":
+            //     return <Notes />;
             case "assignments":
-                return <AssignmentStd />;
+                return <AssignmentView />;
             default:
                 return <HodProfile />;
         }
@@ -155,13 +155,13 @@ const HodDash = () => {
                         >
                             All Students
                         </a>
-                        <a
+                        {/* <a
                             href="#notes"
                             onClick={() => handleActiveFeature("notes")}
                             className={activeFeature === "notes" ? "active" : ""}
                         >
                             Notes
-                        </a>
+                        </a> */}
                         <a
                             href="#assignments"
                             onClick={() => handleActiveFeature("assignments")}
@@ -199,12 +199,12 @@ const HodDash = () => {
 
             <div className="dashboard-content">
                 <aside className="profile-sidebar" id='hidesidebar'>
-                    <div className="profile-image">
+                    {/* <div className="profile-image">
                         <img src={profile.photo} alt="Profile" />
-                    </div>
+                    </div> */}
                     <div className="profile-info">
                         <h4>{profile.full_name}</h4>
-                        <p>{profile.department_name}</p>
+                        {/* <p>{profile.department_name}</p> */}
                         <hr />
                         <p>{profile.email}</p>
                         <p>{profile.phone}</p>
@@ -237,9 +237,9 @@ const HodDash = () => {
                             <Button variant="warning" onClick={() => setShowForm("Department")} className="custom-button m-2">
                                 Add Department
                             </Button>
-                            <Button variant="info" onClick={() => setShowForm("Notes")} className="custom-button m-2">
+                            {/* <Button variant="info" onClick={() => setShowForm("Notes")} className="custom-button m-2">
                                 Add Notes
-                            </Button>
+                            </Button> */}
                             <Button variant="info" onClick={() => setShowForm("Assignment")} className="custom-button m-2">
                                 Add Assignment
                             </Button>

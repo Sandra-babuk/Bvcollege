@@ -435,6 +435,13 @@ export const deleteSubmissionApi = async (token, assignmentId, submissionId) => 
 };
 
 
+// Get only the assignments created by the logged-in teacher
+export const getTeacherAssignments = async (token) => {
+  return await axios.get(`${serverUrl}/assignments/`, {
+    headers: { Authorization: `Bearer ${token}` },
+  });
+};
+
 
 
 // upload notes
@@ -574,6 +581,9 @@ export const getStudentAttendanceByIdApi = async (id, token) => {
 };
 
 
+
+
+
 // ==========================
 
 // Post exam result data
@@ -591,6 +601,19 @@ export const ExamResultApi = async (examResult, token) => {
     throw error;
   }
 };
+
+
+export const uploadExamResultApi = async (token, title, file) => {
+  const formData = new FormData();
+  formData.append('title', title);
+  formData.append('file', file);
+
+  return await commonAPI("POST", `${serverUrl}/exam_result/`, formData, {
+    Authorization: `Bearer ${token}`,
+  });
+};
+
+
 
 
 

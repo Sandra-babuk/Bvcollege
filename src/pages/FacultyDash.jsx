@@ -2,26 +2,23 @@ import React, { useEffect, useState } from 'react';
 import './facdash.css';
 import prof3 from '../assets/prof3.jpg';
 import { RiArrowGoForwardLine } from "react-icons/ri";
-import { FaPlus } from 'react-icons/fa';
+import { FaPlus, FaTrash } from 'react-icons/fa';
 import { MdNotifications } from 'react-icons/md';
 import { Button, Modal } from 'react-bootstrap';
 import Notes from '../components/Notes';
-// import FacultyProfile from '../components/FacultyProfile';
 import ViewStudent from '../components/ViewStudent';
 import AddStudent from '../components/AddStudent';
 import AddNote from '../components/AddNote';
 import { toast } from 'react-toastify';
 import FacProfile from '../components/FacProfile';
 import AddAssignment from '../components/AddAssign';
-import { getUserProfileApi, getNotificationsApi } from '../services/allApi';
-import AssignmentStd from '../components/AssignmentStd';
+import { getUserProfileApi, getNotificationsApi, deleteNotificationApi } from '../services/allApi';
 import AssignmentView from '../components/AssignmentView';
 import StdAttendance from '../components/StdAttendance';
 
 const FacultyDash = () => {
 
     const serverUrl = "http://localhost:8000"; // Change this for production
-
 
     const [activeFeature, setActiveFeature] = useState("profile");
     const [showModal, setShowModal] = useState(false);
@@ -68,11 +65,30 @@ const FacultyDash = () => {
             case "assignments":
                 return <AssignmentView />;
             case "attendance":
-                return <StdAttendance />; // Update this line
+                return <StdAttendance />;
             default:
-                return <FacultyProfile />;
+                return <FacProfile />;
         }
     };
+
+    const handleDeleteNotification = async (id) => {
+        const token = localStorage.getItem('access');
+        try {
+            const response = await deleteNotificationApi(id, token);
+            if (response.status === 204) {
+                setNotifications(notifications.filter(notification => notification.id !== id));
+                toast.success('Notification deleted successfully.');
+            } else if (response.status === 404) {
+                toast.error('Notification not found.');
+            } else {
+                toast.error('Failed to delete notification.');
+            }
+        } catch (error) {
+            console.error('Error deleting notification:', error);
+            toast.error('Failed to delete notification.');
+        }
+    }
+    
 
     const handleAdd = (formType) => {
         setShowForm(formType);
@@ -87,13 +103,14 @@ const FacultyDash = () => {
         const token = localStorage.getItem('access');
         try {
             const response = await getNotificationsApi(token);
-            // Ensure the response data is an array
             setNotifications(Array.isArray(response.data) ? response.data : []);
         } catch (error) {
             console.error('Error fetching notifications:', error);
             toast.error('Failed to fetch notifications.');
         }
     };
+
+   
 
     return (
         <div className="faculty-dashboard">
@@ -109,7 +126,7 @@ const FacultyDash = () => {
 
             <div className="navigation-menu">
                 <nav className="nav-links">
-                    {['profile', 'students', 'notes', 'assignments', 'attendance'].map(feature => ( // Update this line
+                    {["profile", "students", "notes", "assignments", "attendance"].map(feature => (
                         <a
                             key={feature}
                             href={`#${feature}`}
@@ -124,13 +141,6 @@ const FacultyDash = () => {
 
             <div className="dashboard-content">
                 <aside className="profile-sidebar">
-                    {/* <div className="profile-image">
-
-                        <img
-                            src={profile.photo ? `${serverUrl}${profile.photo}` :""}
-                            alt="Profile"
-                            onError={(e) => e.target.src = prof3}
-                        />                    </div> */}
                     <div className="profile-info">
                         <h4>{profile.full_name}</h4>
                         <p>{profile.department}</p>
@@ -150,7 +160,7 @@ const FacultyDash = () => {
 
             {showActionMenu && (
                 <div className="action-menu-container">
-                    {['Student', 'Note', 'Assignment'].map(type => (
+                    {["Student", "Note", "Assignment"].map(type => (
                         <Button key={type} variant="primary" onClick={() => handleAdd(type)}>
                             Add {type}
                         </Button>
@@ -175,20 +185,21 @@ const FacultyDash = () => {
                 </Modal.Header>
                 <Modal.Body>
                     {Array.isArray(notifications) && notifications.length > 0 ? (
-                        <ul className="notification-list">
-                            {notifications.map((notification, index) => (
-                                <li key={index} className="notification-item">
-                                    <h5>{notification.title}</h5>
-                                    <p>{notification.message}</p>
-                                </li>
-                            ))}
-                        </ul>
+                      <ul className="notification-list">
+                      {notifications.map((notification) => (
+                          <li key={notification.id} className="notification-item">
+                              <h5>{notification.title}</h5>
+                              <p>{notification.message}</p>
+                              <FaTrash className="delete-icon" onClick={() => handleDeleteNotification(notification.id)} />
+                          </li>
+                      ))}
+                  </ul>
+                  
                     ) : (
                         <p>No notifications available.</p>
                     )}
                 </Modal.Body>
             </Modal>
-
         </div>
     );
 };

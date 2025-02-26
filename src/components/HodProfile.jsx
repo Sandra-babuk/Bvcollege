@@ -82,10 +82,10 @@ const HodProfile = () => {
         <div className="col-lg-5 ms-2">{userDetails.phone}</div>
       </div>
       <hr />
-      <div className="profile-details d-flex flex-row">
+      {/* <div className="profile-details d-flex flex-row">
         <div className="col-lg-3">Department</div>:
         <div className="col-lg-5 ms-2">{userDetails.department_name}</div>
-      </div>
+      </div> */}
     </div>
   );
 };

@@ -24,22 +24,27 @@ const AssignmentView = () => {
       setLoading(true);
       try {
         const response = await getAssignmentApi(token);
-        if (response?.data) {
+        console.log("Assignments API Response:", response); // Debugging
+        if (Array.isArray(response?.data)) {
           setAssignments(response.data);
         } else {
           toast.info("No assignments found.");
+          setAssignments([]); // Ensure it's an empty array if data is not an array
         }
       } catch (error) {
         console.error("Error fetching assignments:", error);
         toast.error("Error fetching assignments.");
+        setAssignments([]); // Default to an empty array in case of an error
       } finally {
         setLoading(false);
       }
     };
+  
     if (token) {
       fetchAssignments();
     }
   }, [token]);
+  
 
   useEffect(() => {
     const fetchStudents = async () => {

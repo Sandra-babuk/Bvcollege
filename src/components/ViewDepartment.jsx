@@ -12,11 +12,10 @@ const serverUrl = 'http://localhost:8000';
 const ViewDepartment = () => {
   const [departments, setDepartments] = useState([]);
   const [courses, setCourses] = useState([]);
-  const [selectedCourse, setSelectedCourse] = useState('');
-  const [showModal, setShowModal] = useState(false);
   const [selectedDepartment, setSelectedDepartment] = useState(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [photo, setPhoto] = useState(null);
+  const [showModal, setShowModal] = useState(false);
 
   useEffect(() => {
     AllDepartments();
@@ -60,7 +59,7 @@ const ViewDepartment = () => {
   };
 
   const handleCourseChangeMulti = (selectedOptions) => {
-    const courseIds = selectedOptions.map(option => option.id);
+    const courseIds = selectedOptions.map(option => option.value); 
     setSelectedDepartment(prevDept => ({
       ...prevDept,
       course_type: courseIds,
@@ -89,7 +88,6 @@ const ViewDepartment = () => {
       const response = await deleteDeptApi(id, token);
       if (response.status === 200) {
         setDepartments(departments.filter(dept => dept.id !== id));
-        setSelectedCourse(''); // Reset filter after deletion
         toast.success('Department deleted successfully');
       } else {
         toast.error('Failed to delete department');
@@ -119,22 +117,25 @@ const ViewDepartment = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsSubmitting(true);
-
+  
     const token = localStorage.getItem('access');
     const { id, department_name, description, course_type } = selectedDepartment;
-
+  
+    console.log("Selected Department Data:", selectedDepartment); // Log selected department data
+  
     const formData = new FormData();
     formData.append('department_name', department_name);
     formData.append('description', description);
     formData.append('course_type', course_type);
-
+  
     // Append the photo correctly if it exists
     if (photo) {
       formData.append('photo', photo);  // Ensure 'photo' is a file object here
     }
-
+  
     try {
       const response = await editDeptApi(id, formData, token);
+      console.log("API Response:", response); // Log API response
       if (response.status === 200) {
         setDepartments(departments.map(dept => dept.id === id ? response.data : dept));
         setShowModal(false);
@@ -143,35 +144,22 @@ const ViewDepartment = () => {
         toast.error('Failed to update department');
       }
     } catch (error) {
+      console.error("Error updating department:", error); // Log error
       toast.error('Error updating department:', error);
     } finally {
       setIsSubmitting(false);
     }
   };
+  
 
   const getCourseNameById = (id) => {
     const course = courses.find(course => course.id === id);
     return course ? course.course_name : 'Unknown Course';
   };
 
-  const filteredDepartments = selectedCourse
-    ? departments.filter(department => Array.isArray(department.courses) && department.courses.includes(selectedCourse))
-    : departments;
-
   return (
     <div className="view-department-container">
       <h1 className="title">Departments</h1>
-      <div className="filter-container">
-        <label htmlFor="course">Filter by Course: </label>
-        <select id="course" name="course" value={selectedCourse} onChange={(e) => setSelectedCourse(e.target.value)}>
-          <option value="">All</option>
-          {courses.map((course) => (
-            <option key={course.id} value={course.id}>
-              {course.course_name}
-            </option>
-          ))}
-        </select>
-      </div>
       <table className="department-table">
         <thead>
           <tr>
@@ -184,8 +172,8 @@ const ViewDepartment = () => {
           </tr>
         </thead>
         <tbody>
-          {filteredDepartments.length > 0 ? (
-            filteredDepartments.map((department, index) => (
+          {departments.length > 0 ? (
+            departments.map((department, index) => (
               <tr key={department.id}>
                 <td>{index + 1}</td>
                 <td>
@@ -197,10 +185,10 @@ const ViewDepartment = () => {
                 <td>{department.description}</td>
                 <td>{Array.isArray(department.courses) && department.courses.length > 0 ? department.courses.map(courseId => getCourseNameById(courseId)).join(', ') : 'No courses available'}</td>
                 <td>
-                  <button onClick={() => handleEdit(department)}>
+                  <button variant="outline-primary" onClick={() => handleEdit(department)}>
                     <FaEdit />
                   </button>
-                  <button onClick={() => handleDelete(department.id)} className="delete-button">
+                  <button variant="outline-danger" onClick={() => handleDelete(department.id)} className="delete-button">
                     <FaTrashAlt />
                   </button>
                 </td>
@@ -249,13 +237,14 @@ const ViewDepartment = () => {
                 <Form.Label>Courses</Form.Label>
                 <Select
                   isMulti
-                  options={courses}
-                  value={courses.filter(course =>
-                    Array.isArray(selectedDepartment.course_type) &&
-                    selectedDepartment.course_type.includes(course.id)
-                  )}
-                  getOptionLabel={option => option.course_name}
-                  getOptionValue={option => option.id}
+                  options={courses.map(course => ({
+                    value: course.id,
+                    label: course.course_name
+                  }))} 
+                  value={selectedDepartment.course_type ? selectedDepartment.course_type.map(courseId => {
+                    const course = courses.find(course => course.id === courseId);
+                    return course ? { value: course.id, label: course.course_name } : null;
+                  }).filter(Boolean) : []}  // Ensure value is set properly
                   onChange={handleCourseChangeMulti}
                   isDisabled={isSubmitting}
                 />

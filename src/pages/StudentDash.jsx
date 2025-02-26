@@ -8,7 +8,7 @@ import ResultStd from '../components/ResultStd';
 import { useNavigate } from 'react-router-dom';
 import StdProfile from '../components/StdProfile';
 import { Modal } from 'react-bootstrap';
-import { getNotificationsApi } from '../services/allApi';
+import { getNotificationsApi ,deleteNotificationApi } from '../services/allApi';
 import StudentNotesView from '../components/StudentNoteView'; // Import the new component
 
 const StudentDash = () => {
@@ -60,6 +60,25 @@ const StudentDash = () => {
     const handleCloseNotifications = () => {
         setShowNotifications(false);
     };
+
+
+     const handleDeleteNotification = async (id) => {
+            const token = localStorage.getItem('access');
+            try {
+                const response = await deleteNotificationApi(id, token);
+                if (response.status === 204) {
+                    setNotifications(notifications.filter(notification => notification.id !== id));
+                    toast.success('Notification deleted successfully.');
+                } else if (response.status === 404) {
+                    toast.error('Notification not found.');
+                } else {
+                    toast.error('Failed to delete notification.');
+                }
+            } catch (error) {
+                console.error('Error deleting notification:', error);
+                toast.error('Failed to delete notification.');
+            }
+        }
 
     return (
         <div className="student-dashboard">
@@ -139,13 +158,14 @@ const StudentDash = () => {
                 <Modal.Body>
                     {notifications.length > 0 ? (
                         <ul className="notification-list">
-                            {notifications.map((notification, index) => (
-                                <li key={index} className="notification-item">
-                                    <h5>{notification.title}</h5>
-                                    <p>{notification.message}</p>
-                                </li>
-                            ))}
-                        </ul>
+                                             {notifications.map((notification) => (
+                                                 <li key={notification.id} className="notification-item">
+                                                     <h5>{notification.title}</h5>
+                                                     <p>{notification.message}</p>
+                                                     <FaTrash className="delete-icon" onClick={() => handleDeleteNotification(notification.id)} />
+                                                 </li>
+                                             ))}
+                                         </ul>
                     ) : (
                         <p>No notifications available.</p>
                     )}

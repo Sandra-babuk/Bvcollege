@@ -26,7 +26,7 @@ function ViewFaculty() {
     const fetchData = async () => {
       try {
         const facultyResponse = await FacultyApi(token);
-       console.log(facultyResponse);
+        console.log(facultyResponse);
         if (Array.isArray(facultyResponse.data)) setFacultyList(facultyResponse.data);
 
         const deptResponse = await departmentApi(token);
@@ -74,6 +74,7 @@ function ViewFaculty() {
     if (!window.confirm("Are you sure you want to delete this faculty?")) return;
     try {
       const response = await deleteFacultyApi(facultyId, token);
+      console.log(response);  // Log the response to check the status and data
       if (response.status === 204) {
         setFacultyList(facultyList.filter((faculty) => faculty.id !== facultyId));
         toast.success("Faculty deleted successfully.");
@@ -86,6 +87,7 @@ function ViewFaculty() {
     }
   };
 
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     setSelectedFaculty((prevFaculty) => ({ ...prevFaculty, [name]: value }));
@@ -96,49 +98,59 @@ function ViewFaculty() {
     if (file) {
       setSelectedFaculty((prevFaculty) => ({
         ...prevFaculty,
-        photo: file,
+        photo: file, // Store file object
       }));
     }
   };
 
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsSubmitting(true);
-
+  
     const formData = new FormData();
-    for (const key in selectedFaculty) {
-      if (key === "photo" && selectedFaculty[key] instanceof File) {
-        formData.append("photo", selectedFaculty[key]);
-      } else {
-        formData.append(key, selectedFaculty[key]);
-      }
+    formData.append("id", selectedFaculty.id);
+    formData.append("full_name", selectedFaculty.full_name);
+    formData.append("email", selectedFaculty.email);
+    formData.append("phone", selectedFaculty.phone);
+    formData.append("department", selectedFaculty.department);
+    formData.append("gender", selectedFaculty.gender);
+    formData.append("dob", selectedFaculty.dob || ""); // Keep DOB to avoid errors
+  
+    if (selectedFaculty.photo instanceof File) {
+      formData.append("photo", selectedFaculty.photo);
     }
-
+  
     try {
       const response = await editFacultyApi(selectedFaculty.id, formData, token, true);
+  
       if (response.status === 200) {
-        toast.success("Faculty details updated!");
-        setShowModal(false);
         setFacultyList((prevList) =>
-          prevList.map((faculty) => (faculty.id === selectedFaculty.id ? response.data : faculty))
+          prevList.map((faculty) =>
+            faculty.id === selectedFaculty.id ? response.data : faculty
+          )
         );
+        setShowModal(false);
+        toast.success("Faculty details updated!");
       } else {
         toast.error("Failed to update faculty details.");
       }
     } catch (error) {
       console.error("Error updating faculty:", error);
-      toast.error("An error occurred.");
+      toast.error(error.response?.data?.message || "An error occurred.");
     } finally {
       setIsSubmitting(false);
     }
   };
+  
+
 
   return (
     <Container>
       <Row className="justify-content-center my-4">
         <Col lg={10}>
           <Form.Select value={selectedDepartment} onChange={(e) => setSelectedDepartment(e.target.value)}>
-            <option value="">Select Department</option>
+            <option value="">All Department</option>
             {departments.map((dept) => (
               <option key={dept.id} value={dept.id}>{dept.department_name}</option>
             ))}
@@ -160,11 +172,12 @@ function ViewFaculty() {
                   <th>Id</th>
                   <th>Name</th>
                   <th>Email</th>
+                  <th>Dob</th>
                   <th>Phone</th>
                   <th>Department</th>
-                  <th>Course</th>
+                  {/* <th>Course</th>
                   <th>Batch</th>
-                  <th>Subject</th>
+                  <th>Subject</th> */}
                   <th>Gender</th>
                   <th>Photo</th>
                   <th>Actions</th>
@@ -177,11 +190,12 @@ function ViewFaculty() {
                     <td>{faculty.id}</td>
                     <td>{faculty.full_name}</td>
                     <td>{faculty.email}</td>
+                    <td>{faculty.dob}</td>
                     <td>{faculty.phone}</td>
                     <td>{departments.find((dept) => dept.id === faculty.department)?.department_name || "Unknown"}</td>
-                    <td>{courses.find((course) => course.id === faculty.course)?.course_name || "Unknown"}</td>
+                    {/* <td>{courses.find((course) => course.id === faculty.course)?.course_name || "Unknown"}</td>
                     <td>{batches.find((batch) => batch.id === faculty.batch)?.batch_name || "Unknown"}</td>
-                    <td>{subjects.find((subject) => subject.id === faculty.subject)?.name || "Unknown"}</td>
+                    <td>{subjects.find((subject) => subject.id === faculty.subject)?.name || "Unknown"}</td> */}
                     <td>{faculty.gender}</td>
                     <td>
                       {faculty.photo ? (
@@ -212,7 +226,7 @@ function ViewFaculty() {
         </Modal.Header>
         <Modal.Body>
           {selectedFaculty && (
-            <Form onSubmit={handleSubmit}>
+            <Form onSubmit={handleSubmit} encType="multipart/form-data">
               {/* Full Name */}
               <Form.Group>
                 <Form.Label>Full Name</Form.Label>
@@ -234,6 +248,19 @@ function ViewFaculty() {
                   onChange={handleChange}
                 />
               </Form.Group>
+
+              {/* dob */}
+              <Form.Group className="mt-3">
+                <Form.Label>Date of Birth</Form.Label>
+                <Form.Control
+                  type="date"
+                  name="dob"
+                  value={selectedFaculty.dob || ""}
+                  onChange={handleChange}
+                  required
+                />
+              </Form.Group>
+
 
               {/* Phone */}
               <Form.Group className="mt-3">
@@ -262,7 +289,7 @@ function ViewFaculty() {
               </Form.Group>
 
               {/* Course Dropdown */}
-              <Form.Group className="mt-3">
+              {/* <Form.Group className="mt-3">
                 <Form.Label>Course</Form.Label>
                 <Form.Select
                   name="course"
@@ -274,10 +301,10 @@ function ViewFaculty() {
                     <option key={course.id} value={course.id}>{course.course_name}</option>
                   ))}
                 </Form.Select>
-              </Form.Group>
+              </Form.Group> */}
 
               {/* Batch Dropdown */}
-              <Form.Group className="mt-3">
+              {/* <Form.Group className="mt-3">
                 <Form.Label>Batch</Form.Label>
                 <Form.Select
                   name="batch"
@@ -289,10 +316,10 @@ function ViewFaculty() {
                     <option key={batch.id} value={batch.id}>{batch.batch_name}</option>
                   ))}
                 </Form.Select>
-              </Form.Group>
+              </Form.Group> */}
 
               {/* Subject */}
-              <Form.Group className="mt-3">
+              {/* <Form.Group className="mt-3">
                 <Form.Label>Subject</Form.Label>
                 <Form.Select
                   name="subject"
@@ -304,7 +331,7 @@ function ViewFaculty() {
                     <option key={subject.id} value={subject.id}>{subject.name}</option>
                   ))}
                 </Form.Select>
-              </Form.Group>
+              </Form.Group> */}
 
               {/* Gender Dropdown */}
               <Form.Group className="mt-3">
@@ -327,11 +354,14 @@ function ViewFaculty() {
                 <div>
                   {selectedFaculty?.photo && (
                     <img
-                      src={selectedFaculty.photo instanceof File ? URL.createObjectURL(selectedFaculty.photo) : `${serverUrl} ${selectedFaculty.photo}`}
+                      src={selectedFaculty.photo instanceof File
+                        ? URL.createObjectURL(selectedFaculty.photo)
+                        : `${serverUrl}${selectedFaculty.photo}`} // Removed extra space
                       alt="Faculty"
                       style={{ width: "80px", height: "80px", borderRadius: "50%", marginBottom: "10px" }}
                     />
                   )}
+
                 </div>
                 <Form.Control type="file" name="photo" onChange={handlePhotoChange} />
               </Form.Group>

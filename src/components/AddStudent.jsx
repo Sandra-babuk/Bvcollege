@@ -60,18 +60,35 @@ function StudentRegistration() {
     setUserData({ ...userData, [name]: value });
   };
 
+  // Validation function
+  const validateInputs = () => {
+    const { full_name, dob, gender, email, phone, password, course, department, batch } = userData;
+
+    if (!full_name.trim()) return "Full Name is required.";
+    if (!dob) return "Date of Birth is required.";
+    if (!gender) return "Gender is required.";
+    if (!/^\S+@\S+\.\S+$/.test(email)) return "Invalid email format.";
+    if (!/^\d{10}$/.test(phone)) return "Phone number must be 10 digits.";
+    if (password.length < 6) return "Password must be at least 6 characters long.";
+    if (!course) return "Course is required.";
+    if (!department) return "Department is required.";
+    if (!batch) return "Batch is required.";
+
+    return null;
+  };
+
   const handleRegistration = async (e) => {
     e.preventDefault();
-    setIsLoading(true); // Set loading state to true
+    setIsLoading(true); 
 
-    const { full_name, dob, gender, email, phone, password, course, department, batch, role } = userData;
-
-    // Check if any field is empty
-    if (!full_name || !dob || !gender || !email || !phone || !password || !course || !department || !batch) {
-      toast.warning('Please fill out all fields');
-      setIsLoading(false); // Reset loading state
+    const validationError = validateInputs();
+    if (validationError) {
+      toast.warning(validationError); 
+      setIsLoading(false); 
       return;
     }
+
+    const { full_name, dob, gender, email, phone, password, course, department, batch, role } = userData;
 
     try {
       const response = await registerApi({
@@ -87,7 +104,7 @@ function StudentRegistration() {
         role,
       });
 
-      console.log('User Data:', userData); // Debug log to check data being sent
+      console.log('User Data:', userData); 
 
       if (response.status === 200) {
         toast.success('OTP sent successfully');
@@ -111,7 +128,7 @@ function StudentRegistration() {
       console.error('Error during registration:', error);
       toast.error('An unexpected error occurred. Please try again.');
     } finally {
-      setIsLoading(false); // Reset loading state after the request
+      setIsLoading(false); 
     }
   };
 

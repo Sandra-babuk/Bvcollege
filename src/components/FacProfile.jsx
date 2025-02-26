@@ -66,11 +66,11 @@ const FacProfile = () => {
           <div className='col-lg-5 ms-2'>{userDetails.full_name}</div>
         </div>
         <hr />
-        <div className='profile-details d-flex flex-row '>
+        {/* <div className='profile-details d-flex flex-row '>
           <div className='col-lg-3'>Department </div>:
           <div className='col-lg-5 ms-2'>{userDetails.department_name}</div>
-        </div>
-        <hr />
+        </div> */}
+        {/* <hr /> */}
         <div className='profile-details d-flex flex-row '>
           <div className='col-lg-3'>DOB </div>:
           <div className='col-lg-5 ms-2'>{userDetails.dob}</div>

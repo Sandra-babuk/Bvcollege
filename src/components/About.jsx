@@ -3,7 +3,6 @@ import { TfiAnnouncement } from "react-icons/tfi";
 import { MdOutlineEventNote, MdOutlineLibraryBooks } from "react-icons/md";
 import { GiBlackBook } from "react-icons/gi";
 import { BsTrophy } from "react-icons/bs";
-// import { PiExamFill } from "react-icons/pi";
 import './about.css'
 import Events from './Events';
 import Courses from './Courses';

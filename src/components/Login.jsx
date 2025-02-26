@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { toast, ToastContainer } from "react-toastify";
 import { loginApi } from "../services/allApi";
-import "./login.css"; // Import the CSS file
+import "./login.css"; 
 
 function Login() {
   const [userData, setUserData] = useState({
@@ -25,7 +25,7 @@ function Login() {
   
     try {
       const result = await loginApi(userData);
-      console.log("Login Response:", result); // Debug response
+      console.log("Login Response:", result); 
       if (result.status === 200) {
         localStorage.setItem("loggedUser", JSON.stringify(result.data));
         localStorage.setItem("access", result.data.access);
@@ -35,7 +35,8 @@ function Login() {
         localStorage.setItem("department", result.data.department);
         localStorage.setItem("course", result.data.course);
         localStorage.setItem("subject", result.data.subject);
-  
+        localStorage.setItem("batch", result.data.batch);
+
         setUserData({ email: "", password: "" });
         toast.success("Login successful");
         navigate("/home");

@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { Modal, Button, Form, Container, Row, Col, Spinner, Table } from 'react-bootstrap';
 import { toast, ToastContainer } from "react-toastify";
 import { deleteStudentApi, departmentApi, editStdApi, getBatchApi, getCoursesApi, StudentApi } from '../services/allApi';
+import { FaEdit, FaTrash } from 'react-icons/fa';
 
 const ViewStudent = () => {
   const serverUrl = 'http://localhost:8000';
@@ -29,7 +30,7 @@ const ViewStudent = () => {
     course: '',
     batch: '',
     gender: '',
-    photo: null
+    // photo: ""
   });
 
   useEffect(() => {
@@ -112,6 +113,7 @@ const ViewStudent = () => {
       toast.error("Failed to delete student.");
     }
   };
+
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -197,7 +199,7 @@ const ViewStudent = () => {
             <th>Department</th>
             <th>Course</th>
             <th>Batch</th>
-            <th>Photo</th>
+            {/* <th>Photo</th> */}
             <th>Actions</th>
           </tr>
         </thead>
@@ -211,14 +213,18 @@ const ViewStudent = () => {
               <td>{departments.find(dept => dept.id === student.department)?.department_name || 'Unknown'}</td>
               <td>{courses.find(course => course.id === student.course)?.course_name || 'Unknown'}</td>
               <td>{batches.find(batch => batch.id === student.batch)?.batch_name || 'Unknown'}</td>
-              <td>
+              {/* <td>
                 {student.photo ? (
                   <img src={`${serverUrl}${student.photo}`} alt={student.full_name} style={{ width: "50px", height: "50px", borderRadius: "50%" }} />
                 ) : "No Photo"}
-              </td>
+              </td> */}
               <td>
-                <Button size="sm" onClick={() => handleEdit(student)}>Edit</Button>
-                <Button size="sm" variant="danger" onClick={() => handleDelete(student.id)}>Delete</Button>
+                <Button variant="outline-primary" size="sm" onClick={() => handleEdit(student)}>
+                  <FaEdit />
+                </Button>
+                <Button variant="outline-danger" size="sm"  onClick={() => handleDelete(student.id)}>
+                  <FaTrash />
+                </Button>
               </td>
             </tr>
           ))}
@@ -322,13 +328,13 @@ const ViewStudent = () => {
               </Form.Group>
 
               {/* Photo Upload */}
-              <Form.Group controlId="photo" className="mt-3">
+              {/* <Form.Group controlId="photo" className="mt-3">
                 <Form.Label>Upload Photo</Form.Label>
                 <Form.Control
                   type="file"
                   onChange={(e) => setSelectedStudent({ ...selectedStudent, photo: e.target.files[0] })}
                 />
-              </Form.Group>
+              </Form.Group> */}
             </Form>
           )}
         </Modal.Body>

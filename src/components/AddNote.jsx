@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Form, Button, Container } from 'react-bootstrap';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import { upload_Studentnote, FacultyApi,getCoursesApi } from '../services/allApi';
+import { upload_Studentnote, FacultyApi, getCoursesApi } from '../services/allApi';
 
 const AddNote = ({ onNoteAdded }) => {
   const [title, setTitle] = useState('');
@@ -16,21 +16,34 @@ const AddNote = ({ onNoteAdded }) => {
   useEffect(() => {
     const storedRole = localStorage.getItem('role');
     setRole(storedRole || '');
-  
+
     const fetchFacultyList = async () => {
       try {
         const facultyResponse = await FacultyApi();
+        console.log(facultyResponse);
+
         if (facultyResponse.data.length > 0) {
-          const facultyId = facultyResponse.data[0].id; // Assuming the first faculty is the logged-in user
-          localStorage.setItem('facultyId', facultyId); // Store in localStorage
-          setUsername(facultyId); // Update state
+          const currentUsername = localStorage.getItem('username'); // Assuming the username is saved in localStorage
+          const matchedFaculty = facultyResponse.data.find(faculty => faculty.full_name === currentUsername);
+
+          if (matchedFaculty) {
+            const facultyId = matchedFaculty.id;
+            localStorage.setItem('facultyId', facultyId); // Store in localStorage
+            setUsername(matchedFaculty.username); // Set username to match the logged-in user
+            setFacultyList(facultyResponse.data); // Set the list of all faculties
+          } else {
+            toast.error("Faculty not found for the current username.");
+          }
+        } else {
+          toast.error("No faculty data available.");
         }
-        setFacultyList(facultyResponse.data);
       } catch (error) {
         console.error('Error fetching faculty list:', error);
+        toast.error("An error occurred while fetching faculty data.");
       }
     };
-  
+
+
     const fetchCourses = async () => {
       const token = localStorage.getItem('access'); // Fix: Declare token before using it
       if (!token) {
@@ -49,12 +62,12 @@ const AddNote = ({ onNoteAdded }) => {
         toast.error("An error occurred while fetching courses.");
       }
     };
-  
+
     fetchFacultyList();
     fetchCourses();
   }, []);
-  
-  
+
+
 
   const handleFileChange = (e) => {
     setFile(e.target.files[0]);
@@ -117,7 +130,7 @@ const AddNote = ({ onNoteAdded }) => {
             required
           />
         </Form.Group>
-        
+
         <Form.Group controlId="file">
           <Form.Label>File</Form.Label>
           <Form.Control
@@ -127,27 +140,27 @@ const AddNote = ({ onNoteAdded }) => {
             required
           />
         </Form.Group>
-        
-        <Form.Group controlId="course">
-                 <Form.Label>Course</Form.Label>
-                 <Form.Control
-                   as="select"
-                   value={course}
-                   onChange={(e) => setCourse(e.target.value)}
-                   required
-                 >
-                   <option value="">Select Course</option>
-                   {courses.map((course) => (
-                     <option key={course.id} value={course.id}>{course.course_name}</option>
-                   ))}
-                 </Form.Control>
-               </Form.Group>
 
-        {/* Display faculty username */}
-        <Form.Group controlId="faculty">
-          <Form.Label>Faculty Username</Form.Label>
-          <Form.Control type="text" value={username} readOnly />
+        <Form.Group controlId="course">
+          <Form.Label>Course</Form.Label>
+          <Form.Control
+            as="select"
+            value={course}
+            onChange={(e) => setCourse(e.target.value)}
+            required
+          >
+            <option value="">Select Course</option>
+            {courses.map((course) => (
+              <option key={course.id} value={course.id}>{course.course_name}</option>
+            ))}
+          </Form.Control>
         </Form.Group>
+
+        <Form.Group controlId="facultyId">
+          <Form.Label>Faculty ID</Form.Label>
+          <Form.Control type="text" value={localStorage.getItem('facultyId')} readOnly />
+        </Form.Group>
+
 
         <Button className='my-2' variant="primary" type="submit">Upload</Button>
       </Form>

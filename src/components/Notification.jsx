@@ -4,7 +4,7 @@ import { addNotificationApi, updateNotificationApi, deleteNotificationApi, getNo
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import './notif.css';
-import { FaEye } from 'react-icons/fa'; // Importing view icon
+import { FaEye ,FaEdit,FaTrash } from 'react-icons/fa'; 
 
 const Notification = () => {
     const [title, setTitle] = useState('');
@@ -21,35 +21,35 @@ const Notification = () => {
         allNotifications();
     }, []);
 
-    useEffect(() => {
-        if (recipientType === 'particularStudent') {
-            fetchStudents();
-        } else {
-            setStudents([]);
-            setStudentOptions([]);
-        }
-    }, [recipientType]);
+    // useEffect(() => {
+    //     if (recipientType === 'particularStudent') {
+    //         fetchStudents();
+    //     } else {
+    //         setStudents([]);
+    //         setStudentOptions([]);
+    //     }
+    // }, [recipientType]);
 
-    const fetchStudents = async () => {
-        const token = localStorage.getItem('access');
-        try {
-            const response = await StudentApi(token);
-            if (response.status === 200) {
-                const studentsData = response.data;
-                setStudents(studentsData);
-                const options = studentsData.map(student => ({
-                    value: student.id,
-                    label: student.full_name
-                }));
-                setStudentOptions(options);
-            } else if (response.status === 404) {
-                toast.error('Students not found.');
-            }
-        } catch (error) {
-            console.error('Error fetching students:', error);
-            toast.error('Failed to fetch students.');
-        }
-    };
+    // const fetchStudents = async () => {
+    //     const token = localStorage.getItem('access');
+    //     try {
+    //         const response = await StudentApi(token);
+    //         if (response.status === 200) {
+    //             const studentsData = response.data;
+    //             setStudents(studentsData);
+    //             const options = studentsData.map(student => ({
+    //                 value: student.id,
+    //                 label: student.full_name
+    //             }));
+    //             setStudentOptions(options);
+    //         } else if (response.status === 404) {
+    //             toast.error('Students not found.');
+    //         }
+    //     } catch (error) {
+    //         console.error('Error fetching students:', error);
+    //         toast.error('Failed to fetch students.');
+    //     }
+    // };
 
     const allNotifications = async () => {
         const token = localStorage.getItem('access');
@@ -74,7 +74,7 @@ const Notification = () => {
             title,
             message,
             recipientType,
-            recipientIds: recipientType === 'particularStudent' ? recipientIds : []
+            // recipientIds: recipientType === 'particularStudent' ? recipientIds : []
         };
 
         try {
@@ -97,7 +97,7 @@ const Notification = () => {
             setTitle('');
             setMessage('');
             setRecipientType('');
-            setRecipientIds([]);
+            // setRecipientIds([]);
             allNotifications(); // Refresh notifications
         } catch (error) {
             console.error('Error sending notification:', error);
@@ -132,8 +132,8 @@ const Notification = () => {
         setSelectedNotification(notification);
         setTitle(notification.title);
         setMessage(notification.message);
-        setRecipientType(notification.recipientType);
-        setRecipientIds(notification.recipientIds || []);
+        // setRecipientType(notification.recipientType);
+        // setRecipientIds(notification.recipientIds || []);
     };
 
     const toggleNotifications = () => {
@@ -163,7 +163,7 @@ const Notification = () => {
                         required
                     ></textarea>
                 </div>
-                <div className="form-group">
+                {/* <div className="form-group">
                     <label htmlFor="recipientType">Send To</label>
                     <select
                         id="recipientType"
@@ -191,7 +191,7 @@ const Notification = () => {
                             placeholder="Search and select students"
                         />
                     </div>
-                )}
+                )} */}
                 <button type="submit" className="btn btn-primary">{selectedNotification ? 'Update' : 'Send'}</button>
             </form>
             
@@ -207,8 +207,8 @@ const Notification = () => {
                             <li key={notification.id}>
                                 <h4>{notification.title}</h4>
                                 <p>{notification.message}</p>
-                                <button onClick={() => handleEditNotification(notification)}>Edit</button>
-                                <button onClick={() => handleDeleteNotification(notification.id)}>Delete</button>
+                                <button variant="outline-primary" onClick={() => handleEditNotification(notification)}><FaEdit/></button>
+                                <button variant="outline-danger" onClick={() => handleDeleteNotification(notification.id)}><FaTrash/></button>
                             </li>
                         ))}
                     </ul>
