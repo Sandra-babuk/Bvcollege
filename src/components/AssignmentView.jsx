@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import './assign.css';
 import { getAssignmentApi, getAssignmentSubmissions, StudentApi, deleteSubmissionApi } from '../services/allApi';
-import { FaEye, FaTrash, FaFilePdf } from "react-icons/fa"; // Import FaFilePdf
+import { FaEye, FaTrash, FaFilePdf } from "react-icons/fa";
 import { Button, Modal } from 'react-bootstrap';
 import { toast, ToastContainer } from 'react-toastify';
 
@@ -13,6 +13,7 @@ const AssignmentView = () => {
   const [students, setStudents] = useState({});
   const [showModal, setShowModal] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [searchQuery, setSearchQuery] = useState("");  
 
   useEffect(() => {
     const storedToken = localStorage.getItem('access');
@@ -44,7 +45,6 @@ const AssignmentView = () => {
       fetchAssignments();
     }
   }, [token]);
-  
 
   useEffect(() => {
     const fetchStudents = async () => {
@@ -100,8 +100,28 @@ const AssignmentView = () => {
     }
   };
 
+  // Handle search input change
+  const handleSearchChange = (e) => {
+    setSearchQuery(e.target.value.toLowerCase());
+  };
+
+  // Filter assignments based on search query
+  const filteredAssignments = assignments.filter((assignment) =>
+    assignment.title.toLowerCase().includes(searchQuery)
+  );
+
   return (
     <div className="assignment-view-container">
+      <div className="search-container">
+        <input
+          type="text"
+          className="search-input"
+          placeholder="Search by title..."
+          value={searchQuery}
+          onChange={handleSearchChange}
+        />
+      </div>
+
       <div className="table-container">
         {loading ? <p>Loading assignments...</p> : (
           <table className="styled-table">
@@ -115,7 +135,7 @@ const AssignmentView = () => {
               </tr>
             </thead>
             <tbody>
-              {assignments.length ? assignments.map((A, index) => (
+              {filteredAssignments.length ? filteredAssignments.map((A, index) => (
                 <tr key={A.id}>
                   <td>{index + 1}</td>
                   {/* <td>{A.subject_name}</td> */}

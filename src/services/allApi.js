@@ -587,9 +587,9 @@ export const getStudentAttendanceByIdApi = async (id, token) => {
 // ==========================
 
 // Post exam result data
-export const ExamResultApi = async (examResult, token) => {
+export const ExamResultApi = async (token) => {
   try {
-    const response = await axios.post('http://localhost:8000/exam_result/', examResult, {
+    const response = await axios.get('http://localhost:8000/api/exam_result/', {
       headers: {
         Authorization: `Bearer ${token}`,
         'Content-Type': 'application/json'
@@ -597,12 +597,13 @@ export const ExamResultApi = async (examResult, token) => {
     });
     return response.data;
   } catch (error) {
-    console.error('There was an error posting the exam result!', error);
+    console.error('Error fetching exam results!', error);
     throw error;
   }
 };
 
 
+// post
 export const uploadExamResultApi = async (token, title, file) => {
   const formData = new FormData();
   formData.append('title', title);
@@ -612,6 +613,24 @@ export const uploadExamResultApi = async (token, title, file) => {
     Authorization: `Bearer ${token}`,
   });
 };
+
+// delete
+export const deleteExamResultApi = async (token, id) => {
+  
+  try {
+    const response = await axios.delete(`http://localhost:8000/api/exam_result/${id}/`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    return response;
+  } catch (error) {
+    console.error("Error deleting exam result:", error.response ? error.response.data : error.message);
+    throw error;
+  }
+};
+
+
 
 
 

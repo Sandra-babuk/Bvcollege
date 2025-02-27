@@ -15,6 +15,7 @@ import AddAssignment from '../components/AddAssign';
 import { getUserProfileApi, getNotificationsApi, deleteNotificationApi } from '../services/allApi';
 import AssignmentView from '../components/AssignmentView';
 import StdAttendance from '../components/StdAttendance';
+import ResultStd from '../components/ResultStd';
 
 const FacultyDash = () => {
 
@@ -66,6 +67,8 @@ const FacultyDash = () => {
                 return <AssignmentView />;
             case "attendance":
                 return <StdAttendance />;
+                case "results":
+                    return <ResultStd />;
             default:
                 return <FacProfile />;
         }
@@ -126,7 +129,7 @@ const FacultyDash = () => {
 
             <div className="navigation-menu">
                 <nav className="nav-links">
-                    {["profile", "students", "notes", "assignments", "attendance"].map(feature => (
+                    {["profile", "students", "notes", "assignments", "attendance","results"].map(feature => (
                         <a
                             key={feature}
                             href={`#${feature}`}

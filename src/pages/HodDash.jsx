@@ -21,6 +21,7 @@ import './hoddash.css'
 import AddAssignment from '../components/AddAssign';
 import FacAttendance from '../components/FacAttendance';
 import AssignmentView from '../components/AssignmentView';
+import ResultStd from '../components/ResultStd';
 
 const HodDash = () => {
     const [activeFeature, setActiveFeature] = useState("profile");
@@ -36,7 +37,7 @@ const HodDash = () => {
     const [showNotifications, setShowNotifications] = useState(false);
     const [notifications, setNotifications] = useState([]);
     const [showDetails, setShowDetails] = useState(false);
-    const [sidebarVisible, setSidebarVisible] = useState(false); 
+    const [sidebarVisible, setSidebarVisible] = useState(false);
 
     useEffect(() => {
         const fetchProfileDetails = async () => {
@@ -79,7 +80,7 @@ const HodDash = () => {
         if (showNotifications) {
             return <Notification notifications={notifications} onClose={handleCloseNotifications} />;
         }
-    
+
         switch (activeFeature) {
             case "students":
                 return <ViewStudent />;
@@ -91,11 +92,13 @@ const HodDash = () => {
             //     return <Notes />;
             case "assignments":
                 return <AssignmentView />;
+            case "results":
+                return <ResultStd />;
             default:
                 return <HodProfile />;
         }
     };
-    
+
 
     const handleAddUser = () => {
         setShowModal(true);
@@ -129,9 +132,9 @@ const HodDash = () => {
                 <div className='icon-photo ms-2 d-lg-none' onClick={handlePhotoClick}>
                     <img src={profile.photo} className='img-fluid' alt="profile" />
                 </div>
-                
+
                 <Navbar.Toggle aria-controls="basic-navbar-nav" className='ms-auto' />
-                
+
                 <Navbar.Collapse id="basic-navbar-nav">
                     <Nav className="nav-links ms-auto me-auto">
                         <a
@@ -176,8 +179,16 @@ const HodDash = () => {
                         >
                             Attendance
                         </a>
+                        <a
+                            href="#results"
+                            onClick={() => handleActiveFeature("results")}
+                            className={activeFeature === "results" ? "active" : ""}
+                        >
+                            Results
+                        </a>
+
                         <MdNotifications className="notification-btn" onClick={handleShowNotifications} />
-                        </Nav>
+                    </Nav>
                 </Navbar.Collapse>
             </Navbar>
 
@@ -223,7 +234,7 @@ const HodDash = () => {
 
             <Modal show={showModal} onHide={handleModalClose} centered className="custom-modal">
                 <Modal.Header closeButton className="custom-modal-header">
-                    <Modal.Title>{showForm ? `Add ${showForm} `: "Select User Type"}</Modal.Title>
+                    <Modal.Title>{showForm ? `Add ${showForm} ` : "Select User Type"}</Modal.Title>
                 </Modal.Header>
                 <Modal.Body className="custom-modal-body">
                     {!showForm ? (
@@ -261,4 +272,4 @@ const HodDash = () => {
     );
 };
 
-export default HodDash;
+export default HodDash;

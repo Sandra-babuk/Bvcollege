@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { getNotes } from '../services/allApi';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import './notes.css';
+import './notes.css';  // Add styles in this file
 
 const Notes = () => {
   const [notes, setNotes] = useState([]);
@@ -58,8 +58,9 @@ const Notes = () => {
         {notes.map(note => (
           <div className="note-card" key={note.id}>
             <h3 className="note-title">{note.title}</h3>
-            <p className="note-info">Course: {note.courseName}</p>
-            <p className="note-info">Faculty: {note.facultyName}</p>
+            <p className="note-info">Subject: {note.subject}</p>
+            <p className="note-info">Course: {note.course}</p>
+            <p className="note-info">Faculty: {note.faculty}</p>
             {note.fileUrl ? (
               <a className="note-link" href={note.fileUrl} target="_blank" rel="noopener noreferrer">
                 Open PDF
