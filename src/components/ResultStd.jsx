@@ -1,15 +1,17 @@
 import React, { useEffect, useState } from 'react';
-import { ExamResultApi, deleteExamResultApi } from '../services/allApi';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { FaFilePdf, FaExclamationTriangle, FaTrash } from 'react-icons/fa';
+import { deleteExamResultApi, ExamResultApi } from '../services/allApi';
+import './resultstd.css'
 import { Button } from 'react-bootstrap';
 
 const ResultStd = () => {
   const [results, setResults] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [searchQuery, setSearchQuery] = useState(""); // State for search query
   const token = localStorage.getItem('access');
+  const [searchQuery, setSearchQuery] = useState("");
+  const userRole = localStorage.getItem('role');
 
   useEffect(() => {
     if (token) {
@@ -41,7 +43,6 @@ const ResultStd = () => {
       setLoading(false);
     }
   };
-
   const handleDelete = async (id) => {
     try {
       const response = await deleteExamResultApi(token, id);
@@ -70,8 +71,6 @@ const ResultStd = () => {
   return (
     <div className="exam-result-container">
       <h2 className="result-title">Exam Results</h2>
-
-      {/* Search input */}
       <div className="search-container">
         <input
           type="text"
@@ -87,10 +86,10 @@ const ResultStd = () => {
           <div className="spinner"></div>
           <p>Loading results...</p>
         </div>
-      ) : filteredResults.length === 0 ? (
+      ) : results.length === 0 ? (
         <div className="no-results">
           <FaExclamationTriangle className="no-results-icon" />
-          <p>No results found.</p>
+          <p>No results available.</p>
         </div>
       ) : (
         <div className="table-responsive">
@@ -100,7 +99,8 @@ const ResultStd = () => {
                 <th>SI.No</th>
                 <th>Title</th>
                 <th>File</th>
-                <th>Action</th>
+                {userRole !== 'student' && <th>Action</th>}
+
               </tr>
             </thead>
             <tbody>
@@ -123,18 +123,20 @@ const ResultStd = () => {
                       <p className="no-pdf">No PDF available</p>
                     )}
                   </td>
-                  <td data-label="Action">
-                    <Button variant="outline-danger" size="sm" onClick={() => handleDelete(result.id)}>
-                      <FaTrash />
-                    </Button>
-                  </td>
+                  {userRole !== 'student' && (
+                    <td data-label="Action">
+                      <Button variant="outline-danger" size="sm" onClick={() => handleDelete(result.id)}>
+                        <FaTrash />
+                      </Button>
+                    </td>
+                  )}
+
                 </tr>
               ))}
             </tbody>
           </table>
         </div>
       )}
-
       <ToastContainer position="top-right" autoClose={3000} />
     </div>
   );

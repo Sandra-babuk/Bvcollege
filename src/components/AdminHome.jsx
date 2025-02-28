@@ -79,9 +79,9 @@ function AdminHome() {
               <ListItem button className="nested-item" onClick={() => renderComponent(<AddBatch />)}>
                 <ListItemText primary="Add Batch" />
               </ListItem>
-              <ListItem button className="nested-item" onClick={() => renderComponent(<AddCourse />)}>
+              {/* <ListItem button className="nested-item" onClick={() => renderComponent(<AddCourse />)}>
                 <ListItemText primary="Add Course" />
-              </ListItem>
+              </ListItem> */}
               <ListItem button className="nested-item" onClick={() => renderComponent(<AddSubject />)}>
                 <ListItemText primary="Add Subject" />
               </ListItem>

@@ -124,7 +124,7 @@ const AssignmentStd = () => {
       {availableBatches.length > 1 && (
         <div className="batch-selector">
           <select value={batchId} onChange={handleBatchChange}>
-            <option value="">All</option>
+            <option value="">select Batch</option>
             {availableBatches.map(batch => (
               <option key={batch.id} value={batch.id}>{batch.batch_name}</option>
             ))}

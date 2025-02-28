@@ -10,7 +10,7 @@ const AddBatch = () => {
     start_year: "",
     end_year: "",
   });
-  const [courses, setCourses] = useState([]); // Ensuring courses is always an array
+  const [courses, setCourses] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
 
@@ -78,10 +78,10 @@ const AddBatch = () => {
           </div>
           <div className="form-group">
             <label>Course:</label>
-            <select 
-            name="course" 
-            value={formData.course}
-             onChange={handleChange} required>
+            <select
+              name="course"
+              value={formData.course}
+              onChange={handleChange} required>
               <option value="">Select Course</option>
               {courses.map((course) => (
                 <option key={course.id} value={course.id}>
@@ -89,7 +89,7 @@ const AddBatch = () => {
                 </option>
               ))}
             </select>
-          </div> 
+          </div>
 
           <div className="form-group">
             <label>Start Year:</label>
@@ -109,4 +109,4 @@ const AddBatch = () => {
 
 };
 
-export default AddBatch;
+export default AddBatch;

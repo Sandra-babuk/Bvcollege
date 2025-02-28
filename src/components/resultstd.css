@@ -1,0 +1,131 @@
+.exam-result-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+    font-family: 'Arial', sans-serif;
+}
+
+.result-title {
+    font-size: 2rem;
+    font-weight: bold;
+    color: #1d41c1;
+    text-align: start;
+}
+
+.result-title::after {
+    content: '';  
+    display: block;
+    width: 100%;
+    max-width: 1000px; 
+    height: 4px;
+    background-color: #1d41c1;
+    border-radius: 2px;
+    margin-top: 5px;
+}
+
+.table-responsive {
+    overflow-x: auto;
+    margin-top: 20px;
+}
+
+.result-table {
+    width: 90%;
+    border-collapse: collapse;
+    background: white;
+    border-radius: 10px;
+    overflow: hidden;
+    min-width: 600px;
+
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+}
+.search-container{
+    padding: 10px;
+    display: flex;
+    justify-content: flex-start;
+    margin-left: auto;
+  }
+  
+
+.result-table th, 
+.result-table td {
+    padding: 1.2rem 1.5rem;
+    text-align: center;
+    border-bottom: 2px solid #ecf0f1;
+    
+}
+
+.result-table th {
+    background: #f8f9fa; 
+    color: black;
+    font-weight: 600;
+
+    font-size: 0.85rem;
+    letter-spacing: 1px;
+
+
+}
+
+.result-table td{
+    font-size: 0.99rem;
+}
+.result-table tr:hover {
+    background: #f8f9fa;
+}
+
+.pdf-link {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+    text-decoration: none;
+    color: #007bff;
+    font-weight: 500;
+}
+
+.pdf-link:hover {
+    color: #0056b3;
+    text-decoration: none;
+}
+
+.pdf-icon {
+    color: #0056b3;
+    font-size: 1.2rem;
+}
+
+.no-pdf {
+    color: #d9534f;
+    font-style: italic;
+}
+
+.loading-spinner {
+    text-align: center;
+    padding: 20px;
+}
+
+.spinner {
+    border: 4px solid rgba(0, 0, 0, 0.1);
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    border-left-color: #1d41c1;
+    animation: spin 1s ease infinite;
+    margin: 10px auto;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+.no-results {
+    text-align: center;
+    font-size: 1.2rem;
+    color: #7f8c8d;
+    padding: 20px;
+}
+
+.no-results-icon {
+    font-size: 2rem;
+    color: #f39c12;
+    margin-bottom: 10px;
+}

@@ -13,7 +13,7 @@ const AssignmentView = () => {
   const [students, setStudents] = useState({});
   const [showModal, setShowModal] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [searchQuery, setSearchQuery] = useState("");  
+  const [searchQuery, setSearchQuery] = useState("");
 
   useEffect(() => {
     const storedToken = localStorage.getItem('access');
@@ -25,22 +25,22 @@ const AssignmentView = () => {
       setLoading(true);
       try {
         const response = await getAssignmentApi(token);
-        console.log("Assignments API Response:", response); // Debugging
+        console.log("Assignments API Response:", response);
         if (Array.isArray(response?.data)) {
           setAssignments(response.data);
         } else {
           toast.info("No assignments found.");
-          setAssignments([]); // Ensure it's an empty array if data is not an array
+          setAssignments([]); 
         }
       } catch (error) {
         console.error("Error fetching assignments:", error);
         toast.error("Error fetching assignments.");
-        setAssignments([]); // Default to an empty array in case of an error
+        setAssignments([]);
       } finally {
         setLoading(false);
       }
     };
-  
+
     if (token) {
       fetchAssignments();
     }
@@ -100,18 +100,24 @@ const AssignmentView = () => {
     }
   };
 
-  // Handle search input change
+  //  search  
   const handleSearchChange = (e) => {
     setSearchQuery(e.target.value.toLowerCase());
   };
 
-  // Filter assignments based on search query
+  // search query
   const filteredAssignments = assignments.filter((assignment) =>
     assignment.title.toLowerCase().includes(searchQuery)
   );
 
   return (
     <div className="assignment-view-container">
+
+      <div>
+        <h3 style={{color: '#1d41c1'}}>Assignment Submission</h3>
+        <hr style={{color: '#1d41c1'}} />
+      </div>
+
       <div className="search-container">
         <input
           type="text"
@@ -121,6 +127,7 @@ const AssignmentView = () => {
           onChange={handleSearchChange}
         />
       </div>
+
 
       <div className="table-container">
         {loading ? <p>Loading assignments...</p> : (
@@ -195,7 +202,7 @@ const AssignmentView = () => {
                     <td>{S.submitted_at ? new Date(S.submitted_at).toLocaleString() : "N/A"}</td>
                     <td>
                       <button
-                        className="action-btn delete-btn"
+                        className="action-btn asdelete-btn"
                         onClick={() => handleDeleteSubmission(selectedAssignment, S.id)}
                       >
                         <FaTrash className="icon" />

@@ -30,7 +30,6 @@ const ViewStudent = () => {
     course: '',
     batch: '',
     gender: '',
-    // photo: ""
   });
 
   useEffect(() => {
@@ -56,44 +55,26 @@ const ViewStudent = () => {
         setCourses(Array.isArray(courseResponse.data) ? courseResponse.data : []);
 
         const batchResponse = await getBatchApi(token);
-        console.log("Batch Response:", batchResponse.data); // Debugging API response
-
-        if (Array.isArray(batchResponse.data)) {
-          setBatches(batchResponse.data);
-        } else {
-          setBatches([]); // Ensure batches is always an array
-        }
-
+        setBatches(Array.isArray(batchResponse.data) ? batchResponse.data : []);
       } catch (error) {
         console.error('Error fetching data:', error);
         toast.error('Failed to load data');
       }
     };
 
-
-
     fetchData();
   }, [navigate]);
 
   useEffect(() => {
-    if (!students || students.length === 0) return;
+    if (!students.length) return;
 
     let filtered = students;
+    if (filterBatch) filtered = filtered.filter(student => student.batch.toString() === filterBatch);
+    if (filterDepartment) filtered = filtered.filter(student => student.department.toString() === filterDepartment);
+    if (filterCourse) filtered = filtered.filter(student => student.course.toString() === filterCourse);
 
-    if (filterBatch) {
-      filtered = filtered.filter(student => student.batch.toString() === filterBatch);
-    }
-    if (filterDepartment) {
-      filtered = filtered.filter(student => student.department.toString() === filterDepartment);
-    }
-    if (filterCourse) {
-      filtered = filtered.filter(student => student.course.toString() === filterCourse);
-    }
-
-    console.log("Filtered Students:", filtered);
     setFilteredStudents(filtered);
   }, [filterBatch, filterDepartment, filterCourse, students]);
-
 
   const handleEdit = (student) => {
     setSelectedStudent(student);
@@ -114,21 +95,16 @@ const ViewStudent = () => {
     }
   };
 
-
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsSubmitting(true);
 
     const formData = new FormData();
     Object.keys(selectedStudent).forEach((key) => {
-      if (selectedStudent[key] && key !== 'photo') {
-        formData.append(key, selectedStudent[key]);
+      if (selectedStudent[key]) {
+        formData.append(key, selectedStudent[key]);  // Keeping all values as strings
       }
     });
-
-    if (selectedStudent.photo instanceof File) {
-      formData.append("photo", selectedStudent.photo);
-    }
 
     try {
       const response = await editStdApi(selectedStudent.id, formData, localStorage.getItem('access'));
@@ -139,7 +115,7 @@ const ViewStudent = () => {
         setShowModal(false);
         toast.success("Student details updated!");
       } else {
-        toast.error("Failed to update Student details.");
+        toast.error("Failed to update student details.");
       }
     } catch (error) {
       console.error("Error updating student:", error);
@@ -156,15 +132,10 @@ const ViewStudent = () => {
         <Col md={4}>
           <Form.Select value={filterBatch} onChange={(e) => setFilterBatch(e.target.value)}>
             <option value="">Filter by Batch</option>
-            {Array.isArray(batches) && batches.length > 0 ? (
-              batches.map((batch) => (
-                <option key={batch.id} value={batch.id}>{batch.batch_name}</option>
-              ))
-            ) : (
-              <option disabled>No batches available</option>
-            )}
+            {batches.map((batch) => (
+              <option key={batch.id} value={batch.id}>{batch.batch_name}</option>
+            ))}
           </Form.Select>
-
         </Col>
         <Col md={4}>
           <Form.Select value={filterDepartment} onChange={(e) => setFilterDepartment(e.target.value)}>
@@ -177,15 +148,10 @@ const ViewStudent = () => {
         <Col md={4}>
           <Form.Select value={filterCourse} onChange={(e) => setFilterCourse(e.target.value)}>
             <option value="">Filter by Course</option>
-            {Array.isArray(courses) && courses.length > 0 ? (
-              courses.map((course) => (
-                <option key={course.id} value={course.id}>{course.course_name}</option>
-              ))
-            ) : (
-              <option disabled>No courses available</option>
-            )}
+            {courses.map(course => (
+              <option key={course.id} value={course.id}>{course.course_name}</option>
+            ))}
           </Form.Select>
-
         </Col>
       </Row>
 
@@ -199,7 +165,6 @@ const ViewStudent = () => {
             <th>Department</th>
             <th>Course</th>
             <th>Batch</th>
-            {/* <th>Photo</th> */}
             <th>Actions</th>
           </tr>
         </thead>
@@ -213,16 +178,11 @@ const ViewStudent = () => {
               <td>{departments.find(dept => dept.id === student.department)?.department_name || 'Unknown'}</td>
               <td>{courses.find(course => course.id === student.course)?.course_name || 'Unknown'}</td>
               <td>{batches.find(batch => batch.id === student.batch)?.batch_name || 'Unknown'}</td>
-              {/* <td>
-                {student.photo ? (
-                  <img src={`${serverUrl}${student.photo}`} alt={student.full_name} style={{ width: "50px", height: "50px", borderRadius: "50%" }} />
-                ) : "No Photo"}
-              </td> */}
               <td>
                 <Button variant="outline-primary" size="sm" onClick={() => handleEdit(student)}>
                   <FaEdit />
                 </Button>
-                <Button variant="outline-danger" size="sm"  onClick={() => handleDelete(student.id)}>
+                <Button variant="outline-danger" size="sm" onClick={() => handleDelete(student.id)}>
                   <FaTrash />
                 </Button>
               </td>
@@ -231,9 +191,8 @@ const ViewStudent = () => {
         </tbody>
       </Table>
 
-
-
-
+      {/* Edit Student Modal */}
+     
       <Modal show={showModal} onHide={() => setShowModal(false)}>
         <Modal.Header closeButton>
           <Modal.Title>Edit Student</Modal.Title>
@@ -345,9 +304,6 @@ const ViewStudent = () => {
           </Button>
         </Modal.Footer>
       </Modal>
-
-
-
     </Container>
   );
 };

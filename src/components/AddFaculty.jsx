@@ -72,7 +72,7 @@ function FacultyRegistration() {
   // Handle registration
   const handleRegistration = async (e) => {
     e.preventDefault();
-    setIsLoading(true); // Start loading
+    setIsLoading(true); 
 
     const error = validateInputs();
     if (error) {
@@ -127,7 +127,7 @@ function FacultyRegistration() {
         "An unexpected error occurred. Please try again."
       );
     } finally {
-      setIsLoading(false); // Reset loading state
+      setIsLoading(false); 
     }
   };
 

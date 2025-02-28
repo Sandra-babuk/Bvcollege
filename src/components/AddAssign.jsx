@@ -7,7 +7,6 @@ import { addAssignmentApi, getBatchApi, FacultyApi, getSubjectApi, departmentApi
 const AddAssignment = () => {
   const navigate = useNavigate();
   
-  // State management
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
   const [batch, setBatch] = useState('');
@@ -25,7 +24,6 @@ const AddAssignment = () => {
 
   const [error, setError] = useState('');
   
-  // Fetch from localStorage
   useEffect(() => {
     setFacultyId(localStorage.getItem('facultyId') || '');
   }, []);
@@ -98,7 +96,7 @@ const AddAssignment = () => {
       
       if (response.status === 201) {
         toast.success('Assignment uploaded successfully!');
-        navigate('/assignments'); // Redirect after successful upload
+        navigate('/assignments'); 
       } else {
         toast.error('Failed to upload assignment');
       }

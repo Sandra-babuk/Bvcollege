@@ -29,14 +29,14 @@ const AddNote = ({ onNoteAdded }) => {
         console.log(facultyResponse);
 
         if (facultyResponse.data.length > 0) {
-          const currentUsername = localStorage.getItem('username'); // Assuming the username is saved in localStorage
+          const currentUsername = localStorage.getItem('username');
           const matchedFaculty = facultyResponse.data.find(faculty => faculty.full_name === currentUsername);
 
           if (matchedFaculty) {
             const facultyId = matchedFaculty.id;
-            localStorage.setItem('facultyId', facultyId); // Store in localStorage
-            setUsername(matchedFaculty.username); // Set username to match the logged-in user
-            setFacultyList(facultyResponse.data); // Set the list of all faculties
+            localStorage.setItem('facultyId', facultyId); 
+            setUsername(matchedFaculty.username); 
+            setFacultyList(facultyResponse.data);
           } else {
             toast.error("Faculty not found for the current username.");
           }
@@ -66,7 +66,7 @@ const AddNote = ({ onNoteAdded }) => {
 
 
     const fetchCourses = async () => {
-      const token = localStorage.getItem('access'); // Fix: Declare token before using it
+      const token = localStorage.getItem('access'); 
       if (!token) {
         toast.error("No authentication token found. Please log in.");
         return;
@@ -131,7 +131,7 @@ const AddNote = ({ onNoteAdded }) => {
       setFile(null);
       setCourse('');
       setSubject('')
-      document.getElementById('fileInput').value = ""; // Clear file input
+      document.getElementById('fileInput').value = ""; 
     } else {
       console.error("Error response:", response.data);
       toast.error("There was a problem adding the note. Please try again.");

@@ -90,8 +90,8 @@ const HodDash = () => {
                 return <FacAttendance />;
             // case "notes":
             //     return <Notes />;
-            case "assignments":
-                return <AssignmentView />;
+            // case "assignments":
+            //     return <AssignmentView />;
             case "results":
                 return <ResultStd />;
             default:
@@ -165,13 +165,13 @@ const HodDash = () => {
                         >
                             Notes
                         </a> */}
-                        <a
+                        {/* <a
                             href="#assignments"
                             onClick={() => handleActiveFeature("assignments")}
                             className={activeFeature === "assignments" ? "active" : ""}
                         >
                             Assignments
-                        </a>
+                        </a> */}
                         <a
                             href="#attendence"
                             onClick={() => handleActiveFeature("attendence")}
